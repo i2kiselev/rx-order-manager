@@ -10,6 +10,4 @@ public class TaskQueue {
 
     private Task task;
 
-    private Deque<Employee> employeeDeque;
-
 }

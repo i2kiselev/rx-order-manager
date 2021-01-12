@@ -1,17 +1,20 @@
 package ru.isu.i2kiselev.rxordermanager.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Employee;
+import ru.isu.i2kiselev.rxordermanager.model.Task;
 import ru.isu.i2kiselev.rxordermanager.repository.EmployeeRepository;
 
 @Service
 public class EmployeeService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     public Mono<Employee> saveEmployee(Employee employee){
         return employeeRepository.save(employee);
@@ -24,4 +27,15 @@ public class EmployeeService {
     public Mono<Employee> findById(Integer id){
         return employeeRepository.findById(id);
     }
+
+    public Flux<Employee> findByTaskId(Integer id) {
+        return employeeRepository.findAllByTaskId(id);
+    }
+
+    public Mono<Employee> addTaskToEmployee(Employee employee, Task task, Integer taskEstimate){
+           employee.addTaskEstimate(task, taskEstimate);
+           return employeeRepository.save(employee);
+
+    }
+
 }

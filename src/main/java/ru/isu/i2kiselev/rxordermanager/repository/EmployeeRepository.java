@@ -8,6 +8,10 @@ import ru.isu.i2kiselev.rxordermanager.model.Employee;
 
 @Repository
 public interface EmployeeRepository extends ReactiveCrudRepository<Employee, Integer> {
-    @Query("SELECT ")
-    Flux<Employee> findAllByTask(Integer taskId);
+
+    @Query("select * from public.employee where $1 = any (tasks)")
+    Flux<Employee> findAllByTaskId(Integer task_id);
+
+
+
 }

@@ -18,11 +18,14 @@ public class Employee {
     //Nickname of employee
     private String username;
 
-    //Map of task IDs and their respective completion time
-    //private Map<Integer, Integer> taskEstimates;
-
+    //Task IDs
     private Collection<Integer> tasks;
 
+    //Estimated task completion times
     private Collection<Integer> estimates;
 
+    public void addTaskEstimate(Task task, Integer taskEstimate){
+           this.getTasks().add(task.getId());
+           this.getEstimates().add(taskEstimate);
+    }
 }

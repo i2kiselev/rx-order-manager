@@ -3,7 +3,7 @@ spring:
   r2dbc:
     username: postgres
     password: 1832373
-    url: r2dbc:postgresql://localhost:5432/postgres
+    url: r2dbc:postgresql://localhost:5432/ilusha
     pool:
       enabled: true
 logging:

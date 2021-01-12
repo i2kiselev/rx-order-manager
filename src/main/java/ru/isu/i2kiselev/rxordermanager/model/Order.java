@@ -8,7 +8,4 @@ public class Order {
     @Id
     private Integer id;
 
-    //Collection of task IDs
-    private Collection<Integer> tasks;
-
 }

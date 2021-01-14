@@ -1,7 +1,9 @@
 package ru.isu.i2kiselev.rxordermanager.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Employee;
@@ -11,11 +13,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/employee")
 public class EmployeeController {
 
-    @Autowired
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @GetMapping("/save")
     public Mono<Employee> saveEmployeeTest(){
@@ -32,9 +37,9 @@ public class EmployeeController {
         return employeeService.findAll();
     }
 
-    @GetMapping("/findAllByTaskId/{taskId}")
-    public Flux<Employee> findAllByTaskId(@PathVariable Integer taskId){
-        return employeeService.findByTaskId(taskId);
+    @GetMapping("/findAllByTask/{taskId}")
+    public Flux<Employee> findAllByTask(@PathVariable Integer taskId){
+        return employeeService.findByTask(taskId);
     }
 
 }

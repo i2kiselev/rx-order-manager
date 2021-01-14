@@ -28,7 +28,7 @@ public class EmployeeService {
         return employeeRepository.findById(id);
     }
 
-    public Flux<Employee> findByTaskId(Integer id) {
+    public Flux<Employee> findByTask(Integer id) {
         return employeeRepository.findAllByTaskId(id);
     }
 

@@ -6,6 +6,12 @@ import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Task;
 import ru.isu.i2kiselev.rxordermanager.repository.TaskRepository;
 
+/**
+ * Singleton-service for CRUD-operations with Task class
+ * @version 0.1
+ * @author Ilya Kiselev
+ */
+
 @Service
 public class TaskService {
 
@@ -16,7 +22,7 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Mono<Task> saveTask(Task task){
+    public Mono<Task> save(Task task){
         return taskRepository.save(task);
     }
 

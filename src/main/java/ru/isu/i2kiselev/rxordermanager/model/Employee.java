@@ -7,6 +7,13 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Collection;
 
+/**
+ * Employee POJO. It represent company's employee with array of tasks and respective completion estimates
+ * @version 0.1
+ * @author Ilya Kiselev
+ */
+
+
 @Getter
 @Setter
 @Table

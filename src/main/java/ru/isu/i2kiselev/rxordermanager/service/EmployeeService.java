@@ -7,6 +7,12 @@ import ru.isu.i2kiselev.rxordermanager.model.Employee;
 import ru.isu.i2kiselev.rxordermanager.model.Task;
 import ru.isu.i2kiselev.rxordermanager.repository.EmployeeRepository;
 
+/**
+ * Service for CRUD-operations with Employee class
+ * @version 0.1
+ * @author Ilya Kiselev
+ */
+
 @Service
 public class EmployeeService {
 

@@ -8,7 +8,7 @@ import ru.isu.i2kiselev.rxordermanager.model.Task;
 import ru.isu.i2kiselev.rxordermanager.repository.EmployeeRepository;
 
 /**
- * Service for CRUD-operations with Employee class
+ * Singleton-service for CRUD-operations with Employee class
  * @version 0.1
  * @author Ilya Kiselev
  */

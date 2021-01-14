@@ -1,7 +1,7 @@
 package ru.isu.i2kiselev.rxordermanager.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -14,8 +14,9 @@ import java.util.Collection;
  */
 
 
-@Getter
-@Setter
+
+@Data
+@NoArgsConstructor
 @Table
 public class Employee {
 
@@ -35,4 +36,9 @@ public class Employee {
            this.getTasks().add(task.getId());
            this.getEstimates().add(taskEstimate);
     }
+
+    public Employee(String username) {
+        this.username = username;
+    }
+
 }

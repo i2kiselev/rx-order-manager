@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
  * @version 0.1
  * @author Ilya Kiselev
  */
+
 public class Order {
     @Id
     private Integer id;

@@ -5,12 +5,11 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Employee;
-import ru.isu.i2kiselev.rxordermanager.model.Task;
 import ru.isu.i2kiselev.rxordermanager.repository.EmployeeRepository;
 
 /**
- * Singleton-service for CRUD-operations with Employee class
- * @version 0.1
+ * Singleton-service for operations with Employee class
+ * @version 0.2
  * @author Ilya Kiselev
  */
 
@@ -44,11 +43,15 @@ public class EmployeeService {
         return employeeRepository.findAllByTaskId(id);
     }
 
-    public Mono<Employee> addTaskToEmployee(Employee employee, Task task, Integer taskEstimate){
-           log.info("Added task #{} with completion estimate of {} to employee #{}", task::getId, taskEstimate::intValue, employee::getId);
-           employee.addTaskEstimate(task, taskEstimate);
-           return employeeRepository.save(employee);
-
+    public Mono<Void> addTaskEstimate(Integer employeeId, Integer taskId, Integer taskEstimate){
+        log.info("Added task #{} estimate of {} units to employee #{} ", taskId, taskEstimate, employeeId);
+        return employeeRepository.addTaskEstimateToEmployee(employeeId,taskId,taskEstimate);
     }
+
+    public Mono<Void> removeTaskEstimate(Integer employeeId, Integer taskId){
+        log.info("Removed task #{} estimate of employee #{} ", taskId,  employeeId);
+        return employeeRepository.removeTaskEstimateToEmployee(employeeId,taskId);
+    }
+
 
 }

@@ -1,110 +1,57 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 13.1
--- Dumped by pg_dump version 13.1
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
-SET default_tablespace = '';
-
-SET default_table_access_method = heap;
-
---
--- Name: employee; Type: TABLE; Schema: public; Owner: postgres
---
-
 CREATE TABLE public.employee (
-    id integer NOT NULL,
-    username character varying(255),
-    tasks integer[],
-    estimates integer[]
+    id SERIAL NOT NULL,
+    username varchar NOT NULL,
+    PRIMARY KEY (id)
 );
 
-
-ALTER TABLE public.employee OWNER TO postgres;
-
---
--- Name: employee_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.employee_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.employee_id_seq OWNER TO postgres;
-
---
--- Name: employee_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.employee_id_seq OWNED BY public.employee.id;
-
-
---
--- Name: task; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.task (
-    id integer NOT NULL,
-    task_name character varying(255)
+    id SERIAL NOT NULL,
+    taskname varchar NOT NULL,
+    PRIMARY KEY (id)
 );
 
 
-ALTER TABLE public.task OWNER TO postgres;
+CREATE TABLE public.employee_task_estimates (
+    employee_id SERIAL NOT NULL,
+    task_id SERIAL NOT NULL,
+    completion_time integer NOT NULL
+);
 
---
--- Name: task_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.task_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+ALTER TABLE public.employee_task_estimates
+    ADD UNIQUE (employee_id, task_id);
 
 
-ALTER TABLE public.task_id_seq OWNER TO postgres;
+CREATE TABLE public.order_table (
+    id SERIAL NOT NULL,
+    task_id SERIAL NOT NULL,
+    PRIMARY KEY (id)
+);
 
---
--- Name: task_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.task_id_seq OWNED BY public.task.id;
-
-
---
--- Name: employee id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.employee ALTER COLUMN id SET DEFAULT nextval('public.employee_id_seq'::regclass);
+CREATE INDEX ON public.order_table
+    (task_id);
 
 
---
--- Name: task id; Type: DEFAULT; Schema: public; Owner: postgres
---
+CREATE TABLE public.task_queue (
+    task_id SERIAL NOT NULL,
+    employee_id SERIAL NOT NULL,
+    order_id SERIAL NOT NULL
+);
 
-ALTER TABLE ONLY public.task ALTER COLUMN id SET DEFAULT nextval('public.task_id_seq'::regclass);
+ALTER TABLE public.employee_task_estimates
+    ADD UNIQUE (task_id, employee_id, order_id);
+
+CREATE INDEX ON public.task_queue
+    (task_id);
+CREATE INDEX ON public.task_queue
+    (employee_id);
+CREATE INDEX ON public.task_queue
+    (order_id);
 
 
---
--- PostgreSQL database dump complete
---
-
+ALTER TABLE public.employee_task_estimates ADD CONSTRAINT FK_employee_task_estimates__employee_id FOREIGN KEY (employee_id) REFERENCES public.employee(id);
+ALTER TABLE public.employee_task_estimates ADD CONSTRAINT FK_employee_task_estimates__task_id FOREIGN KEY (task_id) REFERENCES public.task(id);
+ALTER TABLE public.order_table ADD CONSTRAINT FK_order_table__task_id FOREIGN KEY (task_id) REFERENCES public.task(id);
+ALTER TABLE public.task_queue ADD CONSTRAINT FK_task_queue__task_id FOREIGN KEY (task_id) REFERENCES public.task(id);
+ALTER TABLE public.task_queue ADD CONSTRAINT FK_task_queue__employee_id FOREIGN KEY (employee_id) REFERENCES public.employee(id);
+ALTER TABLE public.task_queue ADD CONSTRAINT FK_task_queue__order_id FOREIGN KEY (order_id) REFERENCES public.order_table(id);

@@ -48,6 +48,11 @@ public class EmployeeService {
         return employeeRepository.addTaskEstimateToEmployee(employeeId,taskId,taskEstimate);
     }
 
+    public Mono<Void> updateTaskEstimate(Integer employeeId, Integer taskId, Integer taskEstimate){
+        log.info("Update task #{} estimate of {} units to employee #{} ", taskId, taskEstimate, employeeId);
+        return employeeRepository.updateTaskEstimateOfEmployee(employeeId,taskId,taskEstimate);
+    }
+
     public Mono<Void> removeTaskEstimate(Integer employeeId, Integer taskId){
         log.info("Removed task #{} estimate of employee #{} ", taskId,  employeeId);
         return employeeRepository.removeTaskEstimateToEmployee(employeeId,taskId);

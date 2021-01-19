@@ -67,4 +67,42 @@ class EmployeeServiceTest {
                 .expectComplete()
                 .verify();
     }
+
+    @Test
+    void findByTaskIdReturnsFluxWithEmployeesTest(){
+        List<Employee> employees = new ArrayList<>();
+        Employee employee1 = new Employee("user1");
+        Employee employee2 = new Employee("user2");
+        employees.add(employee1);
+        employees.add(employee2);
+        given(employeeRepository.findAllByTaskId(any(Integer.class))).willReturn(Flux.fromIterable(employees));
+        Flux<Employee> employeeFlux = employeeService.findAll();
+        StepVerifier.create(employeeFlux)
+                .expectNext(employee1,employee2)
+                .expectNextCount(0)
+                .expectComplete()
+                .verify();
+    }
+
+    /*@Test
+    void addTaskEstimateReturnsMonoVoidTest(){
+        List<Employee> employees = new ArrayList<>();
+        given(employeeRepository.addTaskEstimateToEmployee(any(Integer.class),any(Integer.class),any(Integer.class))).willReturn(Mono.);
+        Flux<Employee> employeeFlux = employeeService.findAll();
+        StepVerifier.create(employeeFlux)
+                .expectNextCount(0)
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    void findAllByTaskIdReturnsFluxWithNoEmployeesTest(){
+        List<Employee> employees = new ArrayList<>();
+        given(employeeRepository.findAllByTaskId(any(Integer.class))).willReturn(Flux.fromIterable(employees));
+        Flux<Employee> employeeFlux = employeeService.findAll();
+        StepVerifier.create(employeeFlux)
+                .expectNextCount(0)
+                .expectComplete()
+                .verify();
+    }*/
 }

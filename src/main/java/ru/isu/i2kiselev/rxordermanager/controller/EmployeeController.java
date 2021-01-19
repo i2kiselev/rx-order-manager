@@ -41,6 +41,11 @@ public class EmployeeController {
             return employeeService.addTaskEstimate(employeeId,taskId,estimate);
     }
 
+    @PutMapping("/{employeeId}/task/{taskId}/estimate/{estimate}")
+    public Mono<Void> updateTaskEstimate(@PathVariable Integer employeeId, @PathVariable Integer taskId, @PathVariable Integer estimate){
+        return employeeService.updateTaskEstimate(employeeId,taskId,estimate);
+    }
+
     @DeleteMapping("/{employeeId}/task/{taskId}/")
     public Mono<Void> removeTaskEstimate(@PathVariable Integer employeeId, @PathVariable Integer taskId){
         return employeeService.removeTaskEstimate(employeeId,taskId);

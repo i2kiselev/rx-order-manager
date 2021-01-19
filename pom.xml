@@ -12,7 +12,7 @@
 	<artifactId>rx-order-manager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>rx-order-manager</name>
-	<description>Reactive order managment system based on Spring WebFlux</description>
+	<description>Reactive order management system based on Spring WebFlux</description>
 
 	<properties>
 		<java.version>11</java.version>

@@ -1,16 +1,12 @@
 package ru.isu.i2kiselev.rxordermanager.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Employee;
 import ru.isu.i2kiselev.rxordermanager.service.EmployeeService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 @RestController
 @RequestMapping("/employee")
@@ -27,19 +23,26 @@ public class EmployeeController {
         Employee employee = new Employee();
         employee.setUsername("ilusha");
         ArrayList<Integer> tasks = new ArrayList<>();
-        employee.setTasks(Arrays.asList(1,2,3));
-        employee.setEstimates(Arrays.asList(3,2,1));
         return employeeService.saveEmployee(employee);
     }
 
-    @GetMapping("/findAll")
+    @GetMapping("/all")
     public Flux<Employee> findAll(){
         return employeeService.findAll();
     }
 
-    @GetMapping("/findAllByTask/{taskId}")
+    @GetMapping("/all-by-task/{taskId}")
     public Flux<Employee> findAllByTask(@PathVariable Integer taskId){
         return employeeService.findByTask(taskId);
     }
 
+    @PostMapping("/{employeeId}/task/{taskId}/estimate/{estimate}")
+    public Mono<Void> addTaskEstimate(@PathVariable Integer employeeId, @PathVariable Integer taskId, @PathVariable Integer estimate){
+            return employeeService.addTaskEstimate(employeeId,taskId,estimate);
+    }
+
+    @DeleteMapping("/{employeeId}/task/{taskId}/")
+    public Mono<Void> removeTaskEstimate(@PathVariable Integer employeeId, @PathVariable Integer taskId){
+        return employeeService.removeTaskEstimate(employeeId,taskId);
+    }
 }

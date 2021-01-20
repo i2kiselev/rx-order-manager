@@ -24,7 +24,7 @@ public class EmployeeService {
     }
 
     public Mono<Employee> saveEmployee(Employee employee){
-        log.info("Saved employee with id {}", employee::getUsername);
+        log.info("Saved employee with id {}", employee::getId);
         return employeeRepository.save(employee);
     }
 

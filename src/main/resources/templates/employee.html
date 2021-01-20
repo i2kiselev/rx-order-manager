@@ -6,6 +6,7 @@
 </head>
 <body>
     <div th:each="emp: ${employees}">
+        <p th:text="${emp.getId()}"></p>
         <p th:text="${emp.getUsername()}"></p>
     </div>
 </body>

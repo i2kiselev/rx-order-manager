@@ -5,10 +5,10 @@
     <title>Test</title>
 </head>
 <body>
-<form th:action="@{/employee/addEmployee}" action="#" th:object="${employee}" method="post">
+<form  action="#" th:action="@{/employee/add}"  th:object="${employee}" method="post">
     <div class="form-group">
-        <label for="name">Employee name</label>
-        <input type="text" th:field="*{username}" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter name">
+        <label for="username">Employee name</label>
+        <input type="text" th:field="*{username}" class="form-control" id="username" aria-describedby="nameHelp" placeholder="Enter name">
     </div>
     <div class="btn-wrap">
         <button type="submit" class="btn btn-primary">Submit</button>

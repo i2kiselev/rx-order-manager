@@ -1,7 +1,5 @@
 package ru.isu.i2kiselev.rxordermanager.model;
 
-import org.springframework.data.annotation.Id;
-
 /**
  * TaskQueue POJO. It represents record of employee taking some task for completion
  * @version 0.1
@@ -9,8 +7,8 @@ import org.springframework.data.annotation.Id;
  */
 
 public class TaskQueue {
-    @Id
-    private Integer id;
+
+    private Integer employeeId;
 
     private Task task;
 

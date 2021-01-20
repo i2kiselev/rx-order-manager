@@ -21,19 +21,7 @@ public class Employee {
     @Id
     private Integer id;
 
-    //Nickname of employee
     private String username;
-
-    /*//Task IDs
-    private Collection<Integer> tasks;
-
-    //Estimated task completion times
-    private Collection<Integer> estimates;
-
-    public void addTaskEstimate(Task task, Integer taskEstimate){
-           this.getTasks().add(task.getId());
-           this.getEstimates().add(taskEstimate);
-    }*/
 
     public Employee(String username) {
         this.username = username;

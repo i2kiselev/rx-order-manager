@@ -10,6 +10,4 @@ spring:
     mode: HTML
 logging:
   level:
-    root: ERROR
-    org.springframework.data.r2dbc: DEBUG
-    org.springframework.web: DEBUG
+    root: INFO

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Test</title>
+</head>
+<body>
+<form th:action="@{/employee/addEmployee}" action="#" th:object="${employee}" method="post">
+    <div class="form-group">
+        <label for="name">Employee name</label>
+        <input type="text" th:field="*{username}" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter name">
+    </div>
+    <div class="btn-wrap">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+    </div>
+</form>
+</body>
+</html>

@@ -6,6 +6,8 @@ spring:
     url: r2dbc:postgresql://localhost:5432/order-manager
     pool:
       enabled: true
+  thymeleaf:
+    mode: HTML
 logging:
   level:
     root: ERROR

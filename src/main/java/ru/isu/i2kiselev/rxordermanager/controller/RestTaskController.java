@@ -11,11 +11,11 @@ import ru.isu.i2kiselev.rxordermanager.service.TaskService;
 
 @RestController
 @RequestMapping("/task")
-public class TaskController {
+public class RestTaskController {
 
     private final TaskService taskService;
 
-    public TaskController(TaskService taskService) {
+    public RestTaskController(TaskService taskService) {
         this.taskService = taskService;
     }
 

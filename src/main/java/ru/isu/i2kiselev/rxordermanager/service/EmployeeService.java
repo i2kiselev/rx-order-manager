@@ -28,6 +28,11 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
+    public Mono<Void> deleteEmployeeById(Integer employeeId){
+        log.info("Deleted employee with id {}", employeeId);
+        return employeeRepository.deleteById(employeeId);
+    }
+
     public Flux<Employee> findAll(){
         log.info("Returned all employees");
         return employeeRepository.findAll();

@@ -22,24 +22,28 @@ public class EmployeeController {
     @GetMapping("/")
     public Mono<String> employees(Model model){
         model.addAttribute("employees", employeeService.findAll());
-        log.info("Returned employee view");
-        return Mono.just("employee");
+        log.info("Returned employees view");
+        return Mono.just("employees");
+    }
+    @GetMapping("")
+    public Mono<String> redirect(Model model){
+        return employees(model);
     }
 
     @GetMapping("/{employeeId}")
     public Mono<String> editEmployee(@PathVariable Integer employeeId, Model model){
-        model.addAttribute("emp", employeeService.findByTask(employeeId));
-        return Mono.just("add-employee");
+        model.addAttribute("employee", employeeService.findById(employeeId));
+        return Mono.just("edit-employee");
     }
 
     @PutMapping("/{employeeId}")
-    public Mono<String> saveEditedEmployee(@PathVariable Integer employeeId, @ModelAttribute Employee employee){
-        return employeeService.saveEmployee(employee).thenReturn("redirect:/employee");
+    public Mono<String> saveEditedEmployee(@PathVariable Integer employeeId, @ModelAttribute Employee employee, Model model){
+        return employeeService.saveEmployee(employee).then(employees(model));
     }
 
     @DeleteMapping("/{employeeId}")
-    public Mono<String> removeEmployee(@PathVariable Integer employeeId){
-        return employeeService.deleteEmployeeById(employeeId).thenReturn("employee");
+    public Mono<String> removeEmployee(@PathVariable Integer employeeId, Model model){
+        return employeeService.deleteEmployeeById(employeeId).then(employees(model));
     }
 
     @GetMapping("/add")
@@ -50,8 +54,8 @@ public class EmployeeController {
     }
 
     @PostMapping("/add")
-    public Mono<String> addEmployee(@ModelAttribute("employee") Employee employee){
-        return employeeService.saveEmployee(employee).thenReturn("redirect:/employee/");
+    public Mono<String> addEmployee(@ModelAttribute("employee") Employee employee, Model model){
+        return employeeService.saveEmployee(employee).then(employees(model));
     }
 
 

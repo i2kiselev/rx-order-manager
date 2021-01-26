@@ -8,7 +8,7 @@ import ru.isu.i2kiselev.rxordermanager.model.Task;
 import ru.isu.i2kiselev.rxordermanager.repository.TaskRepository;
 
 /**
- * Singleton-service for CRUD-operations with Task class
+ * Singleton-service for operations with Task class
  * @version 0.1
  * @author Ilya Kiselev
  */
@@ -33,5 +33,13 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
+    public Flux<Task> findAllByEmployeeId(Integer employeeId){
+        log.info("Returned all tasks for employee #{}", employeeId);
+        return taskRepository.findAllByEmployeeId(employeeId);
+    }
 
+    public Mono<Task> findById(Integer taskId) {
+        log.info("Returned task  with id {}", taskId);
+        return taskRepository.findById(taskId);
+    }
 }

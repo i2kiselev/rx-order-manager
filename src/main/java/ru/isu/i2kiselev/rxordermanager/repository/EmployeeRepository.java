@@ -7,6 +7,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Employee;
 
+/**
+ * Employee repository.
+ * @version 0.5
+ * @author Ilya Kiselev
+ */
+
 @Repository
 public interface EmployeeRepository extends ReactiveCrudRepository<Employee, Integer> {
 

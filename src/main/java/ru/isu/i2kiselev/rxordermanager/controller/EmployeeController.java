@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Employee;
+import ru.isu.i2kiselev.rxordermanager.model.Task;
 import ru.isu.i2kiselev.rxordermanager.service.EmployeeService;
 import ru.isu.i2kiselev.rxordermanager.service.TaskService;
 
@@ -75,20 +76,17 @@ public class EmployeeController {
         return Mono.just("employee-tasks");
     }
 
-    /*@GetMapping("/{employeeId}/tasks/{taskId}")
-    public Mono<String> employeeTask(@PathVariable Integer employeeId, Model model, @PathVariable Integer taskId){
+    @GetMapping("/{employeeId}/tasks/add")
+    public Mono<String> employeeTask(@PathVariable Integer employeeId, Model model){
         model.addAttribute("tasks", taskService.findAllByEmployeeId(employeeId));
         model.addAttribute("employee",employeeService.findById(employeeId));
-        model.addAttribute("task",taskService.findById(taskId));
-        return Mono.just("employee-task");
+        model.addAttribute("task", new Task());
+        return Mono.just("add-employee-task");
     }
 
-    @PostMapping("/{employeeId}/tasks/{taskId}")
-    public Mono<String> addEmployeeTask(@ModelAttribute("task") Task task, Model model, @PathVariable Integer taskId, @PathVariable Integer employeeId){
-        Integer estimate=0;
-        return employeeService.addTaskEstimate(employeeId,taskId,estimate)
-                            .then(taskService.save(task))
-                            .thenReturn("employee-tasks");
+    @PostMapping("/{employeeId}/tasks/add")
+    public Mono<String> saveEmployeeTask(@ModelAttribute("task") Task task, @PathVariable Integer employeeId, @RequestParam("estimate") Integer estimate){
+        return taskService.save(task).flatMap(x->employeeService.addTaskEstimate(employeeId,x.getId(),estimate)).thenReturn("redirect:/employee/{employeeId}/tasks");
     }
 
     @PutMapping("/{employeeId}/tasks/{taskId}")
@@ -97,8 +95,5 @@ public class EmployeeController {
         model.addAttribute("employee",employeeService.findById(employeeId));
         model.addAttribute("task",taskService.findById(taskId));
         return Mono.just("employee-tasks");
-    }*/
-
-
-
+    }
 }

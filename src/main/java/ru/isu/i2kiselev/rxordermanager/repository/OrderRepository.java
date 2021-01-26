@@ -6,6 +6,12 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Order;
 
+/**
+ * Order repository.
+ * @version 0.2
+ * @author Ilya Kiselev
+ */
+
 @Repository
 public interface OrderRepository extends ReactiveCrudRepository<Order,Integer> {
 

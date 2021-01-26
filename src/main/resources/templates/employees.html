@@ -27,6 +27,7 @@
         <tr th:each="emp: ${employees}">
             <td th:text="${emp.id}"></td>
             <td th:text="${emp.username}"></td>
+            <td><a th:href="@{/employee/{id}/tasks(id=${emp.id})}" class="btn btn-primary">Tasks</a></td>
             <td><a th:href="@{/employee/{id}(id=${emp.id})}" class="btn btn-primary">Edit</a></td>
             <td>
                 <form th:action="@{/employee/{id}(id=${emp.id})}" th:method="delete" id="delete" method="post">

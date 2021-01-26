@@ -1,0 +1,30 @@
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary py-3" xmlns:th="http://www.w3.org/1999/xhtml">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarToggler">
+        <a class="navbar-brand align-center" href="#"><img src="#" th:src="@{/img/manager.svg}" width="60" height="60" class="d-inline-block align-center" alt="">
+           Order manager</a>
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/employee}">Employees<span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Tasks
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" th:href="@{/console/addProduct}">Product</a>
+                    <a class="dropdown-item" th:href="@{/console/addRoll}">Roll</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" th:href="@{/console/addRollset}">Roll set</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <form method="POST" th:action="@{/logout}">
+                    <button class="btn btn-primary" type="submit">Logout</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>

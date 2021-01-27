@@ -59,15 +59,25 @@ public class EmployeeController {
         return Mono.just("edit-employee");
     }
 
-    @PutMapping("/{employeeId}")
+    /*@PutMapping("/{employeeId}")
     public Mono<String> saveEditedEmployee(@PathVariable Integer employeeId, @ModelAttribute Employee employee, Model model){
+        return employeeService.saveEmployee(employee).then(employees(model));
+    }*/
+
+    @PostMapping("/{employeeId}/update")
+    public Mono<String> updateEmployee(@PathVariable Integer employeeId, @ModelAttribute Employee employee, Model model){
         return employeeService.saveEmployee(employee).then(employees(model));
     }
 
-    @DeleteMapping("/{employeeId}")
+    @PostMapping("/{employeeId}/delete")
     public Mono<String> removeEmployee(@PathVariable Integer employeeId, Model model){
         return employeeService.deleteEmployeeById(employeeId).then(employees(model));
     }
+
+    /*@DeleteMapping("/{employeeId}")
+    public Mono<String> removeEmployee(@PathVariable Integer employeeId, Model model){
+        return employeeService.deleteEmployeeById(employeeId).then(employees(model));
+    }*/
 
     @GetMapping("/{employeeId}/tasks")
     public Mono<String> employeeTasks(@PathVariable Integer employeeId, Model model){
@@ -89,11 +99,37 @@ public class EmployeeController {
         return taskService.save(task).flatMap(x->employeeService.addTaskEstimate(employeeId,x.getId(),estimate)).thenReturn("redirect:/employee/{employeeId}/tasks");
     }
 
-    @PutMapping("/{employeeId}/tasks/{taskId}")
+    /*@PutMapping("/{employeeId}/tasks/{taskId}")
+    public Mono<String> updateEmployeeTask(@PathVariable Integer employeeId, Model model, @PathVariable Integer taskId){
+        model.addAttribute("tasks", taskService.findAllByEmployeeId(employeeId));
+        model.addAttribute("employee",employeeService.findById(employeeId));
+        model.addAttribute("task",taskService.findById(taskId));
+        return Mono.just("employee-tasks");
+    }*/
+
+    @GetMapping("/{employeeId}/tasks/{taskId}/update")
+    public Mono<String> editEmployeeTask(@PathVariable Integer employeeId, Model model, @PathVariable Integer taskId){
+        model.addAttribute("tasks", taskService.findAllByEmployeeId(employeeId));
+        model.addAttribute("employee",employeeService.findById(employeeId));
+        model.addAttribute("task",taskService.findById(taskId));
+        return Mono.just("employee-tasks");
+    }
+
+    @PostMapping("/{employeeId}/tasks/{taskId}/update")
     public Mono<String> updateEmployeeTask(@PathVariable Integer employeeId, Model model, @PathVariable Integer taskId){
         model.addAttribute("tasks", taskService.findAllByEmployeeId(employeeId));
         model.addAttribute("employee",employeeService.findById(employeeId));
         model.addAttribute("task",taskService.findById(taskId));
         return Mono.just("employee-tasks");
     }
+
+    @PostMapping("/{employeeId}/tasks/{taskId}/delete")
+    public Mono<String> deleteEmployeeTask(@PathVariable Integer employeeId, Model model, @PathVariable Integer taskId){
+        model.addAttribute("tasks", taskService.findAllByEmployeeId(employeeId));
+        model.addAttribute("employee",employeeService.findById(employeeId));
+        model.addAttribute("task",taskService.findById(taskId));
+        return Mono.just("employee-tasks");
+    }
+
+
 }

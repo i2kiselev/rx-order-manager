@@ -15,10 +15,10 @@ import ru.isu.i2kiselev.rxordermanager.model.Task;
 @Repository
 public interface TaskRepository extends ReactiveCrudRepository<Task,Integer> {
 
-    @Query("select * from public.task " +
-            "join employee_task_estimates id " +
+    @Query("select * from task " +
+            "left join employee_task_estimates " +
             "on task.id=employee_task_estimates.task_id " +
-            "where employee_task_estimates.employee_id=$1")
+            "where employee_id=$1")
     Flux<Task> findAllByEmployeeId(Integer employeeId);
 
 }

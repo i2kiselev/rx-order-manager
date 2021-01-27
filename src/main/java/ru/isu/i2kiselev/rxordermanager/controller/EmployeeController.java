@@ -116,11 +116,12 @@ public class EmployeeController {
     }
 
     @PostMapping("/{employeeId}/tasks/{taskId}/update")
-    public Mono<String> updateEmployeeTask(@PathVariable Integer employeeId, Model model, @PathVariable Integer taskId){
+    public Mono<String> updateEmployeeTask(@PathVariable Integer employeeId, Model model, @PathVariable Integer taskId, @RequestParam("estimate") Integer estimate){
         model.addAttribute("tasks", taskService.findAllByEmployeeId(employeeId));
         model.addAttribute("employee",employeeService.findById(employeeId));
         model.addAttribute("task",taskService.findById(taskId));
-        return Mono.just("employee-tasks");
+        return employeeService.updateTaskEstimate(employeeId,taskId,estimate).thenReturn("employee-tasks");
+
     }
 
     @PostMapping("/{employeeId}/tasks/{taskId}/delete")
@@ -128,7 +129,7 @@ public class EmployeeController {
         model.addAttribute("tasks", taskService.findAllByEmployeeId(employeeId));
         model.addAttribute("employee",employeeService.findById(employeeId));
         model.addAttribute("task",taskService.findById(taskId));
-        return Mono.just("employee-tasks");
+        return employeeService.deleteTaskEstimate(employeeId,taskId).thenReturn("employee-tasks");
     }
 
 

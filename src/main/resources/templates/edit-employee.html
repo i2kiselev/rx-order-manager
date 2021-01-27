@@ -20,7 +20,7 @@
 <body>
 <div th:replace="fragments/navbar"></div>
 <div id="form">
-    <form action="#" th:action="@{/employee/{id}(id=${employee.id})}" th:object="${employee}" th:method="put" method="post">
+    <form action="#" th:action="@{/employee/{id}/update(id=${employee.id})}" th:object="${employee}" method="post">
         <input type="hidden" th:field="*{id}" id="emp-id">
         <div class="form-group">
             <label for="username">Employee name</label>

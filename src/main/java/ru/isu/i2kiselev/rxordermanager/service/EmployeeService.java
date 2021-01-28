@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Employee;
+import ru.isu.i2kiselev.rxordermanager.model.TaskEstimate;
 import ru.isu.i2kiselev.rxordermanager.repository.EmployeeRepository;
 
 /**
@@ -51,6 +52,11 @@ public class EmployeeService {
     public Mono<Integer> addTaskEstimate(Integer employeeId, Integer taskId, Integer taskEstimate){
         log.info("Added task #{} estimate of {} units to employee #{} ", taskId, taskEstimate, employeeId);
         return employeeRepository.addTaskEstimateToEmployee(employeeId,taskId,taskEstimate);
+    }
+
+    public Mono<Integer> addTaskEstimate(TaskEstimate taskEstimate){
+        log.info("Added task #{} estimate of {} units to employee #{} ", taskEstimate.getTaskId(), taskEstimate.getEstimate(), taskEstimate.getEmployeeId());
+        return employeeRepository.addTaskEstimateToEmployee(taskEstimate.getEmployeeId(), taskEstimate.getTaskId(), taskEstimate.getEstimate() );
     }
 
     public Mono<Integer> updateTaskEstimate(Integer employeeId, Integer taskId, Integer taskEstimate){

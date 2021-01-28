@@ -20,16 +20,24 @@
 <body>
 <div th:replace="fragments/navbar"></div>
 <div id="form">
-    <form action="#" th:action="@{/employee/{id}/tasks/add}" th:object="${task}" method="post">
-        <input type="hidden" th:value="*{id}">
+    <form action="#" th:action="@{/employee/{id}/tasks/add(id=${employee.id})}" th:object="${taskEstimate}" method="post">
+
+        <input type="hidden" th:value="${employee.id}" th:attr="name='employeeId'"/>
+
+        <!--<input type="hidden" th:field="*{employeeId}" th:value="${employee.id}">-->
+
         <div class="form-group">
-            <label for="taskname">Task name</label>
-            <input type="text" th:field="*{taskName}" class="form-control" id="taskname" aria-describedby="nameHelp" placeholder="Enter name">
+            <label for="task-id">Choose task</label>
+            <select th:field="*{taskId}" class="form-control" id="task-id">
+                <option th:each="task : ${tasks}" th:value="${task.id}" th:text="${task.taskName}"></option>
+            </select>
         </div>
+
         <div class="form-group">
             <label for="estimate">Time estimate</label>
-            <input type="text" name="estimate" class="form-control" id="estimate" aria-describedby="nameHelp" placeholder="Enter name">
+            <input type="text" th:field="*{estimate}" name="estimate" class="form-control" id="estimate" aria-describedby="nameHelp" placeholder="Enter estimate">
         </div>
+
         <div class="btn-wrap">
             <button type="submit" class="btn btn-primary">Submit</button>
             <button type="reset" class="btn btn-secondary">Reset</button>

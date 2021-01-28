@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Employee;
-import ru.isu.i2kiselev.rxordermanager.model.Task;
+import ru.isu.i2kiselev.rxordermanager.model.TaskEstimate;
 import ru.isu.i2kiselev.rxordermanager.service.EmployeeService;
 import ru.isu.i2kiselev.rxordermanager.service.TaskService;
 
@@ -31,7 +31,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/")
-    public Mono<String> employees(Model model){
+    public Mono<String> index(Model model){
         model.addAttribute("employees", employeeService.findAll());
         log.info("Returned employees view");
         return Mono.just("employees");
@@ -39,7 +39,7 @@ public class EmployeeController {
 
     @GetMapping("")
     public Mono<String> redirect(Model model){
-        return employees(model);
+        return index(model);
     }
 
     @GetMapping("/add")
@@ -51,27 +51,29 @@ public class EmployeeController {
 
     @PostMapping("/add")
     public Mono<String> addEmployee(@ModelAttribute("employee") Employee employee, Model model){
-        return employeeService.saveEmployee(employee).then(employees(model));
+        return employeeService.saveEmployee(employee).then(index(model));
     }
 
     @GetMapping("/{employeeId}")
     public Mono<String> editEmployee(@PathVariable Integer employeeId, Model model){
+        log.info("Returned edit-employee view");
         model.addAttribute("employee", employeeService.findById(employeeId));
         return Mono.just("edit-employee");
     }
 
     @PostMapping("/{employeeId}/update")
     public Mono<String> updateEmployee(@PathVariable Integer employeeId, @ModelAttribute Employee employee, Model model){
-        return employeeService.saveEmployee(employee).then(employees(model));
+        return employeeService.saveEmployee(employee).then(index(model));
     }
 
     @PostMapping("/{employeeId}/delete")
     public Mono<String> removeEmployee(@PathVariable Integer employeeId, Model model){
-        return employeeService.deleteEmployeeById(employeeId).then(employees(model));
+        return employeeService.deleteEmployeeById(employeeId).then(index(model));
     }
 
     @GetMapping("/{employeeId}/tasks")
     public Mono<String> employeeTasks(@PathVariable Integer employeeId, Model model){
+        log.info("Returned employee-tasks view");
         model.addAttribute("tasks", taskService.findAllByEmployeeId(employeeId));
         model.addAttribute("employee",employeeService.findById(employeeId));
         return Mono.just("employee-tasks");
@@ -79,32 +81,16 @@ public class EmployeeController {
 
     @GetMapping("/{employeeId}/tasks/add")
     public Mono<String> employeeTask(@PathVariable Integer employeeId, Model model){
-        model.addAttribute("tasks", taskService.findAllByEmployeeId(employeeId));
+        model.addAttribute("tasks", taskService.findAll());
         model.addAttribute("employee",employeeService.findById(employeeId));
-        model.addAttribute("task", new Task());
+        model.addAttribute("taskEstimate", new TaskEstimate());
+        log.info("Returned add-employee-task view");
         return Mono.just("add-employee-task");
     }
 
     @PostMapping("/{employeeId}/tasks/add")
-    public Mono<String> saveEmployeeTask(@ModelAttribute("task") Task task, @PathVariable Integer employeeId, @RequestParam("estimate") Integer estimate){
-        return taskService.save(task).flatMap(x->employeeService.addTaskEstimate(employeeId,x.getId(),estimate)).thenReturn("redirect:/employee/{employeeId}/tasks");
-    }
-
-    @GetMapping("/{employeeId}/tasks/{taskId}/update")
-    public Mono<String> editEmployeeTask(@PathVariable Integer employeeId, Model model, @PathVariable Integer taskId){
-        model.addAttribute("tasks", taskService.findAllByEmployeeId(employeeId));
-        model.addAttribute("employee",employeeService.findById(employeeId));
-        model.addAttribute("task",taskService.findById(taskId));
-        return Mono.just("employee-tasks");
-    }
-
-    @PostMapping("/{employeeId}/tasks/{taskId}/update")
-    public Mono<String> updateEmployeeTask(@PathVariable Integer employeeId, Model model, @PathVariable Integer taskId, @RequestParam("estimate") Integer estimate){
-        model.addAttribute("tasks", taskService.findAllByEmployeeId(employeeId));
-        model.addAttribute("employee",employeeService.findById(employeeId));
-        model.addAttribute("task",taskService.findById(taskId));
-        return employeeService.updateTaskEstimate(employeeId,taskId,estimate).thenReturn("employee-tasks");
-
+    public Mono<String> saveEmployeeTask(@ModelAttribute("taskEstimate") TaskEstimate taskEstimate, @PathVariable Integer employeeId){
+        return employeeService.addTaskEstimate(taskEstimate).thenReturn("redirect:/employee/{employeeId}/tasks");
     }
 
     @PostMapping("/{employeeId}/tasks/{taskId}/delete")

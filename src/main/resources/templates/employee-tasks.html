@@ -19,15 +19,20 @@
 <body>
 <div th:replace="fragments/navbar"></div>
 <div class="sections-wrap">
-    <a th:href="@{/employee/tasks/}">Add new task</a>
+    <a th:href="@{/employee/{id}/tasks/add(id=${employee.id})}">Add new task</a>
     <table class="table">
         <thead>
         </thead>
         <tbody>
-        <tr th:each="task: ${tasks}">
+        <tr th:each="task, iter: ${tasks}">
             <td th:text="${task.id}"></td>
             <td th:text="${task.taskName}"></td>
-            <!--<td><a th:href="@{/employee/{id}(id=${emp.id})}">Edit</a></td>-->
+            <!--<td th:text="${estimates[iter]}"></td>-->
+            <td>
+                <form th:action="@{/employee/{id}/tasks/{taskId}/delete(id=${employee.id}, taskId=${task.id})}" method="post">
+                    <button type="submit" class="btn btn-primary" >Delete</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

@@ -16,7 +16,6 @@ public class TaskEstimate {
 
     private Integer employeeId;
 
-
     private Integer estimate;
 
 }

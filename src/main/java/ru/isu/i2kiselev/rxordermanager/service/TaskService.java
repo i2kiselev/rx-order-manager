@@ -42,4 +42,10 @@ public class TaskService {
         log.info("Returned task  with id {}", taskId);
         return taskRepository.findById(taskId);
     }
+
+    public Mono<Void> deleteById(Integer taskId){
+        log.info("Deleted task with id {}", taskId);
+        return taskRepository.deleteById(taskId);
+    }
+
 }

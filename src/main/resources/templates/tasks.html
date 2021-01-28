@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Employees</title>
+    <title>Tasks</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -19,15 +19,20 @@
 <body>
 <div th:replace="fragments/navbar"></div>
 <div class="sections-wrap">
-    <a th:href="@{/employee/add}">Add new employee</a>
+    <a th:href="@{/task/add}">Add new task</a>
     <table class="table">
         <thead>
         </thead>
         <tbody>
-        <tr th:each="emp: ${employees}">
-            <td th:text="${emp.id}"></td>
-            <td th:text="${emp.username}"></td>
-            <!--<td><a th:href="@{/employee/{id}(id=${emp.id})}">Edit</a></td>-->
+        <tr th:each="task: ${tasks}">
+            <td th:text="${task.id}"></td>
+            <td th:text="${task.taskName}"></td>
+            <td><a th:href="@{/task/{id}(id=${task.id})}" class="btn btn-primary">Edit</a></td>
+            <td>
+                <form th:action="@{/task/{id}/delete(id=${task.id})}" method="post">
+                    <button type="submit" class="btn btn-primary" >Delete</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

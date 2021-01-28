@@ -9,22 +9,10 @@
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/employee}">Employees<span class="sr-only"></span></a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Tasks
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" th:href="@{/console/addProduct}">Product</a>
-                    <a class="dropdown-item" th:href="@{/console/addRoll}">Roll</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" th:href="@{/console/addRollset}">Roll set</a>
-                </div>
-            </li>
             <li class="nav-item">
-                <form method="POST" th:action="@{/logout}">
-                    <button class="btn btn-primary" type="submit">Logout</button>
-                </form>
+                <a class="nav-link" th:href="@{/task}">Tasks<span class="sr-only"></span></a>
             </li>
+
         </ul>
     </div>
 </nav>

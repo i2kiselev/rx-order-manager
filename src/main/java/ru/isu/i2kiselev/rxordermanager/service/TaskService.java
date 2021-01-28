@@ -24,7 +24,7 @@ public class TaskService {
     }
 
     public Mono<Task> save(Task task){
-        log.info("Saved task with id {}", task::getTaskName);
+        log.info("Saved task with id {}", task::getId);
         return taskRepository.save(task);
     }
 

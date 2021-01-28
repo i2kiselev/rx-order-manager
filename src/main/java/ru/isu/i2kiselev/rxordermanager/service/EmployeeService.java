@@ -9,7 +9,7 @@ import ru.isu.i2kiselev.rxordermanager.repository.EmployeeRepository;
 
 /**
  * Singleton-service for operations with Employee class
- * @version 0.2
+ * @version 0.4
  * @author Ilya Kiselev
  */
 
@@ -43,25 +43,24 @@ public class EmployeeService {
         return employeeRepository.findById(id);
     }
 
-    public Flux<Employee> findByTask(Integer id) {
+    public Flux<Employee> findAllByTaskId(Integer id) {
         log.info("Returned employee by task with id {}", id);
         return employeeRepository.findAllByTaskId(id);
     }
 
-    public Mono<Void> addTaskEstimate(Integer employeeId, Integer taskId, Integer taskEstimate){
+    public Mono<Integer> addTaskEstimate(Integer employeeId, Integer taskId, Integer taskEstimate){
         log.info("Added task #{} estimate of {} units to employee #{} ", taskId, taskEstimate, employeeId);
         return employeeRepository.addTaskEstimateToEmployee(employeeId,taskId,taskEstimate);
     }
 
-    public Mono<Void> updateTaskEstimate(Integer employeeId, Integer taskId, Integer taskEstimate){
+    public Mono<Integer> updateTaskEstimate(Integer employeeId, Integer taskId, Integer taskEstimate){
         log.info("Update task #{} estimate of {} units to employee #{} ", taskId, taskEstimate, employeeId);
         return employeeRepository.updateTaskEstimateOfEmployee(employeeId,taskId,taskEstimate);
     }
 
-    public Mono<Void> removeTaskEstimate(Integer employeeId, Integer taskId){
+    public Mono<Integer> deleteTaskEstimate(Integer employeeId, Integer taskId){
         log.info("Removed task #{} estimate of employee #{} ", taskId,  employeeId);
         return employeeRepository.removeTaskEstimateToEmployee(employeeId,taskId);
     }
-
 
 }

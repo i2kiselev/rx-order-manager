@@ -24,16 +24,16 @@ public interface EmployeeRepository extends ReactiveCrudRepository<Employee, Int
     Flux<Employee> findAllByTaskId(Integer task_id);
 
     @Query("insert into employee_task_estimates values($1,$2,$3)")
-    Mono<Void> addTaskEstimateToEmployee(Integer employee_id, Integer task_id, Integer estimate);
+    Mono<Integer> addTaskEstimateToEmployee(Integer employee_id, Integer task_id, Integer estimate);
 
     @Query("update employee_task_estimates set(estimate) = ($3) " +
             "where employee_task_estimates.employee_id=$1 and " +
             "      employee_task_estimates.task_id=$2")
-    Mono<Void> updateTaskEstimateOfEmployee(Integer employee_id, Integer task_id, Integer estimate);
+    Mono<Integer> updateTaskEstimateOfEmployee(Integer employee_id, Integer task_id, Integer estimate);
 
     @Query("delete from employee_task_estimates " +
             "where employee_task_estimates.employee_id=$1 and " +
             "employee_task_estimates.task_id=$2")
-    Mono<Void> removeTaskEstimateToEmployee(Integer employee, Integer task_id);
+    Mono<Integer> removeTaskEstimateToEmployee(Integer employee, Integer task_id);
 
 }

@@ -12,4 +12,6 @@ public class TaskQueue {
 
     private Task task;
 
+    private Status status;
+
 }

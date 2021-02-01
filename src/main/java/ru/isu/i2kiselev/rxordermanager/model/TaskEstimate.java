@@ -18,4 +18,5 @@ public class TaskEstimate {
 
     private Integer estimate;
 
+    private Status taskStatus;
 }

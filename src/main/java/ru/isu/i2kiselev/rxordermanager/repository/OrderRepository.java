@@ -16,7 +16,6 @@ import ru.isu.i2kiselev.rxordermanager.model.Order;
 public interface OrderRepository extends ReactiveCrudRepository<Order,Integer> {
 
     @Query("insert into order_table values ($1,$2)")
-    Mono<Void> addTaskToOrderByOrderId(Integer orderId, Integer taskId);
-
+    Mono<Integer> addTaskToOrderByOrderId(Integer orderId, Integer taskId);
 
 }

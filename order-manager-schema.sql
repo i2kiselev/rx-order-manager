@@ -4,10 +4,9 @@ CREATE TABLE public.employee (
     PRIMARY KEY (id)
 );
 
-
 CREATE TABLE public.task (
     id SERIAL NOT NULL,
-    taskname varchar NOT NULL,
+    task_name varchar NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -24,22 +23,22 @@ ALTER TABLE public.employee_task_estimates
 
 CREATE TABLE public.order_table (
     id SERIAL NOT NULL,
-    task_id SERIAL NOT NULL,
+    creation_date TIMESTAMP NOT NULL,
     PRIMARY KEY (id)
 );
 
-CREATE INDEX ON public.order_table
-    (task_id);
+
 
 
 CREATE TABLE public.task_queue (
     task_id SERIAL NOT NULL,
     employee_id SERIAL NOT NULL,
-    order_id SERIAL NOT NULL
+    order_id SERIAL NOT NULL,
+    status VARCHAR NOT NULL
 );
 
 ALTER TABLE public.employee_task_estimates
-    ADD UNIQUE (task_id, employee_id, order_id);
+    ADD UNIQUE (task_id, employee_id);
 
 CREATE INDEX ON public.task_queue
     (task_id);
@@ -51,7 +50,6 @@ CREATE INDEX ON public.task_queue
 
 ALTER TABLE public.employee_task_estimates ADD CONSTRAINT FK_employee_task_estimates__employee_id FOREIGN KEY (employee_id) REFERENCES public.employee(id);
 ALTER TABLE public.employee_task_estimates ADD CONSTRAINT FK_employee_task_estimates__task_id FOREIGN KEY (task_id) REFERENCES public.task(id);
-ALTER TABLE public.order_table ADD CONSTRAINT FK_order_table__task_id FOREIGN KEY (task_id) REFERENCES public.task(id);
 ALTER TABLE public.task_queue ADD CONSTRAINT FK_task_queue__task_id FOREIGN KEY (task_id) REFERENCES public.task(id);
 ALTER TABLE public.task_queue ADD CONSTRAINT FK_task_queue__employee_id FOREIGN KEY (employee_id) REFERENCES public.employee(id);
 ALTER TABLE public.task_queue ADD CONSTRAINT FK_task_queue__order_id FOREIGN KEY (order_id) REFERENCES public.order_table(id);

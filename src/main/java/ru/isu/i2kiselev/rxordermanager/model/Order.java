@@ -23,6 +23,6 @@ public class Order {
     private LocalDate creationDate;
 
     @Transient
-    private List<Integer> tasks;
+    private List<Integer> tasksIds;
 
 }

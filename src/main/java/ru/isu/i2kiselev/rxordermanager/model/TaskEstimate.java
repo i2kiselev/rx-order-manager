@@ -12,11 +12,11 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data
 @Table
 public class TaskEstimate {
+
     private Integer taskId;
 
     private Integer employeeId;
 
     private Integer estimate;
 
-    private Status taskStatus;
 }

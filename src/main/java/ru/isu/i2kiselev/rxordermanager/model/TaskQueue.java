@@ -10,7 +10,9 @@ public class TaskQueue {
 
     private Integer employeeId;
 
-    private Task task;
+    private Integer taskId;
+
+    private Integer orderId;
 
     private Status status;
 

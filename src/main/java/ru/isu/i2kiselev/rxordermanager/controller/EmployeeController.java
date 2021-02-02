@@ -12,7 +12,7 @@ import ru.isu.i2kiselev.rxordermanager.service.TaskService;
 
 /**
  * Employee controller. Allows to add/delete/update employees
- * @version 0.5
+ * @version 0.6
  * @author Ilya Kiselev
  */
 
@@ -81,7 +81,7 @@ public class EmployeeController {
 
     @GetMapping("/{employeeId}/tasks/add")
     public Mono<String> employeeTask(@PathVariable Integer employeeId, Model model){
-        model.addAttribute("tasks", taskService.findAll());
+        model.addAttribute("tasks", taskService.findAllNotAddedByEmployeeId(employeeId));
         model.addAttribute("employee",employeeService.findById(employeeId));
         model.addAttribute("taskEstimate", new TaskEstimate());
         log.info("Returned add-employee-task view");

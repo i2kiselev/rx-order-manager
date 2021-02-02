@@ -38,6 +38,11 @@ public class TaskService {
         return taskRepository.findAllByEmployeeId(employeeId);
     }
 
+    public Flux<Task> findAllNotAddedByEmployeeId(Integer employeeId){
+        log.info("Returned all tasks not added for employee #{}", employeeId);
+        return taskRepository.findAllNotAddedByEmployeeId(employeeId);
+    }
+
     public Mono<Task> findById(Integer taskId) {
         log.info("Returned task  with id {}", taskId);
         return taskRepository.findById(taskId);

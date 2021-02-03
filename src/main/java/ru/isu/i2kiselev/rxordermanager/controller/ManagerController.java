@@ -21,20 +21,29 @@ import ru.isu.i2kiselev.rxordermanager.service.TaskService;
 
 @Controller
 @Log4j2
-@RequestMapping("/dashboard")
+@RequestMapping("/manager")
 public class ManagerController {
 
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
-    private TaskService taskService;
+    private final TaskService taskService;
 
-    private OrderService orderService;
+    private final OrderService orderService;
+
+    public ManagerController(EmployeeService employeeService, TaskService taskService, OrderService orderService) {
+        this.employeeService = employeeService;
+        this.taskService = taskService;
+        this.orderService = orderService;
+    }
 
     @GetMapping("/order/add")
-    public Mono<String> orderForm(Model model){
+    //public Mono<String> orderForm(Model model){
+    public String orderForm(Model model){
         model.addAttribute("order", new Order());
+        model.addAttribute("tasks", taskService.findAll());
         log.info("ManagerController : orderForm, returned add-order view");
-        return Mono.just("add-order");
+        return "add-order";
+        //return Mono.just("add-order");
     }
 
     @PostMapping("/order/add")

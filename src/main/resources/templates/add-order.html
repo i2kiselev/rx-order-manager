@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link th:href="@{/css/item-quantity-dropdown.min.css}" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/item-quantity-dropdown.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/order-form.js}"></script>
+    <title>Create order</title>
+</head>
+<body>
+<div th:replace="fragments/navbar"></div>
+<div id="form">
+    <form action="#" th:action="@{/manager/order/add}" id="orderForm" th:object="${order}" method="post">
+        <input type="hidden" th:value="*{id}">
+        <div class="form-group">
+            <label for="username">Order description</label>
+            <textarea type="text" th:field="*{description}" class="form-control" id="username" aria-describedby="nameHelp" placeholder="Enter name"></textarea>
+        </div>
+        <div class="form-group">
+            <div class="iqdropdown">
+                <p class="iqdropdown-selection"></p>
+                <div class="iqdropdown-menu">
+                    <div th:each="task : ${tasks}" th:remove="tag">
+                        <div class="iqdropdown-menu-option" th:attr="data-id=${task.id}" data-id="'item.id'">
+                            <div>
+                                <p class="iqdropdown-item" th:text="${task.taskName}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="inputs">
+                </div>
+            </div>
+        </div>
+        <div class="btn-wrap">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -10,7 +10,7 @@ import ru.isu.i2kiselev.rxordermanager.repository.EmployeeRepository;
 
 /**
  * Singleton-service for operations with Employee class
- * @version 0.4
+ * @version 0.6
  * @author Ilya Kiselev
  */
 

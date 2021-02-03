@@ -25,8 +25,7 @@ public class EmployeeService {
     }
 
     public Mono<Employee> saveEmployee(Employee employee){
-        log.info("Saved employee with id {}", employee::getId);
-        return employeeRepository.save(employee);
+        return employeeRepository.save(employee).doOnNext(x->log.info("Saved employee with id {}", x::getId));
     }
 
     public Mono<Void> deleteEmployeeById(Integer employeeId){

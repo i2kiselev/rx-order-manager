@@ -17,35 +17,39 @@ import ru.isu.i2kiselev.rxordermanager.repository.OrderRepository;
 @Log4j2
 public class OrderService {
 
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
+
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
     public Mono<Order> save(Order order) {
-        return orderRepository.save(order);
+        return orderRepository.save(order).doOnNext(x->log.info("Save order with id {}", order::getId));
     }
 
     public Mono<Order> saveFromForm(Order order){
         return orderRepository.save(order).doOnNext(x->{
             for (int i =0; i<order.getIds().size();i++ ) {
-                for (int j = 0; j < order.getQuantities().get(i); j++) {
-                    addTaskToOrderByOrderId(x.getId(),order.getIds().get(i));
-                }
+                addTaskToOrderByOrderIdMultipleTimes(x.getId(), order.getIds().get(i), order.getQuantities().get(i));
             }
+            log.info("Save order from form with id {}", order::getId);
         });
     }
 
     public Mono<Integer> addTaskToOrderByOrderId(Integer orderId, Integer taskId){
+        log.info("Added task #{} to order  with id {}", orderId, taskId);
         return orderRepository.addTaskToOrderByOrderId(orderId,taskId);
     }
 
     public Mono<Integer> addTaskToOrderByOrderId(Order order, Task task){
+        log.info("Added task #{} to order  with id {}", task::getId, order::getId);
         return orderRepository.addTaskToOrderByOrderId(order.getId(),task.getId());
     }
 
-    public Mono<Integer> addTaskToOrderByOrderIdMultipleTimes(Integer orderId, Integer taskId, Integer quantity){
+    private void addTaskToOrderByOrderIdMultipleTimes(Integer orderId, Integer taskId, Integer quantity){
         for (int j = 0; j < quantity; j++) {
             addTaskToOrderByOrderId(orderId,taskId);
         }
-        return orderRepository.addTaskToOrderByOrderId(orderId,taskId);
     }
 
 }

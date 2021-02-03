@@ -22,30 +22,25 @@ ALTER TABLE public.employee_task_estimates
 
 
 CREATE TABLE public.order_table (
-    id SERIAL NOT NULL,
-    creation_date TIMESTAMP NOT NULL,
-    PRIMARY KEY (id)
+        id SERIAL NOT NULL,
+        description varchar NOT NULL,
+        creation_date timestamp without time zone NOT NULL,
+        PRIMARY KEY (id)
 );
 
 
 
 
 CREATE TABLE public.task_queue (
-    task_id SERIAL NOT NULL,
-    employee_id SERIAL NOT NULL,
-    order_id SERIAL NOT NULL,
-    status VARCHAR NOT NULL
+       task_id SERIAL NOT NULL,
+       employee_id SERIAL NOT NULL,
+       order_id SERIAL NOT NULL,
+       status varchar NOT NULL,
+       assignment_date timestamp without time zone NOT NULL
 );
 
-ALTER TABLE public.employee_task_estimates
-    ADD UNIQUE (task_id, employee_id);
-
-CREATE INDEX ON public.task_queue
-    (task_id);
 CREATE INDEX ON public.task_queue
     (employee_id);
-CREATE INDEX ON public.task_queue
-    (order_id);
 
 
 ALTER TABLE public.employee_task_estimates ADD CONSTRAINT FK_employee_task_estimates__employee_id FOREIGN KEY (employee_id) REFERENCES public.employee(id);

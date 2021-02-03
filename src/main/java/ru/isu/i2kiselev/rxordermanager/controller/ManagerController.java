@@ -48,7 +48,7 @@ public class ManagerController {
 
     @PostMapping("/order/add")
     public Mono<String> saveOrder(@ModelAttribute("order") Order order, Model model){
-        return orderService.save(order).thenReturn("orders");
+        return orderService.saveFromForm(order).thenReturn("orders");
     }
 
 

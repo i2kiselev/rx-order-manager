@@ -8,6 +8,12 @@ import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Task;
 import ru.isu.i2kiselev.rxordermanager.service.TaskService;
 
+/**
+ * Task controller. Allows to add/delete/edit tasks independently of employees
+ * @version 0.5
+ * @author Ilya Kiselev
+ */
+
 @Controller
 @RequestMapping("/task")
 @Log4j2

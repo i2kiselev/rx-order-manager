@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 @Data
-@Table
+@Table("order_table")
 public class Order {
 
     @Id
@@ -23,7 +23,7 @@ public class Order {
 
     private String description;
 
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
     @Transient
     private List<Integer> ids;
@@ -31,4 +31,6 @@ public class Order {
     @Transient
     private List<Integer> quantities;
 
+    @Transient
+    private List<Integer> tasks;
 }

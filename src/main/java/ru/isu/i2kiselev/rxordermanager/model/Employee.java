@@ -15,7 +15,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Data
 @NoArgsConstructor
-@Table
+@Table("employee")
 public class Employee {
 
     @Id

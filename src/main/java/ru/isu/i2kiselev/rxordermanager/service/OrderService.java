@@ -33,10 +33,6 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public Mono<Order> save(Order order) {
-        return addCreationDate(order).then(orderRepository.save(order)).doOnNext(x->log.info("Save order with id {}", order::getId));
-    }
-
     public Mono<Void> deleteById(Integer orderId){
         return orderRepository.deleteById(orderId);
     }
@@ -68,11 +64,14 @@ public class OrderService {
     }
 
     private Mono<Order> addAllTasksToOrder(Order order){
-        return Flux.fromIterable(order.getTasks()).flatMap(x->addTaskToOrderByOrderId(order.getId(),x)).then(Mono.just(order));
+        return Flux.fromIterable(order.getTasks())
+                .flatMap(x->addTaskToOrderByOrderId(order.getId(),x))
+                .then(Mono.just(order));
     }
 
     private Mono<Order> addCreationDate(Order order){
-        return Mono.just(order).doOnNext(x->x.setCreationDate(LocalDateTime.now()));
+        return Mono.just(order)
+                .doOnNext(x->x.setCreationDate(LocalDateTime.now()));
     }
 
     private Mono<Order> addTaskList(Order order){

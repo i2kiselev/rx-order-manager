@@ -37,9 +37,9 @@ public class OrderService {
     }
 
     public Mono<Order> saveFromForm(Order order){
-        return  addTaskList(order)
-                .then(addCreationDate(order))
+        return  addCreationDate(order)
                 .then(orderRepository.save(order))
+                .then(addTaskIdsList(order))
                 .then(addAllTasksToOrder(order))
                 .doOnNext( x->
                     log.info("Saved order from form with id {}", x::getId)
@@ -50,7 +50,6 @@ public class OrderService {
         log.info("Added task #{} to order  with id {}", orderId, taskId);
         return orderRepository.addTaskToOrderByOrderId(orderId,taskId, Status.ACCEPTED, LocalDateTime.now());
     }
-
 
     private Mono<Order> addAllTasksToOrder(Order order){
         return Flux.fromIterable(order.getTasks())
@@ -63,7 +62,7 @@ public class OrderService {
                 .doOnNext(x->x.setCreationDate(LocalDateTime.now()));
     }
 
-    private Mono<Order> addTaskList(Order order){
+    private Mono<Order> addTaskIdsList(Order order){
         List<Integer> tasksIds = new ArrayList<>();
         for (int i = 0; i < order.getIds().size(); i++) {
             for (int j = 0; j < order.getQuantities().get(i); j++) {

@@ -6,7 +6,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Order;
 import ru.isu.i2kiselev.rxordermanager.model.Status;
-import ru.isu.i2kiselev.rxordermanager.model.Task;
 import ru.isu.i2kiselev.rxordermanager.repository.OrderRepository;
 
 import java.time.LocalDateTime;
@@ -52,16 +51,6 @@ public class OrderService {
         return orderRepository.addTaskToOrderByOrderId(orderId,taskId, Status.ACCEPTED, LocalDateTime.now());
     }
 
-    public Mono<Void> addTaskToOrderByOrderId(Order order, Task task){
-        log.info("Added task #{} to order  with id {}", task::getId, order::getId);
-        return orderRepository.addTaskToOrderByOrderId(order.getId(),task.getId(), Status.ACCEPTED, LocalDateTime.now());
-    }
-
-    private void addTaskToOrderByOrderIdMultipleTimes(Integer orderId, Integer taskId, Integer quantity){
-        for (int j = 0; j < quantity; j++) {
-            addTaskToOrderByOrderId(orderId,taskId);
-        }
-    }
 
     private Mono<Order> addAllTasksToOrder(Order order){
         return Flux.fromIterable(order.getTasks())

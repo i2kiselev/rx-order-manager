@@ -37,17 +37,15 @@ public class ManagerController {
     }
 
     @GetMapping("/order/add")
-    //public Mono<String> orderForm(Model model){
-    public String orderForm(Model model){
+    public Mono<String> orderForm(Model model){
         model.addAttribute("order", new Order());
         model.addAttribute("tasks", taskService.findAll());
-        log.info("ManagerController : orderForm, returned add-order view");
-        return "add-order";
-        //return Mono.just("add-order");
+        log.info("Returned add-order view");
+        return Mono.just("add-order");
     }
 
     @PostMapping("/order/add")
-    public Mono<String> saveOrder(@ModelAttribute("order") Order order, Model model){
+    public Mono<String> saveOrder(@ModelAttribute("order") Order order){
         return orderService.saveFromForm(order).thenReturn("orders");
     }
 

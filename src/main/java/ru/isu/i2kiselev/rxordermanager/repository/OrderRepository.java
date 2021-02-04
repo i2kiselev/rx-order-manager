@@ -6,16 +6,18 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Order;
 
+import java.time.LocalDateTime;
+
 /**
  * Order repository.
- * @version 0.2
+ * @version 0.3
  * @author Ilya Kiselev
  */
 
 @Repository
 public interface OrderRepository extends ReactiveCrudRepository<Order,Integer> {
 
-    @Query("insert into task_queue (order_id,task_id,status) values ($1,$2, 'accepted')")
-    Mono<Integer> addTaskToOrderByOrderId(Integer orderId, Integer taskId);
+    @Query("insert into task_queue (order_id,task_id,status,assignment_date) values ($1,$2, 'accepted', $3)")
+    Mono<Void> addTaskToOrderByOrderId(Integer orderId, Integer taskId, LocalDateTime assignmentDate);
 
 }

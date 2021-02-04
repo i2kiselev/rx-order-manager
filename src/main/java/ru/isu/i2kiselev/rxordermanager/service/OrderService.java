@@ -2,14 +2,19 @@ package ru.isu.i2kiselev.rxordermanager.service;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Order;
 import ru.isu.i2kiselev.rxordermanager.model.Task;
 import ru.isu.i2kiselev.rxordermanager.repository.OrderRepository;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Service for task distribution and order managing
- * @version 0.1
+ * @version 0.3
  * @author Ilya Kiselev
  */
 
@@ -24,32 +29,52 @@ public class OrderService {
     }
 
     public Mono<Order> save(Order order) {
-        return orderRepository.save(order).doOnNext(x->log.info("Save order with id {}", order::getId));
+        return addCreationDate(order).then(orderRepository.save(order)).doOnNext(x->log.info("Save order with id {}", order::getId));
     }
 
     public Mono<Order> saveFromForm(Order order){
-        return orderRepository.save(order).doOnNext(x->{
-            for (int i =0; i<order.getIds().size();i++ ) {
-                addTaskToOrderByOrderIdMultipleTimes(x.getId(), order.getIds().get(i), order.getQuantities().get(i));
-            }
-            log.info("Save order from form with id {}", order::getId);
-        });
+        return  addTaskList(order)
+                .then(addCreationDate(order))
+                .then(orderRepository.save(order))
+                .then(addAllTasksToOrder(order))
+                .doOnNext( x->
+                    log.info("Saved order from form with id {}", x::getId)
+                );
     }
 
-    public Mono<Integer> addTaskToOrderByOrderId(Integer orderId, Integer taskId){
+    public Mono<Void> addTaskToOrderByOrderId(Integer orderId, Integer taskId){
         log.info("Added task #{} to order  with id {}", orderId, taskId);
-        return orderRepository.addTaskToOrderByOrderId(orderId,taskId);
+        return orderRepository.addTaskToOrderByOrderId(orderId,taskId, LocalDateTime.now());
     }
 
-    public Mono<Integer> addTaskToOrderByOrderId(Order order, Task task){
+    public Mono<Void> addTaskToOrderByOrderId(Order order, Task task){
         log.info("Added task #{} to order  with id {}", task::getId, order::getId);
-        return orderRepository.addTaskToOrderByOrderId(order.getId(),task.getId());
+        return orderRepository.addTaskToOrderByOrderId(order.getId(),task.getId(), LocalDateTime.now());
     }
 
     private void addTaskToOrderByOrderIdMultipleTimes(Integer orderId, Integer taskId, Integer quantity){
         for (int j = 0; j < quantity; j++) {
             addTaskToOrderByOrderId(orderId,taskId);
         }
+    }
+
+    private Mono<Order> addAllTasksToOrder(Order order){
+        return Flux.fromIterable(order.getTasks()).flatMap(x->addTaskToOrderByOrderId(order.getId(),x)).then(Mono.just(order));
+    }
+
+    private Mono<Order> addCreationDate(Order order){
+        return Mono.just(order).doOnNext(x->x.setCreationDate(LocalDateTime.now()));
+    }
+
+    private Mono<Order> addTaskList(Order order){
+        List<Integer> tasksIds = new ArrayList<>();
+        for (int i = 0; i < order.getIds().size(); i++) {
+            for (int j = 0; j < order.getQuantities().get(i); j++) {
+                tasksIds.add(order.getIds().get(i));
+            }
+        }
+        order.setTasks(tasksIds);
+        return Mono.just(order);
     }
 
 }

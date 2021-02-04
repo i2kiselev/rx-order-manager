@@ -3,10 +3,7 @@ package ru.isu.i2kiselev.rxordermanager.controller;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Order;
 import ru.isu.i2kiselev.rxordermanager.service.EmployeeService;
@@ -36,6 +33,19 @@ public class ManagerController {
         this.orderService = orderService;
     }
 
+    @GetMapping("/")
+    public Mono<String> index(Model model){
+        model.addAttribute("orders", orderService.findAll());
+        log.info("Returned tasks view");
+        return Mono.just("orders");
+    }
+
+    @GetMapping("")
+    public Mono<String> redirect(Model model){
+        return index(model);
+    }
+
+
     @GetMapping("/order/add")
     public Mono<String> orderForm(Model model){
         model.addAttribute("order", new Order());
@@ -49,5 +59,9 @@ public class ManagerController {
         return orderService.saveFromForm(order).thenReturn("orders");
     }
 
+    @PostMapping("/order/{orderId}/delete")
+    public Mono<String> removeEmployee(@PathVariable Integer orderId, Model model){
+        return orderService.deleteById(orderId).then(index(model));
+    }
 
 }

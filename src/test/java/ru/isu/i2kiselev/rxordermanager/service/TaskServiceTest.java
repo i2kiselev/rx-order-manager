@@ -27,7 +27,7 @@ public class TaskServiceTest {
     private  TaskService taskService;
 
     @Test
-    void returnMonoWithTaskWhenTaskAddedTest(){
+    void saveReturnsSameTaskTest(){
         Task task = new Task();
         task.setTaskName("testTask");
         given(taskRepository.save(any(Task.class))).willReturn(Mono.just(task));
@@ -42,7 +42,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    void returnFluxOfTasksWhenFindAllTest(){
+    void findAllReturnsFluxOfTasksTest(){
         List<Task> tasks = new ArrayList<>();
         Task task = new Task();
         task.setTaskName("test");
@@ -60,7 +60,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    void returnEmptyFluxTest(){
+    void findAllReturnsEmptyFluxTest(){
         List<Task> tasks = new ArrayList<>();
         given(taskRepository.findAll()).willReturn(Flux.fromIterable(tasks));
         Flux<Task> taskFlux = taskService.findAll();
@@ -69,4 +69,18 @@ public class TaskServiceTest {
                 .expectComplete()
                 .verify();
     }
+
+    @Test
+    void findByIdReturnsMonoTest(){
+        Task task = new Task();
+        task.setTaskName("test");
+        given(taskRepository.findById(any(Integer.class))).willReturn(Mono.just(task));
+        Mono<Task> taskMono = taskService.findById(1);
+        StepVerifier.create(taskMono)
+                .expectNext(task)
+                .expectNextCount(0)
+                .expectComplete()
+                .verify();
+    }
+
 }

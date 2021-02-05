@@ -79,6 +79,7 @@ class OrderServiceTest {
                 })
                 .verifyComplete();
     }
+
     @Test
     void findAllReturnsFluxTest() {
         List<Order> orders = new ArrayList<>();

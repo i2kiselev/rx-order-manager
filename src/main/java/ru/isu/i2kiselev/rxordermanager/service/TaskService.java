@@ -53,4 +53,7 @@ public class TaskService {
         return taskRepository.deleteById(taskId);
     }
 
+    public Flux<Task> findAllByOrderId(Integer orderId){
+        return taskRepository.findAllByOrderId(orderId);
+    }
 }

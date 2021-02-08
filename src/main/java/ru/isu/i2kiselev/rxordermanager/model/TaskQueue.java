@@ -27,4 +27,18 @@ public class TaskQueue {
 
     private LocalDateTime assignmentDate;
 
+    public TaskQueue(Integer employeeId, Integer taskId, Integer orderId, Status status, LocalDateTime assignmentDate) {
+        this.employeeId = employeeId;
+        this.taskId = taskId;
+        this.orderId = orderId;
+        this.status = status;
+        this.assignmentDate = assignmentDate;
+    }
+
+    public TaskQueue(Integer taskId, Integer orderId, Status status, LocalDateTime assignmentDate) {
+        this.taskId = taskId;
+        this.orderId = orderId;
+        this.status = status;
+        this.assignmentDate = assignmentDate;
+    }
 }

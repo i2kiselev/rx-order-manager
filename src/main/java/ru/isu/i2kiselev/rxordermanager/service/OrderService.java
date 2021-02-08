@@ -6,7 +6,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Order;
 import ru.isu.i2kiselev.rxordermanager.model.Status;
+import ru.isu.i2kiselev.rxordermanager.model.TaskQueue;
 import ru.isu.i2kiselev.rxordermanager.repository.OrderRepository;
+import ru.isu.i2kiselev.rxordermanager.repository.TaskQueueRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,8 +26,11 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public OrderService(OrderRepository orderRepository) {
+    private final TaskQueueRepository taskQueueRepository;
+
+    public OrderService(OrderRepository orderRepository, TaskQueueRepository taskQueueRepository) {
         this.orderRepository = orderRepository;
+        this.taskQueueRepository = taskQueueRepository;
     }
 
     public Flux<Order> findAll() {
@@ -46,9 +51,9 @@ public class OrderService {
                 );
     }
 
-    public Mono<Void> addTaskToOrderByOrderId(Integer orderId, Integer taskId){
+    public Mono<TaskQueue> addTaskToOrderByOrderId(Integer orderId, Integer taskId){
         log.info("Added task #{} to order  with id {}", orderId, taskId);
-        return orderRepository.addTaskToOrderByOrderId(orderId,taskId, Status.ACCEPTED, LocalDateTime.now());
+        return taskQueueRepository.save(new TaskQueue(orderId,taskId, Status.ACCEPTED, LocalDateTime.now()));
     }
 
     private Mono<Order> addAllTasksToOrder(Order order){

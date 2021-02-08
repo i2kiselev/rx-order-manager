@@ -64,4 +64,20 @@ public class ManagerController {
         return orderService.deleteById(orderId).then(index(model));
     }
 
+    @GetMapping("/order/{orderId}/manage")
+    public Mono<String> manageOrder(@PathVariable Integer orderId, Model model){
+        model.addAttribute("order", orderService.findOrderById(orderId));
+        model.addAttribute("taskRecords", orderService.findAllTaskQueuesByOrderId(orderId));
+        model.addAttribute("tasks", taskService.findAllByOrderId(orderId));
+        return Mono.just("order");
+    }
+
+    @GetMapping("/order/{orderId}/manage/{taskQueueId}/assign")
+    public Mono<String> manageOrder(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, Model model){
+        model.addAttribute("employees", orderService.findTaskQueueById(taskQueueId).map(x->employeeService.findAllByTaskId(x.getTaskId())));
+        return Mono.just("assign-task");
+    }
+
+
+
 }

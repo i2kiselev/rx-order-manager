@@ -33,6 +33,17 @@ public class OrderService {
         this.taskQueueRepository = taskQueueRepository;
     }
 
+    public Mono<Order> findOrderById(Integer orderId){
+        return orderRepository.findById(orderId);
+    }
+
+    public Mono<TaskQueue> findTaskQueueById(Integer taskQueueId){
+        return taskQueueRepository.findById(taskQueueId);
+    }
+
+    public Flux<TaskQueue> findAllTaskQueuesByOrderId(Integer orderId){
+        return taskQueueRepository.findAllByOrderId(orderId);
+    }
     public Flux<Order> findAll() {
         return orderRepository.findAll();
     }
@@ -52,10 +63,10 @@ public class OrderService {
     }
 
     public Mono<TaskQueue> addTaskToOrderByOrderId(Integer orderId, Integer taskId){
-        TaskQueue taskQueue = new TaskQueue(orderId,taskId, Status.ACCEPTED, LocalDateTime.now());
+        TaskQueue taskQueue = new TaskQueue(taskId, orderId, Status.ACCEPTED, LocalDateTime.now());
         return taskQueueRepository
                 .save(taskQueue)
-                .doOnNext(x->log.info("Added task #{} to order  with id {}", orderId, taskId));
+                .doOnNext(x->log.info("Added task #{} to order with id {}", taskId, orderId));
     }
 
     private Mono<Order> addAllTasksToOrder(Order order){

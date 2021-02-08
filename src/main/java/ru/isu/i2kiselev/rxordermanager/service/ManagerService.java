@@ -22,13 +22,13 @@ import java.util.List;
 
 @Service
 @Log4j2
-public class OrderService {
+public class ManagerService {
 
     private final OrderRepository orderRepository;
 
     private final TaskQueueRepository taskQueueRepository;
 
-    public OrderService(OrderRepository orderRepository, TaskQueueRepository taskQueueRepository) {
+    public ManagerService(OrderRepository orderRepository, TaskQueueRepository taskQueueRepository) {
         this.orderRepository = orderRepository;
         this.taskQueueRepository = taskQueueRepository;
     }

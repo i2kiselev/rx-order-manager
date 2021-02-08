@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
-class OrderServiceTest {
+class ManagerServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
@@ -29,7 +29,7 @@ class OrderServiceTest {
     private TaskQueueRepository taskQueueRepository;
 
     @InjectMocks
-    private OrderService orderService;
+    private ManagerService managerService;
 
     @Test
     void saveFromFormAddsCreationDateTest() {
@@ -46,7 +46,7 @@ class OrderServiceTest {
         order.setQuantities(quantities);
         given(orderRepository.save(any(Order.class))).willReturn(Mono.just(order));
         given(taskQueueRepository.save(any(TaskQueue.class))).willReturn(Mono.just(new TaskQueue()));
-        Mono<Order> savedOrder = orderService.saveFromForm(order);
+        Mono<Order> savedOrder = managerService.saveFromForm(order);
         StepVerifier.create(savedOrder)
                 .thenConsumeWhile(result -> {
                     assertThat(result).isNotNull();
@@ -72,7 +72,7 @@ class OrderServiceTest {
         order.setQuantities(quantities);
         given(orderRepository.save(any(Order.class))).willReturn(Mono.just(order));
         given(taskQueueRepository.save(any(TaskQueue.class))).willReturn(Mono.just(new TaskQueue()));
-        Mono<Order> savedOrder = orderService.saveFromForm(order);
+        Mono<Order> savedOrder = managerService.saveFromForm(order);
         StepVerifier.create(savedOrder)
                 .thenConsumeWhile(result -> {
                     assertThat(result).isNotNull();
@@ -93,7 +93,7 @@ class OrderServiceTest {
         orders.add(order1);
         orders.add(order2);
         given(orderRepository.findAll()).willReturn(Flux.fromIterable(orders));
-        Flux<Order> orderFlux = orderService.findAll();
+        Flux<Order> orderFlux = managerService.findAll();
         StepVerifier.create(orderFlux)
                 .expectNext(order1,order2)
                 .expectNextCount(0)

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Order;
 import ru.isu.i2kiselev.rxordermanager.service.EmployeeService;
-import ru.isu.i2kiselev.rxordermanager.service.OrderService;
+import ru.isu.i2kiselev.rxordermanager.service.ManagerService;
 import ru.isu.i2kiselev.rxordermanager.service.TaskService;
 
 /**
@@ -25,17 +25,17 @@ public class ManagerController {
 
     private final TaskService taskService;
 
-    private final OrderService orderService;
+    private final ManagerService managerService;
 
-    public ManagerController(EmployeeService employeeService, TaskService taskService, OrderService orderService) {
+    public ManagerController(EmployeeService employeeService, TaskService taskService, ManagerService managerService) {
         this.employeeService = employeeService;
         this.taskService = taskService;
-        this.orderService = orderService;
+        this.managerService = managerService;
     }
 
     @GetMapping("/")
     public Mono<String> index(Model model){
-        model.addAttribute("orders", orderService.findAll());
+        model.addAttribute("orders", managerService.findAll());
         log.info("Returned tasks view");
         return Mono.just("orders");
     }
@@ -56,25 +56,26 @@ public class ManagerController {
 
     @PostMapping("/order/add")
     public Mono<String> saveOrder(@ModelAttribute("order") Order order){
-        return orderService.saveFromForm(order).thenReturn("orders");
+        return managerService.saveFromForm(order).thenReturn("orders");
     }
 
     @PostMapping("/order/{orderId}/delete")
     public Mono<String> removeEmployee(@PathVariable Integer orderId, Model model){
-        return orderService.deleteById(orderId).then(index(model));
+        return managerService.deleteById(orderId).then(index(model));
     }
 
     @GetMapping("/order/{orderId}/manage")
     public Mono<String> manageOrder(@PathVariable Integer orderId, Model model){
-        model.addAttribute("order", orderService.findOrderById(orderId));
-        model.addAttribute("taskRecords", orderService.findAllTaskQueuesByOrderId(orderId));
+        model.addAttribute("order", managerService.findOrderById(orderId));
+        model.addAttribute("taskRecords", managerService.findAllTaskQueuesByOrderId(orderId));
         model.addAttribute("tasks", taskService.findAllByOrderId(orderId));
         return Mono.just("order");
     }
 
     @GetMapping("/order/{orderId}/manage/{taskQueueId}/assign")
     public Mono<String> manageOrder(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, Model model){
-        model.addAttribute("employees", orderService.findTaskQueueById(taskQueueId).map(x->employeeService.findAllByTaskId(x.getTaskId())));
+        model.addAttribute("employees", managerService.findTaskQueueById(taskQueueId).map(x->employeeService.findAllByTaskId(x.getTaskId())));
+        model.addAttribute("order", managerService.findOrderById(orderId));
         return Mono.just("assign-task");
     }
 

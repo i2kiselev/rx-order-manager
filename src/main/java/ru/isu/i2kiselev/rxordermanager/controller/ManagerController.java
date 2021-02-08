@@ -35,7 +35,7 @@ public class ManagerController {
 
     @GetMapping("/")
     public Mono<String> index(Model model){
-        model.addAttribute("orders", managerService.findAll());
+        model.addAttribute("orders", managerService.findAllOrders());
         log.info("Returned tasks view");
         return Mono.just("orders");
     }
@@ -56,12 +56,15 @@ public class ManagerController {
 
     @PostMapping("/order/add")
     public Mono<String> saveOrder(@ModelAttribute("order") Order order){
-        return managerService.saveFromForm(order).thenReturn("orders");
+        return managerService.saveOrderFromForm(order)
+                .thenReturn("orders");
     }
 
     @PostMapping("/order/{orderId}/delete")
     public Mono<String> removeEmployee(@PathVariable Integer orderId, Model model){
-        return managerService.deleteById(orderId).then(index(model));
+        return managerService.deleteAllTaskQueuesByOrderId(orderId)
+                .then(managerService.deleteOrderById(orderId))
+                .then(index(model));
     }
 
     @GetMapping("/order/{orderId}/manage")

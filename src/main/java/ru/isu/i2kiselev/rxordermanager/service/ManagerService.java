@@ -33,10 +33,6 @@ public class ManagerService {
         this.taskQueueRepository = taskQueueRepository;
     }
 
-    public Mono<Order> findOrderById(Integer orderId){
-        return orderRepository.findById(orderId);
-    }
-
     public Mono<TaskQueue> findTaskQueueById(Integer taskQueueId){
         return taskQueueRepository.findById(taskQueueId);
     }
@@ -44,16 +40,26 @@ public class ManagerService {
     public Flux<TaskQueue> findAllTaskQueuesByOrderId(Integer orderId){
         return taskQueueRepository.findAllByOrderId(orderId);
     }
-    public Flux<Order> findAll() {
+
+    public Mono<Integer> deleteAllTaskQueuesByOrderId(Integer orderId){
+        return taskQueueRepository.deleteAllByOrderId(orderId)
+                .doOnNext(x->log.info("Removed all task queues by order id {}", orderId));
+    }
+
+    public Mono<Order> findOrderById(Integer orderId){
+        return orderRepository.findById(orderId);
+    }
+
+    public Flux<Order> findAllOrders() {
         return orderRepository.findAll();
     }
 
-    public Mono<Void> deleteById(Integer orderId){
+    public Mono<Void> deleteOrderById(Integer orderId){
         return orderRepository.deleteById(orderId);
     }
 
-    public Mono<Order> saveFromForm(Order order){
-        return  addCreationDate(order)
+    public Mono<Order> saveOrderFromForm(Order order){
+        return  addCreationDateToOrder(order)
                 .then(orderRepository.save(order))
                 .then(addTaskIdsList(order))
                 .then(addAllTasksToOrder(order))
@@ -75,7 +81,7 @@ public class ManagerService {
                 .then(Mono.just(order));
     }
 
-    private Mono<Order> addCreationDate(Order order){
+    private Mono<Order> addCreationDateToOrder(Order order){
         return Mono.just(order)
                 .doOnNext(x->x.setCreationDate(LocalDateTime.now()));
     }

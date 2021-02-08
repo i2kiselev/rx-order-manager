@@ -46,7 +46,7 @@ class ManagerServiceTest {
         order.setQuantities(quantities);
         given(orderRepository.save(any(Order.class))).willReturn(Mono.just(order));
         given(taskQueueRepository.save(any(TaskQueue.class))).willReturn(Mono.just(new TaskQueue()));
-        Mono<Order> savedOrder = managerService.saveFromForm(order);
+        Mono<Order> savedOrder = managerService.saveOrderFromForm(order);
         StepVerifier.create(savedOrder)
                 .thenConsumeWhile(result -> {
                     assertThat(result).isNotNull();
@@ -72,7 +72,7 @@ class ManagerServiceTest {
         order.setQuantities(quantities);
         given(orderRepository.save(any(Order.class))).willReturn(Mono.just(order));
         given(taskQueueRepository.save(any(TaskQueue.class))).willReturn(Mono.just(new TaskQueue()));
-        Mono<Order> savedOrder = managerService.saveFromForm(order);
+        Mono<Order> savedOrder = managerService.saveOrderFromForm(order);
         StepVerifier.create(savedOrder)
                 .thenConsumeWhile(result -> {
                     assertThat(result).isNotNull();
@@ -93,7 +93,7 @@ class ManagerServiceTest {
         orders.add(order1);
         orders.add(order2);
         given(orderRepository.findAll()).willReturn(Flux.fromIterable(orders));
-        Flux<Order> orderFlux = managerService.findAll();
+        Flux<Order> orderFlux = managerService.findAllOrders();
         StepVerifier.create(orderFlux)
                 .expectNext(order1,order2)
                 .expectNextCount(0)

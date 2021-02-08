@@ -9,7 +9,9 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import ru.isu.i2kiselev.rxordermanager.model.Order;
 import ru.isu.i2kiselev.rxordermanager.model.Status;
+import ru.isu.i2kiselev.rxordermanager.model.TaskQueue;
 import ru.isu.i2kiselev.rxordermanager.repository.OrderRepository;
+import ru.isu.i2kiselev.rxordermanager.repository.TaskQueueRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,6 +26,9 @@ class OrderServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private TaskQueueRepository taskQueueRepository;
 
     @InjectMocks
     private OrderService orderService;
@@ -42,7 +47,7 @@ class OrderServiceTest {
         order.setIds(ids);
         order.setQuantities(quantities);
         given(orderRepository.save(any(Order.class))).willReturn(Mono.just(order));
-        given(orderRepository.addTaskToOrderByOrderId(any(Integer.class),any(Integer.class),any(Status.class),any(LocalDateTime.class))).willReturn(Mono.just("").then());
+        given(taskQueueRepository.save(new TaskQueue(any(Integer.class),any(Integer.class),any(Status.class),any(LocalDateTime.class)))).willReturn(Mono.just(new TaskQueue()));
         Mono<Order> savedOrder = orderService.saveFromForm(order);
         StepVerifier.create(savedOrder)
                 .thenConsumeWhile(result -> {
@@ -68,7 +73,7 @@ class OrderServiceTest {
         order.setIds(ids);
         order.setQuantities(quantities);
         given(orderRepository.save(any(Order.class))).willReturn(Mono.just(order));
-        given(orderRepository.addTaskToOrderByOrderId(any(Integer.class),any(Integer.class),any(Status.class),any(LocalDateTime.class))).willReturn(Mono.just("").then());
+        given(taskQueueRepository.save(new TaskQueue(any(Integer.class),any(Integer.class),any(Status.class),any(LocalDateTime.class)))).willReturn(Mono.just(new TaskQueue()));
         Mono<Order> savedOrder = orderService.saveFromForm(order);
         StepVerifier.create(savedOrder)
                 .thenConsumeWhile(result -> {

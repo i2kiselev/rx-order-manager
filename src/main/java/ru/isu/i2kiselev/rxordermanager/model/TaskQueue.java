@@ -1,6 +1,7 @@
 package ru.isu.i2kiselev.rxordermanager.model;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
@@ -12,9 +13,10 @@ import java.time.LocalDateTime;
  */
 
 @Data
-@Table
+@Table("task_queue")
 public class TaskQueue {
 
+    @Id
     private Integer id;
 
     private Integer employeeId;
@@ -40,5 +42,9 @@ public class TaskQueue {
         this.orderId = orderId;
         this.status = status;
         this.assignmentDate = assignmentDate;
+    }
+
+    public TaskQueue() {
+
     }
 }

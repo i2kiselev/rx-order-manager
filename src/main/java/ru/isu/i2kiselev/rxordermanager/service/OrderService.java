@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Service for task distribution and order managing
- * @version 0.3
+ * @version 0.5
  * @author Ilya Kiselev
  */
 
@@ -52,8 +52,10 @@ public class OrderService {
     }
 
     public Mono<TaskQueue> addTaskToOrderByOrderId(Integer orderId, Integer taskId){
-        log.info("Added task #{} to order  with id {}", orderId, taskId);
-        return taskQueueRepository.save(new TaskQueue(orderId,taskId, Status.ACCEPTED, LocalDateTime.now()));
+        TaskQueue taskQueue = new TaskQueue(orderId,taskId, Status.ACCEPTED, LocalDateTime.now());
+        return taskQueueRepository
+                .save(taskQueue)
+                .doOnNext(x->log.info("Added task #{} to order  with id {}", orderId, taskId));
     }
 
     private Mono<Order> addAllTasksToOrder(Order order){
@@ -77,6 +79,5 @@ public class OrderService {
         order.setTasks(tasksIds);
         return Mono.just(order);
     }
-
 
 }

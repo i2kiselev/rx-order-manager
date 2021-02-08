@@ -14,6 +14,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data
 @Table("task")
 public class Task {
+
     @Id
     private Integer id;
 

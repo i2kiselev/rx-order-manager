@@ -11,5 +11,6 @@ spring:
 logging:
   level:
     root: INFO
+    ru.isu.i2kiselev.rxordermanager: DEBUG
     io.r2dbc.postgresql.QUERY: DEBUG # for queries
     io.r2dbc.postgresql.PARAM: DEBUG # for parameters

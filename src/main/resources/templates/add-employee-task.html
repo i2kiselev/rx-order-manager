@@ -24,8 +24,6 @@
 
         <input type="hidden" th:value="${employee.id}" th:attr="name='employeeId'"/>
 
-        <!--<input type="hidden" th:field="*{employeeId}" th:value="${employee.id}">-->
-
         <div class="form-group">
             <label for="task-id">Choose task</label>
             <select th:field="*{taskId}" class="form-control" id="task-id">

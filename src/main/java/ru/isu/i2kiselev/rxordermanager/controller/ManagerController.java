@@ -78,7 +78,6 @@ public class ManagerController {
 
     @GetMapping("/order/{orderId}/manage/{taskQueueId}/assign")
     public Mono<String> manageOrder(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, Model model){
-
         model.addAttribute("employees", employeeService.findAllByTaskQueueId(taskQueueId) );
         model.addAttribute("taskQueue", managerService.findTaskQueueById(taskQueueId));
         model.addAttribute("order", managerService.findOrderById(orderId));

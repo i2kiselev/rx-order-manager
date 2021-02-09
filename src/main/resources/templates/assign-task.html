@@ -20,10 +20,9 @@
 <body>
 <div th:replace="fragments/navbar"></div>
 <div id="form">
-    <form action="#" th:action="@{/order/{orderId}/manage/{taskQueueId}/assign(orderId=${order.id}, taskQueueId=${taskQueue.id})}" th:object="${taskQueue}" method="post">
-
-        <input type="hidden" th:value="*{id}">
-        <input type="hidden" th:value="*{taskId}">
+    <form action="#" th:action="@{/manager/order/{orderId}/manage/{taskQueueId}/assign(orderId=${order.id}, taskQueueId=${taskQueue.id})}" th:object="${taskQueue}" method="post">
+        <input type="hidden" th:value="${taskQueue.id}" th:attr="name='id'">
+        <input type="hidden" th:value="${taskQueue.taskId}" th:attr="name='taskId'">
         <input type="hidden" th:value="*{orderId}">
 
         <div class="form-group">

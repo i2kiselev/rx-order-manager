@@ -36,4 +36,10 @@ public interface EmployeeRepository extends ReactiveCrudRepository<Employee, Int
             "employee_task_estimates.task_id=$2")
     Mono<Integer> removeTaskEstimateToEmployee(Integer employee, Integer task_id);
 
+    @Query("select employee.id, employee.username " +
+            "from employee " +
+            "left join employee_task_estimates on " +
+            "employee.id=employee_task_estimates.employee_id " +
+            "where task_id=(select task_queue.task_id from task_queue where task_queue.id=$1)")
+    Flux<Employee> findAllByTaskQueueId(Integer taskQueueId);
 }

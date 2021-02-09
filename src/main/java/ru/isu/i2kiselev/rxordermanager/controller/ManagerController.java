@@ -6,13 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Order;
+import ru.isu.i2kiselev.rxordermanager.model.TaskQueue;
 import ru.isu.i2kiselev.rxordermanager.service.EmployeeService;
 import ru.isu.i2kiselev.rxordermanager.service.ManagerService;
 import ru.isu.i2kiselev.rxordermanager.service.TaskService;
 
 /**
  * ManagerController
- * @version 0.1
+ * @version 0.5
  * @author Ilya Kiselev
  */
 
@@ -77,11 +78,16 @@ public class ManagerController {
 
     @GetMapping("/order/{orderId}/manage/{taskQueueId}/assign")
     public Mono<String> manageOrder(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, Model model){
-        model.addAttribute("employees", managerService.findTaskQueueById(taskQueueId).map(x->employeeService.findAllByTaskId(x.getTaskId())));
+
+        model.addAttribute("employees", employeeService.findAllByTaskQueueId(taskQueueId) );
+        model.addAttribute("taskQueue", managerService.findTaskQueueById(taskQueueId));
         model.addAttribute("order", managerService.findOrderById(orderId));
         return Mono.just("assign-task");
     }
 
-
+    @PostMapping("/order/{orderId}/manage/{taskQueueId}/assign")
+    public Mono<String> assignTask(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, @ModelAttribute("taskQueue") TaskQueue taskQueue){
+        return managerService.updateTaskQueue(taskQueue).thenReturn("orders");
+    }
 
 }

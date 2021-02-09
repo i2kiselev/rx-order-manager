@@ -48,6 +48,10 @@ public class EmployeeService {
         return employeeRepository.findAllByTaskId(id);
     }
 
+    public Flux<Employee> findAllByTaskQueueId(Integer taskQueueId) {
+        return employeeRepository.findAllByTaskQueueId(taskQueueId);
+    }
+
     public Mono<Integer> addTaskEstimate(Integer employeeId, Integer taskId, Integer taskEstimate){
         log.info("Added task #{} estimate of {} units to employee #{} ", taskId, taskEstimate, employeeId);
         return employeeRepository.addTaskEstimateToEmployee(employeeId,taskId,taskEstimate);

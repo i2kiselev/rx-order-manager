@@ -33,6 +33,12 @@ public class ManagerService {
         this.taskQueueRepository = taskQueueRepository;
     }
 
+    public Mono<TaskQueue> updateTaskQueue(TaskQueue taskQueue){
+        taskQueue.setAssignmentDate(LocalDateTime.now());
+        taskQueue.setStatus(Status.ASSIGNED);
+        return taskQueueRepository.save(taskQueue);
+    }
+
     public Mono<TaskQueue> findTaskQueueById(Integer taskQueueId){
         return taskQueueRepository.findById(taskQueueId);
     }

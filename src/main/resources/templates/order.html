@@ -34,11 +34,11 @@
                     Assigned
                 </p>
             </td>
-            <!--<td>
-                <form th:action="@{/employee/{id}/delete(id=${emp.id})}" method="post">
-                    <button type="submit" class="btn btn-primary" >Delete</button>
-                </form>
-            </td>-->
+            <td>
+                <a th:href="@{/manager/order/{orderId}/manage/{taskQueueId}/assign(orderId=${order.id}, taskQueueId=${taskRecords[indexStat.index].id})}" th:if="${taskRecords[indexStat.index].employeeId}" class="btn btn-primary">
+                    Reassign task
+                </a>
+            </td>
         </tr>
         </tbody>
     </table>

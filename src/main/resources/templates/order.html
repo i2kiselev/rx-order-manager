@@ -27,9 +27,12 @@
             <td th:text="${indexStat.count}"></td>
             <td th:text="${task.taskName}"></td>
             <td>
-                <a th:href="@{/manager/order/{orderId}/manage/{taskQueueId}/assign(orderId=${order.id}, taskQueueId=${taskRecords[indexStat.index].id})}" class="btn btn-primary">
+                <a th:href="@{/manager/order/{orderId}/manage/{taskQueueId}/assign(orderId=${order.id}, taskQueueId=${taskRecords[indexStat.index].id})}" th:unless="${taskRecords[indexStat.index].employeeId}" class="btn btn-primary">
                     Assign task
                 </a>
+                <p th:if="${taskRecords[indexStat.index].employeeId}" >
+                    Assigned
+                </p>
             </td>
             <!--<td>
                 <form th:action="@{/employee/{id}/delete(id=${emp.id})}" method="post">

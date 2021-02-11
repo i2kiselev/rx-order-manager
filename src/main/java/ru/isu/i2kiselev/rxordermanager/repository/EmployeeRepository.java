@@ -42,4 +42,11 @@ public interface EmployeeRepository extends ReactiveCrudRepository<Employee, Int
             "employee.id=employee_task_estimates.employee_id " +
             "where task_id=(select task_queue.task_id from task_queue where task_queue.id=$1)")
     Flux<Employee> findAllByTaskQueueId(Integer taskQueueId);
+
+    @Query("select employee.id, employee.username " +
+            "from employee " +
+            "right join task_queue on " +
+            "employee.id=task_queue.employee_id " +
+            "where order_id=$1")
+    Flux<Employee> findAllAssignedToOrder(Integer orderId);
 }

@@ -10,7 +10,7 @@ import ru.isu.i2kiselev.rxordermanager.repository.EmployeeRepository;
 
 /**
  * Singleton-service for operations with Employee class
- * @version 0.6
+ * @version 0.7
  * @author Ilya Kiselev
  */
 
@@ -37,7 +37,7 @@ public class EmployeeService {
         log.info("Returned all employees");
         return employeeRepository.findAll();
     }
-
+    
     public Mono<Employee> findById(Integer id){
         log.info("Returned employee with id {}", id);
         return employeeRepository.findById(id);
@@ -50,6 +50,10 @@ public class EmployeeService {
 
     public Flux<Employee> findAllByTaskQueueId(Integer taskQueueId) {
         return employeeRepository.findAllByTaskQueueId(taskQueueId);
+    }
+    
+    public Flux<Employee> findAllAssignedToOrder(Integer orderId){
+        return employeeRepository.findAllAssignedToOrder(orderId);
     }
 
     public Mono<Integer> addTaskEstimate(Integer employeeId, Integer taskId, Integer taskEstimate){

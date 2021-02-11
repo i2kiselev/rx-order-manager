@@ -73,6 +73,7 @@ public class ManagerController {
         model.addAttribute("order", managerService.findOrderById(orderId));
         model.addAttribute("taskRecords", managerService.findAllTaskQueuesByOrderId(orderId));
         model.addAttribute("tasks", taskService.findAllByOrderId(orderId));
+        model.addAttribute("assignedEmployees", employeeService.findAllAssignedToOrder(orderId));
         return Mono.just("order");
     }
 

@@ -92,6 +92,10 @@ public class ManagerService {
                 .doOnNext(x->log.info("Set status of taskQueue with id {} to {}", taskQueueId, status));
     }
 
+    public Mono<Boolean> isOrderCompletedByOrderId(Integer orderId){
+        return taskQueueRepository.isOrderFinished(orderId);
+    }
+
     private Mono<Order> addAllTasksToOrder(Order order){
         return Flux.fromIterable(order.getTasks())
                 .flatMap(x->addTaskToOrderByOrderId(order.getId(),x))

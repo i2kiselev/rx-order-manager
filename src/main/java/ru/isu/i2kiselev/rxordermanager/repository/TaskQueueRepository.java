@@ -25,4 +25,8 @@ public interface TaskQueueRepository extends ReactiveCrudRepository<TaskQueue,In
 
     @Query("update task_queue set status=$1 where id = $2 ")
     Mono<Integer> setTaskStatusByTaskQueueId(Status status, Integer taskQueueId);
+
+    @Query("select count(*)=0 from task_queue where order_id=$1 and status !='COMPLETED'")
+    Mono<Boolean> isOrderFinished(Integer orderId);
+
 }

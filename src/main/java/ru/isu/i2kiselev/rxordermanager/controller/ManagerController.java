@@ -13,7 +13,7 @@ import ru.isu.i2kiselev.rxordermanager.service.ManagerService;
 import ru.isu.i2kiselev.rxordermanager.service.TaskService;
 
 /**
- * ManagerController
+ * ManagerController. Core of the system
  * @version 0.5
  * @author Ilya Kiselev
  */
@@ -76,6 +76,7 @@ public class ManagerController {
         model.addAttribute("tasks", taskService.findAllByOrderId(orderId));
         model.addAttribute("assignedEmployees", employeeService.findAllAssignedToOrder(orderId));
         model.addAttribute("completed", Status.COMPLETED);
+        model.addAttribute("isOrderCompleted", managerService.isOrderCompletedByOrderId(orderId));
         return "order";
     }
 
@@ -96,7 +97,7 @@ public class ManagerController {
     public Mono<String> setCompleteStatusForTask(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, @ModelAttribute("taskQueue") TaskQueue taskQueue){
         return managerService
                 .updateTaskStatusByTaskQueueId(taskQueueId, Status.COMPLETED)
-                .thenReturn("redirect://manager/order/{orderId}/manage");
+                .thenReturn("redirect:/manager/order/{orderId}/manage");
     }
 
 }

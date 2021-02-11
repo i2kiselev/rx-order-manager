@@ -19,6 +19,9 @@
 <body>
 <div th:replace="fragments/navbar"></div>
 <div class="sections-wrap">
+    <h1 th:if="isOrderCompleted">
+        Order is completed!
+    </h1>
     <table class="table">
         <thead>
         </thead>

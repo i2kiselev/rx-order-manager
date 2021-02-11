@@ -49,10 +49,12 @@ public class EmployeeService {
     }
 
     public Flux<Employee> findAllByTaskQueueId(Integer taskQueueId) {
+        log.info("Returned all employees by taskQueue {}", taskQueueId);
         return employeeRepository.findAllByTaskQueueId(taskQueueId);
     }
     
     public Flux<Employee> findAllAssignedToOrder(Integer orderId){
+        log.info("Returned all employees assigned to order {}", orderId);
         return employeeRepository.findAllAssignedToOrder(orderId);
     }
 

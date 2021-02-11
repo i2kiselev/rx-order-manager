@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Service for task distribution and order managing
- * @version 0.5
+ * @version 0.7
  * @author Ilya Kiselev
  */
 
@@ -36,15 +36,18 @@ public class ManagerService {
     public Mono<TaskQueue> updateTaskQueue(TaskQueue taskQueue){
         taskQueue.setAssignmentDate(LocalDateTime.now());
         taskQueue.setStatus(Status.ASSIGNED);
-        return taskQueueRepository.save(taskQueue);
+        return taskQueueRepository.save(taskQueue)
+                .doOnNext(x->log.info("Saved taskQueue with id {}", x.getId()));
     }
 
     public Mono<TaskQueue> findTaskQueueById(Integer taskQueueId){
-        return taskQueueRepository.findById(taskQueueId);
+        return taskQueueRepository.findById(taskQueueId)
+                .doOnNext(x->log.info("Returned taskQueue with id {}",taskQueueId));
     }
 
     public Flux<TaskQueue> findAllTaskQueuesByOrderId(Integer orderId){
-        return taskQueueRepository.findAllByOrderId(orderId);
+        return taskQueueRepository.findAllByOrderId(orderId)
+                .doOnNext(x->log.info("Returned all taskQueues with orderId {}", orderId));
     }
 
     public Mono<Integer> deleteAllTaskQueuesByOrderId(Integer orderId){
@@ -53,15 +56,18 @@ public class ManagerService {
     }
 
     public Mono<Order> findOrderById(Integer orderId){
-        return orderRepository.findById(orderId);
+        return orderRepository.findById(orderId)
+                .doOnNext(x->log.info("Returned order with id {}", orderId));
     }
 
     public Flux<Order> findAllOrders() {
-        return orderRepository.findAll();
+        return orderRepository.findAll()
+                .doOnNext(x->log.info("Returned all orders"));
     }
 
     public Mono<Void> deleteOrderById(Integer orderId){
-        return orderRepository.deleteById(orderId);
+        return orderRepository.deleteById(orderId)
+                .doOnNext(x->log.info("Removed order with id {}", orderId));
     }
 
     public Mono<Order> saveOrderFromForm(Order order){
@@ -82,7 +88,8 @@ public class ManagerService {
     }
 
     public Mono<Integer> updateTaskStatusByTaskQueueId(Integer taskQueueId, Status status){
-        return taskQueueRepository.setTaskStatusByTaskQueueId(status,taskQueueId);
+        return taskQueueRepository.setTaskStatusByTaskQueueId(status,taskQueueId)
+                .doOnNext(x->log.info("Set status of taskQueue with id {} to {}", taskQueueId, status));
     }
 
     private Mono<Order> addAllTasksToOrder(Order order){

@@ -8,6 +8,8 @@ spring:
       enabled: true
   thymeleaf:
     mode: HTML
+  main:
+    lazy-initialization: true
 logging:
   level:
     root: INFO

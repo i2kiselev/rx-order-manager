@@ -33,11 +33,18 @@
                 <p th:if="${taskRecords[indexStat.index].employeeId}" th:text="${assignedEmployees[indexStat.index].username}+' is assigned'" >
                 </p>
             </td>
-            <td>
+            <td th:unless="${taskRecords[indexStat.index].status == completed}">
                 <a th:href="@{/manager/order/{orderId}/manage/{taskQueueId}/assign(orderId=${order.id}, taskQueueId=${taskRecords[indexStat.index].id})}" th:if="${taskRecords[indexStat.index].employeeId}" class="btn btn-primary">
                     Reassign task
                 </a>
+                <a th:href="@{/manager/order/{orderId}/manage/{taskQueueId}/complete(orderId=${order.id}, taskQueueId=${taskRecords[indexStat.index].id})}" th:if="${taskRecords[indexStat.index].employeeId}"  class="btn btn-primary">
+                    Complete task
+                </a>
             </td>
+            <td th:if="${taskRecords[indexStat.index].status == completed}" >
+                <p> Task is completed</p>
+            </td>
+
         </tr>
         </tbody>
     </table>

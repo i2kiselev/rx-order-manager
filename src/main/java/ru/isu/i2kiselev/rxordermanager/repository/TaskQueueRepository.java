@@ -5,6 +5,7 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import ru.isu.i2kiselev.rxordermanager.model.Status;
 import ru.isu.i2kiselev.rxordermanager.model.TaskQueue;
 
 /**
@@ -21,4 +22,7 @@ public interface TaskQueueRepository extends ReactiveCrudRepository<TaskQueue,In
 
     @Query("DELETE FROM task_queue WHERE task_queue.order_id = $1")
     Mono<Integer> deleteAllByOrderId(Integer orderId);
+
+    @Query("update task_queue set status=$1 where id = $2 ")
+    Mono<Integer> setTaskStatusByTaskQueueId(Status status, Integer taskQueueId);
 }

@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Order;
+import ru.isu.i2kiselev.rxordermanager.model.Status;
 import ru.isu.i2kiselev.rxordermanager.model.TaskQueue;
 import ru.isu.i2kiselev.rxordermanager.service.EmployeeService;
 import ru.isu.i2kiselev.rxordermanager.service.ManagerService;
@@ -69,12 +70,13 @@ public class ManagerController {
     }
 
     @GetMapping("/order/{orderId}/manage")
-    public Mono<String> manageOrder(@PathVariable Integer orderId, Model model){
+    public String manageOrder(@PathVariable Integer orderId, Model model){
         model.addAttribute("order", managerService.findOrderById(orderId));
         model.addAttribute("taskRecords", managerService.findAllTaskQueuesByOrderId(orderId));
         model.addAttribute("tasks", taskService.findAllByOrderId(orderId));
         model.addAttribute("assignedEmployees", employeeService.findAllAssignedToOrder(orderId));
-        return Mono.just("order");
+        model.addAttribute("completed", Status.COMPLETED);
+        return "order";
     }
 
     @GetMapping("/order/{orderId}/manage/{taskQueueId}/assign")
@@ -88,6 +90,13 @@ public class ManagerController {
     @PostMapping("/order/{orderId}/manage/{taskQueueId}/assign")
     public Mono<String> assignTask(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, @ModelAttribute("taskQueue") TaskQueue taskQueue){
         return managerService.updateTaskQueue(taskQueue).thenReturn("orders");
+    }
+
+    @GetMapping("/order/{orderId}/manage/{taskQueueId}/complete")
+    public Mono<String> setCompleteStatusForTask(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, @ModelAttribute("taskQueue") TaskQueue taskQueue){
+        return managerService
+                .updateTaskStatusByTaskQueueId(taskQueueId, Status.COMPLETED)
+                .thenReturn("redirect://manager/order/{orderId}/manage");
     }
 
 }

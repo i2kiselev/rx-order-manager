@@ -8,6 +8,8 @@ import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Status;
 import ru.isu.i2kiselev.rxordermanager.model.TaskQueue;
 
+import java.time.LocalDateTime;
+
 /**
  * TaskQueue repository.
  * @version 0.2
@@ -26,7 +28,9 @@ public interface TaskQueueRepository extends ReactiveCrudRepository<TaskQueue,In
     @Query("update task_queue set status=$1 where id = $2 ")
     Mono<Integer> setTaskStatusByTaskQueueId(Status status, Integer taskQueueId);
 
-    @Query("select count(*)=0 from task_queue where order_id=$1 and status !='COMPLETED'")
+    @Query("select count(*)=0 as is_completed from task_queue where order_id=$1 and status !='COMPLETED'")
     Mono<Boolean> isOrderFinished(Integer orderId);
 
+    @Query("update task_queue set completion_time=$1 where id = $2 ")
+    Mono<Integer> setTaskQueueCompletionTime(LocalDateTime localDateTime, Integer taskQueueId);
 }

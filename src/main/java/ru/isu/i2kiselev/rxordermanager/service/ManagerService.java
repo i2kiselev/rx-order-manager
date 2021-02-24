@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Service for task distribution and order managing
- * @version 0.7
+ * @version 0.8
  * @author Ilya Kiselev
  */
 
@@ -90,6 +90,11 @@ public class ManagerService {
     public Mono<Integer> updateTaskStatusByTaskQueueId(Integer taskQueueId, Status status){
         return taskQueueRepository.setTaskStatusByTaskQueueId(status,taskQueueId)
                 .doOnNext(x->log.debug("Set status of taskQueue with id {} to {}", taskQueueId, status));
+    }
+
+    public Mono<Integer> setTaskQueueCompletionTime(Integer taskQueueId, LocalDateTime localDateTime){
+        return taskQueueRepository.setTaskQueueCompletionTime( localDateTime, taskQueueId)
+                .doOnNext(x->log.debug("Set completion time of taskQueue with id {} ", taskQueueId));
     }
 
     public Mono<Boolean> isOrderCompletedByOrderId(Integer orderId){

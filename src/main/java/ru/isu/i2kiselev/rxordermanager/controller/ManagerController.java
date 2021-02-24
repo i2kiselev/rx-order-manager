@@ -59,25 +59,25 @@ public class ManagerController {
     @PostMapping("/order/add")
     public Mono<String> saveOrder(@ModelAttribute("order") Order order){
         return managerService.saveOrderFromForm(order)
-                .thenReturn("orders");
+                .thenReturn("redirect:/manager/");
     }
 
     @PostMapping("/order/{orderId}/delete")
-    public Mono<String> removeEmployee(@PathVariable Integer orderId, Model model){
+    public Mono<String> removeOrder(@PathVariable Integer orderId){
         return managerService.deleteAllTaskQueuesByOrderId(orderId)
                 .then(managerService.deleteOrderById(orderId))
-                .then(index(model));
+                .thenReturn("redirect:/manager/order/{orderId}/manage");
     }
 
     @GetMapping("/order/{orderId}/manage")
-    public String manageOrder(@PathVariable Integer orderId, Model model){
+    public Mono<String> manageOrder(@PathVariable Integer orderId, Model model){
         model.addAttribute("order", managerService.findOrderById(orderId));
         model.addAttribute("taskRecords", managerService.findAllTaskQueuesByOrderId(orderId));
         model.addAttribute("tasks", taskService.findAllByOrderId(orderId));
         model.addAttribute("assignedEmployees", employeeService.findAllAssignedToOrder(orderId));
         model.addAttribute("completed", Status.COMPLETED);
         model.addAttribute("isOrderCompleted", managerService.isOrderCompletedByOrderId(orderId));
-        return "order";
+        return Mono.just("order");
     }
 
     @GetMapping("/order/{orderId}/manage/{taskQueueId}/assign")
@@ -89,8 +89,8 @@ public class ManagerController {
     }
 
     @PostMapping("/order/{orderId}/manage/{taskQueueId}/assign")
-    public Mono<String> assignTask(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, @ModelAttribute("taskQueue") TaskQueue taskQueue){
-        return managerService.updateTaskQueue(taskQueue).thenReturn("orders");
+    public Mono<String> assignTaskToEmployee(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, @ModelAttribute("taskQueue") TaskQueue taskQueue){
+        return managerService.updateTaskQueue(taskQueue).thenReturn("redirect:/manager/order/{orderId}/manage");
     }
 
     @GetMapping("/order/{orderId}/manage/{taskQueueId}/complete")

@@ -46,7 +46,7 @@ public class TaskController {
 
     @PostMapping("/add")
     public Mono<String> addTask(@ModelAttribute("task") Task task, Model model){
-        return taskService.save(task).then(index(model));
+        return taskService.save(task).thenReturn("redirect:/task/");
     }
 
     @GetMapping("/{taskId}")
@@ -58,12 +58,12 @@ public class TaskController {
 
     @PostMapping("/{taskId}/update")
     public Mono<String> updateEmployee(@PathVariable Integer taskId, @ModelAttribute Task task, Model model){
-        return taskService.save(task).then(index(model));
+        return taskService.save(task).thenReturn("redirect:/task/");
     }
 
     @PostMapping("/{taskId}/delete")
     public Mono<String> removeEmployee(@PathVariable Integer taskId, Model model){
-        return taskService.deleteById(taskId).then(index(model));
+        return taskService.deleteById(taskId).thenReturn("redirect:/task/");
     }
 
 }

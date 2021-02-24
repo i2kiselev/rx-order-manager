@@ -51,7 +51,7 @@ public class EmployeeController {
 
     @PostMapping("/add")
     public Mono<String> addEmployee(@ModelAttribute("employee") Employee employee, Model model){
-        return employeeService.saveEmployee(employee).then(index(model));
+        return employeeService.saveEmployee(employee).thenReturn("redirect:/employee/");
     }
 
     @GetMapping("/{employeeId}")
@@ -63,12 +63,12 @@ public class EmployeeController {
 
     @PostMapping("/{employeeId}/update")
     public Mono<String> updateEmployee(@PathVariable Integer employeeId, @ModelAttribute Employee employee, Model model){
-        return employeeService.saveEmployee(employee).then(index(model));
+        return employeeService.saveEmployee(employee).thenReturn("redirect:/employee/");
     }
 
     @PostMapping("/{employeeId}/delete")
     public Mono<String> removeEmployee(@PathVariable Integer employeeId, Model model){
-        return employeeService.deleteEmployeeById(employeeId).then(index(model));
+        return employeeService.deleteEmployeeById(employeeId).thenReturn("redirect:/employee/");
     }
 
     @GetMapping("/{employeeId}/tasks")
@@ -90,7 +90,7 @@ public class EmployeeController {
 
     @PostMapping("/{employeeId}/tasks/add")
     public Mono<String> saveEmployeeTask(@ModelAttribute("taskEstimate") TaskEstimate taskEstimate, @PathVariable Integer employeeId){
-        return employeeService.addTaskEstimate(taskEstimate).thenReturn("redirect:/employee/{employeeId}/tasks");
+        return employeeService.addTaskEstimate(taskEstimate).thenReturn("redirect:/employee/"+employeeId+"/tasks");
     }
 
     @PostMapping("/{employeeId}/tasks/{taskId}/delete")
@@ -98,7 +98,7 @@ public class EmployeeController {
         model.addAttribute("tasks", taskService.findAllByEmployeeId(employeeId));
         model.addAttribute("employee",employeeService.findById(employeeId));
         model.addAttribute("task",taskService.findById(taskId));
-        return employeeService.deleteTaskEstimate(employeeId,taskId).thenReturn("employee-tasks");
+        return employeeService.deleteTaskEstimate(employeeId,taskId).thenReturn("redirect:/employee/"+employeeId+"/tasks");
     }
 
 }

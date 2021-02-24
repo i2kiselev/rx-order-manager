@@ -37,37 +37,37 @@ public class ManagerService {
         taskQueue.setAssignmentDate(LocalDateTime.now());
         taskQueue.setStatus(Status.ASSIGNED);
         return taskQueueRepository.save(taskQueue)
-                .doOnNext(x->log.info("Saved taskQueue with id {}", x.getId()));
+                .doOnNext(x->log.debug("Saved taskQueue with id {}", x.getId()));
     }
 
     public Mono<TaskQueue> findTaskQueueById(Integer taskQueueId){
         return taskQueueRepository.findById(taskQueueId)
-                .doOnNext(x->log.info("Returned taskQueue with id {}",taskQueueId));
+                .doOnNext(x->log.debug("Returned taskQueue with id {}",taskQueueId));
     }
 
     public Flux<TaskQueue> findAllTaskQueuesByOrderId(Integer orderId){
         return taskQueueRepository.findAllByOrderId(orderId)
-                .doOnNext(x->log.info("Returned all taskQueues with orderId {}", orderId));
+                .doOnNext(x->log.debug("Returned all taskQueues with orderId {}", orderId));
     }
 
     public Mono<Integer> deleteAllTaskQueuesByOrderId(Integer orderId){
         return taskQueueRepository.deleteAllByOrderId(orderId)
-                .doOnNext(x->log.info("Removed all task queues by order id {}", orderId));
+                .doOnNext(x->log.debug("Removed all task queues by order id {}", orderId));
     }
 
     public Mono<Order> findOrderById(Integer orderId){
         return orderRepository.findById(orderId)
-                .doOnNext(x->log.info("Returned order with id {}", orderId));
+                .doOnNext(x->log.debug("Returned order with id {}", orderId));
     }
 
     public Flux<Order> findAllOrders() {
         return orderRepository.findAll()
-                .doOnNext(x->log.info("Returned all orders"));
+                .doOnNext(x->log.debug("Returned all orders"));
     }
 
     public Mono<Void> deleteOrderById(Integer orderId){
         return orderRepository.deleteById(orderId)
-                .doOnNext(x->log.info("Removed order with id {}", orderId));
+                .doOnNext(x->log.debug("Removed order with id {}", orderId));
     }
 
     public Mono<Order> saveOrderFromForm(Order order){
@@ -76,7 +76,7 @@ public class ManagerService {
                 .then(addTaskIdsList(order))
                 .then(addAllTasksToOrder(order))
                 .doOnNext( x->
-                    log.info("Saved order from form with id {}", x::getId)
+                    log.debug("Saved order from form with id {}", x::getId)
                 );
     }
 
@@ -84,12 +84,12 @@ public class ManagerService {
         TaskQueue taskQueue = new TaskQueue(taskId, orderId, Status.ACCEPTED, LocalDateTime.now());
         return taskQueueRepository
                 .save(taskQueue)
-                .doOnNext(x->log.info("Added task #{} to order with id {}", taskId, orderId));
+                .doOnNext(x->log.debug("Added task #{} to order with id {}", taskId, orderId));
     }
 
     public Mono<Integer> updateTaskStatusByTaskQueueId(Integer taskQueueId, Status status){
         return taskQueueRepository.setTaskStatusByTaskQueueId(status,taskQueueId)
-                .doOnNext(x->log.info("Set status of taskQueue with id {} to {}", taskQueueId, status));
+                .doOnNext(x->log.debug("Set status of taskQueue with id {} to {}", taskQueueId, status));
     }
 
     public Mono<Boolean> isOrderCompletedByOrderId(Integer orderId){

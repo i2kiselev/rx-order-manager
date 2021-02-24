@@ -24,36 +24,37 @@ public class TaskService {
     }
 
     public Mono<Task> save(Task task){
-        log.info("Saved task with id {}", task::getId);
+        log.debug("Saved task with id {}", task::getId);
         return taskRepository.save(task);
     }
 
     public Flux<Task> findAll(){
-        log.info("Returned all tasks");
+        log.debug("Returned all tasks");
         return taskRepository.findAll();
     }
 
     public Flux<Task> findAllByEmployeeId(Integer employeeId){
-        log.info("Returned all tasks for employee #{}", employeeId);
+        log.debug("Returned all tasks for employee #{}", employeeId);
         return taskRepository.findAllByEmployeeId(employeeId);
     }
 
     public Flux<Task> findAllNotAddedByEmployeeId(Integer employeeId){
-        log.info("Returned all tasks not added for employee #{}", employeeId);
+        log.debug("Returned all tasks not added for employee #{}", employeeId);
         return taskRepository.findAllNotAddedByEmployeeId(employeeId);
     }
 
     public Mono<Task> findById(Integer taskId) {
-        log.info("Returned task  with id {}", taskId);
+        log.debug("Returned task  with id {}", taskId);
         return taskRepository.findById(taskId);
     }
 
     public Mono<Void> deleteById(Integer taskId){
-        log.info("Deleted task with id {}", taskId);
+        log.debug("Deleted task with id {}", taskId);
         return taskRepository.deleteById(taskId);
     }
 
     public Flux<Task> findAllByOrderId(Integer orderId){
+        log.debug("Returned all tasks by order id {}", orderId);
         return taskRepository.findAllByOrderId(orderId);
     }
 }

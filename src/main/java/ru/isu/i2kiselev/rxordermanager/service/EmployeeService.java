@@ -25,56 +25,56 @@ public class EmployeeService {
     }
 
     public Mono<Employee> saveEmployee(Employee employee){
-        return employeeRepository.save(employee).doOnNext(x->log.info("Saved employee with id {}", x::getId));
+        return employeeRepository.save(employee).doOnNext(x->log.debug("Saved employee with id {}", x::getId));
     }
 
     public Mono<Void> deleteEmployeeById(Integer employeeId){
-        log.info("Deleted employee with id {}", employeeId);
+        log.debug("Deleted employee with id {}", employeeId);
         return employeeRepository.deleteById(employeeId);
     }
 
     public Flux<Employee> findAll(){
-        log.info("Returned all employees");
+        log.debug("Returned all employees");
         return employeeRepository.findAll();
     }
     
     public Mono<Employee> findById(Integer id){
-        log.info("Returned employee with id {}", id);
+        log.debug("Returned employee with id {}", id);
         return employeeRepository.findById(id);
     }
 
     public Flux<Employee> findAllByTaskId(Integer id) {
-        log.info("Returned employee by task with id {}", id);
+        log.debug("Returned employee by task with id {}", id);
         return employeeRepository.findAllByTaskId(id);
     }
 
     public Flux<Employee> findAllByTaskQueueId(Integer taskQueueId) {
-        log.info("Returned all employees by taskQueue {}", taskQueueId);
+        log.debug("Returned all employees by taskQueue {}", taskQueueId);
         return employeeRepository.findAllByTaskQueueId(taskQueueId);
     }
     
     public Flux<Employee> findAllAssignedToOrder(Integer orderId){
-        log.info("Returned all employees assigned to order {}", orderId);
+        log.debug("Returned all employees assigned to order {}", orderId);
         return employeeRepository.findAllAssignedToOrder(orderId);
     }
 
     public Mono<Integer> addTaskEstimate(Integer employeeId, Integer taskId, Integer taskEstimate){
-        log.info("Added task #{} estimate of {} units to employee #{} ", taskId, taskEstimate, employeeId);
+        log.debug("Added task #{} estimate of {} units to employee #{} ", taskId, taskEstimate, employeeId);
         return employeeRepository.addTaskEstimateToEmployee(employeeId,taskId,taskEstimate);
     }
 
     public Mono<Integer> addTaskEstimate(TaskEstimate taskEstimate){
-        log.info("Added task #{} estimate of {} units to employee #{} ", taskEstimate.getTaskId(), taskEstimate.getEstimate(), taskEstimate.getEmployeeId());
+        log.debug("Added task #{} estimate of {} units to employee #{} ", taskEstimate.getTaskId(), taskEstimate.getEstimate(), taskEstimate.getEmployeeId());
         return employeeRepository.addTaskEstimateToEmployee(taskEstimate.getEmployeeId(), taskEstimate.getTaskId(), taskEstimate.getEstimate() );
     }
 
     public Mono<Integer> updateTaskEstimate(Integer employeeId, Integer taskId, Integer taskEstimate){
-        log.info("Update task #{} estimate of {} units to employee #{} ", taskId, taskEstimate, employeeId);
+        log.debug("Update task #{} estimate of {} units to employee #{} ", taskId, taskEstimate, employeeId);
         return employeeRepository.updateTaskEstimateOfEmployee(employeeId,taskId,taskEstimate);
     }
 
     public Mono<Integer> deleteTaskEstimate(Integer employeeId, Integer taskId){
-        log.info("Removed task #{} estimate of employee #{} ", taskId,  employeeId);
+        log.debug("Removed task #{} estimate of employee #{} ", taskId,  employeeId);
         return employeeRepository.removeTaskEstimateToEmployee(employeeId,taskId);
     }
 

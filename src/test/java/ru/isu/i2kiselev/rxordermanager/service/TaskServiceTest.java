@@ -24,10 +24,10 @@ public class TaskServiceTest {
     private TaskRepository taskRepository;
 
     @InjectMocks
-    private  TaskService taskService;
+    private TaskService taskService;
 
     @Test
-    void saveReturnsSameTaskTest(){
+    void saveReturnsSameTaskTest() {
         Task task = new Task();
         task.setTaskName("testTask");
         given(taskRepository.save(any(Task.class))).willReturn(Mono.just(task));
@@ -42,7 +42,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    void findAllReturnsFluxOfTasksTest(){
+    void findAllReturnsFluxOfTasksTest() {
         List<Task> tasks = new ArrayList<>();
         Task task = new Task();
         task.setTaskName("test");
@@ -53,14 +53,14 @@ public class TaskServiceTest {
         given(taskRepository.findAll()).willReturn(Flux.fromIterable(tasks));
         Flux<Task> taskFlux = taskService.findAll();
         StepVerifier.create(taskFlux)
-                .expectNext(task,task1)
+                .expectNext(task, task1)
                 .expectNextCount(0)
                 .expectComplete()
                 .verify();
     }
 
     @Test
-    void findAllReturnsEmptyFluxTest(){
+    void findAllReturnsEmptyFluxTest() {
         List<Task> tasks = new ArrayList<>();
         given(taskRepository.findAll()).willReturn(Flux.fromIterable(tasks));
         Flux<Task> taskFlux = taskService.findAll();
@@ -71,7 +71,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    void findByIdReturnsMonoTest(){
+    void findByIdReturnsMonoTest() {
         Task task = new Task();
         task.setTaskName("test");
         given(taskRepository.findById(any(Integer.class))).willReturn(Mono.just(task));
@@ -83,4 +83,81 @@ public class TaskServiceTest {
                 .verify();
     }
 
+    @Test
+    void findAllByEmployeeIdReturnsFluxTest() {
+        List<Task> tasks = new ArrayList<>();
+        Task task = new Task();
+        task.setTaskName("test");
+        Task task1 = new Task();
+        task1.setTaskName("test1");
+        tasks.add(task);
+        tasks.add(task1);
+        given(taskRepository.findAllByEmployeeId(any(Integer.class))).willReturn(Flux.fromIterable(tasks));
+        Flux<Task> taskFlux = taskService.findAll();
+        StepVerifier.create(taskFlux)
+                .expectNext(task, task1)
+                .expectNextCount(0)
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    void findAllByEmployeeIdReturnsEmptyFluxTest(){
+        List<Task> tasks = new ArrayList<>();
+        given(taskRepository.findAllByEmployeeId(any(Integer.class))).willReturn(Flux.fromIterable(tasks));
+        Flux<Task> taskFlux = taskService.findAll();
+        StepVerifier.create(taskFlux)
+                .expectNextCount(0)
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    void findAllNotAddedByEmployeeIdReturnsFluxTest() {
+        List<Task> tasks = new ArrayList<>();
+        Task task = new Task();
+        task.setTaskName("test");
+        Task task1 = new Task();
+        task1.setTaskName("test1");
+        tasks.add(task);
+        tasks.add(task1);
+        given(taskRepository.findAllNotAddedByEmployeeId(any(Integer.class))).willReturn(Flux.fromIterable(tasks));
+        Flux<Task> taskFlux = taskService.findAll();
+        StepVerifier.create(taskFlux)
+                .expectNext(task, task1)
+                .expectNextCount(0)
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    void findAllNotAddedByEmployeeIdReturnsEmptyFluxTest(){
+        List<Task> tasks = new ArrayList<>();
+        given(taskRepository.findAllNotAddedByEmployeeId(any(Integer.class))).willReturn(Flux.fromIterable(tasks));
+        Flux<Task> taskFlux = taskService.findAll();
+        StepVerifier.create(taskFlux)
+                .expectNextCount(0)
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    void findAllByOrderIdReturnsFluxTest() {
+        List<Task> tasks = new ArrayList<>();
+        Task task = new Task();
+        task.setTaskName("test");
+        Task task1 = new Task();
+        task1.setTaskName("test1");
+        tasks.add(task);
+        tasks.add(task1);
+        given(taskRepository.findAllByOrderId(any(Integer.class))).willReturn(Flux.fromIterable(tasks));
+        Flux<Task> taskFlux = taskService.findAll();
+        StepVerifier.create(taskFlux)
+                .expectNext(task, task1)
+                .expectNextCount(0)
+                .expectComplete()
+                .verify();
+    }
+
 }
+

@@ -12,9 +12,11 @@ import ru.isu.i2kiselev.rxordermanager.service.EmployeeService;
 import ru.isu.i2kiselev.rxordermanager.service.ManagerService;
 import ru.isu.i2kiselev.rxordermanager.service.TaskService;
 
+import java.time.LocalDateTime;
+
 /**
  * ManagerController. Core of the system
- * @version 0.5
+ * @version 0.7
  * @author Ilya Kiselev
  */
 
@@ -97,6 +99,7 @@ public class ManagerController {
     public Mono<String> setCompleteStatusForTask(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, @ModelAttribute("taskQueue") TaskQueue taskQueue){
         return managerService
                 .updateTaskStatusByTaskQueueId(taskQueueId, Status.COMPLETED)
+                .then(managerService.setTaskQueueCompletionTime(taskQueueId, LocalDateTime.now()))
                 .thenReturn("redirect:/manager/order/{orderId}/manage");
     }
 

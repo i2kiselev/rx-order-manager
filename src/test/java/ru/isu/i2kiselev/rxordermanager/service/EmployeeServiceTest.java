@@ -144,7 +144,7 @@ class EmployeeServiceTest {
     @Test
     void deleteTaskEstimateReturnsMonoInteger(){
         List<Employee> employees = new ArrayList<>();
-        given(employeeRepository.updateTaskEstimateOfEmployee(any(Integer.class),any(Integer.class),any(Integer.class))).willReturn(Mono.just(1));
+        given(employeeRepository.removeTaskEstimateToEmployee(any(Integer.class),any(Integer.class))).willReturn(Mono.just(1));
         Mono<Integer> deleteTaskEstimate = employeeService.deleteTaskEstimate(1,1);
         StepVerifier.create(deleteTaskEstimate)
                 .expectNextCount(1)

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 /**
  * TaskQueue POJO. It represents record task from order assigned to employee for completion
- * @version 0.5
+ * @version 0.6
  * @author Ilya Kiselev
  */
 
@@ -28,6 +28,8 @@ public class TaskQueue {
     private Status status;
 
     private LocalDateTime assignmentDate;
+
+    private String feedback;
 
     public TaskQueue(Integer employeeId, Integer taskId, Integer orderId, Status status, LocalDateTime assignmentDate) {
         this.employeeId = employeeId;

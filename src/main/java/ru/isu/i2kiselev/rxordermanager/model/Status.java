@@ -1,6 +1,6 @@
 package ru.isu.i2kiselev.rxordermanager.model;
 
 public enum Status {
-    ACCEPTED, ASSIGNED, COMPLETED
+    ACCEPTED, ASSIGNED, COMPLETING, COMPLETED
 }
 

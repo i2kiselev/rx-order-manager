@@ -1,6 +1,8 @@
 CREATE TABLE public.employee (
      id SERIAL NOT NULL,
      username varchar NOT NULL,
+     password varchar NOT NULL,
+     role varchar NOT NULL,
      PRIMARY KEY (id)
 );
 
@@ -36,6 +38,7 @@ CREATE TABLE public.task_queue (
    employee_id integer,
    order_id integer NOT NULL,
    status varchar NOT NULL,
+   feedback varchar NOT NULL,
    assignment_date timestamp without time zone NOT NULL,
    completion_date timestamp without time zone,
    PRIMARY KEY (id)

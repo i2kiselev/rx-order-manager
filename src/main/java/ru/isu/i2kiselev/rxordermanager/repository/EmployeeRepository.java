@@ -49,4 +49,7 @@ public interface EmployeeRepository extends ReactiveCrudRepository<Employee, Int
             "employee.id=task_queue.employee_id " +
             "where order_id=$1")
     Flux<Employee> findAllAssignedToOrder(Integer orderId);
+
+
+    Mono<Employee> findByUsername(String username);
 }

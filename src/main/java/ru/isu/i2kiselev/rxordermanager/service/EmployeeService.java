@@ -1,6 +1,8 @@
 package ru.isu.i2kiselev.rxordermanager.service;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,7 +18,7 @@ import ru.isu.i2kiselev.rxordermanager.repository.EmployeeRepository;
 
 @Service
 @Log4j2
-public class EmployeeService {
+public class EmployeeService implements ReactiveUserDetailsService {
 
     private final EmployeeRepository employeeRepository;
 
@@ -41,6 +43,11 @@ public class EmployeeService {
     public Mono<Employee> findById(Integer id){
         log.debug("Returned employee with id {}", id);
         return employeeRepository.findById(id);
+    }
+
+    public Mono<UserDetails> findByUsername(String username){
+        log.debug("Returned employee with name {}", username);
+        return employeeRepository.findByUsername(username).cast(UserDetails.class);
     }
 
     public Flux<Employee> findAllByTaskId(Integer id) {
@@ -77,5 +84,7 @@ public class EmployeeService {
         log.debug("Removed task #{} estimate of employee #{} ", taskId,  employeeId);
         return employeeRepository.removeTaskEstimateToEmployee(employeeId,taskId);
     }
+
+
 
 }

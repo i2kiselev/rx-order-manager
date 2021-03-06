@@ -37,7 +37,7 @@ public class EmployeeService implements ReactiveUserDetailsService {
 
     public Flux<Employee> findAll(){
         log.debug("Returned all employees");
-        return employeeRepository.findAll();
+        return employeeRepository.findAll().filter(x-> !x.getRole().equals("ROLE_ADMIN"));
     }
     
     public Mono<Employee> findById(Integer id){
@@ -48,6 +48,10 @@ public class EmployeeService implements ReactiveUserDetailsService {
     public Mono<UserDetails> findByUsername(String username){
         log.debug("Returned employee with name {}", username);
         return employeeRepository.findByUsername(username).cast(UserDetails.class);
+    }
+
+    public Mono<Boolean> isRegistered(String username){
+        return employeeRepository.findByUsername(username).hasElement();
     }
 
     public Flux<Employee> findAllByTaskId(Integer id) {

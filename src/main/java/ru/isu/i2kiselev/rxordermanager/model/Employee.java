@@ -6,13 +6,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Employee POJO. It represent company's employee with array of tasks and respective completion estimates stored in RDBMS
- * @version 0.2
+ * Employee POJO. It represent company's employee and its auth credentials
+ * @version 0.7
  * @author Ilya Kiselev
  */
 
@@ -34,6 +35,18 @@ public class Employee implements UserDetails {
 
     public Employee(String username) {
         this.username = username;
+    }
+
+    public Employee(String username, String password, String role) {
+        //this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    public Employee withEncodedPassword(PasswordEncoder encoder){
+        return new Employee(username,encoder.encode(password),"ROLE_EMPLOYEE");
+        //return new Employee(username,encoder.encode(password),"ROLE_ADMIN");
     }
 
     @Override

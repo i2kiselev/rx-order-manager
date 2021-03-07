@@ -38,11 +38,13 @@ CREATE TABLE public.task_queue (
    employee_id integer,
    order_id integer NOT NULL,
    status varchar NOT NULL,
-   feedback varchar NOT NULL,
+   feedback varchar,
    assignment_date timestamp without time zone NOT NULL,
+   start_date timestamp without time zone,
    completion_date timestamp without time zone,
    PRIMARY KEY (id)
 );
+
 
 CREATE INDEX ON public.task_queue
     (task_id);

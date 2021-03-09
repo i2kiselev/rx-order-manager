@@ -38,7 +38,6 @@ public class Employee implements UserDetails {
     }
 
     public Employee(String username, String password, String role) {
-        //this.id = id;
         this.username = username;
         this.password = password;
         this.role = role;

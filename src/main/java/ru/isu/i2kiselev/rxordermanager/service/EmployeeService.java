@@ -1,6 +1,9 @@
 package ru.isu.i2kiselev.rxordermanager.service;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -12,7 +15,7 @@ import ru.isu.i2kiselev.rxordermanager.repository.EmployeeRepository;
 
 /**
  * Singleton-service for operations with Employee class
- * @version 0.7
+ * @version 0.8
  * @author Ilya Kiselev
  */
 
@@ -52,6 +55,10 @@ public class EmployeeService implements ReactiveUserDetailsService {
 
     public Mono<Boolean> isRegistered(String username){
         return employeeRepository.findByUsername(username).hasElement();
+    }
+
+    public Mono<Employee> getCurrentEmployee(){
+        return ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication).map(Authentication::getPrincipal).cast(Employee.class);
     }
 
     public Flux<Employee> findAllByTaskId(Integer id) {

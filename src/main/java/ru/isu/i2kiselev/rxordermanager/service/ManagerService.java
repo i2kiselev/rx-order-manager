@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Service for task distribution and order managing
- * @version 0.8
+ * @version 0.9
  * @author Ilya Kiselev
  */
 
@@ -34,9 +34,7 @@ public class ManagerService {
     }
 
     public Mono<TaskQueue> updateTaskQueue(TaskQueue taskQueue){
-        taskQueue.setAssignmentDate(LocalDateTime.now());
-        taskQueue.setStatus(Status.ASSIGNED);
-        return taskQueueRepository.save(taskQueue)
+        return prepareTaskQueueForAssignment(taskQueue).then(taskQueueRepository.save(taskQueue))
                 .doOnNext(x->log.debug("Saved taskQueue with id {}", x.getId()));
     }
 
@@ -48,6 +46,11 @@ public class ManagerService {
     public Flux<TaskQueue> findAllTaskQueuesByOrderId(Integer orderId){
         return taskQueueRepository.findAllByOrderId(orderId)
                 .doOnNext(x->log.debug("Returned all taskQueues with orderId {}", orderId));
+    }
+
+    public Flux<TaskQueue> findAllTaskQueuesByEmployeeId(Integer employeeId){
+        log.debug("Returned all tasks queues of employee #{}", employeeId);
+        return taskQueueRepository.findAllByEmployeeId(employeeId);
     }
 
     public Mono<Integer> deleteAllTaskQueuesByOrderId(Integer orderId){
@@ -97,8 +100,18 @@ public class ManagerService {
                 .doOnNext(x->log.debug("Set completion time of taskQueue with id {} ", taskQueueId));
     }
 
+    public Mono<Integer> setTaskQueueStartTime(Integer taskQueueId, LocalDateTime localDateTime){
+        return taskQueueRepository.setTaskQueueStartTime( localDateTime, taskQueueId)
+                .doOnNext(x->log.debug("Set completion time of taskQueue with id {} ", taskQueueId));
+    }
     public Mono<Boolean> isOrderCompletedByOrderId(Integer orderId){
         return taskQueueRepository.isOrderFinished(orderId);
+    }
+
+    private Mono<Void> prepareTaskQueueForAssignment(TaskQueue taskQueue){
+        taskQueue.setAssignmentDate(LocalDateTime.now());
+        taskQueue.setStatus(Status.ASSIGNED);
+        return Mono.empty();
     }
 
     private Mono<Order> addAllTasksToOrder(Order order){

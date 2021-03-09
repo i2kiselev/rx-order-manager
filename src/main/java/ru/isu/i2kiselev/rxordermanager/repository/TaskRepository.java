@@ -34,4 +34,11 @@ public interface TaskRepository extends ReactiveCrudRepository<Task,Integer> {
             "on task.id=task_queue.task_id  " +
             "where order_id=$1")
     Flux<Task> findAllByOrderId(Integer orderId);
+
+    @Query("select task.id,task.task_name from task " +
+            "left join task_queue " +
+            "on task.id=task_queue.task_id " +
+            "where employee_id= $1 ORDER BY task_queue.id ASC")
+    Flux<Task> findAllAssignedTasksByEmployeeId(Integer employeeId);
+
 }

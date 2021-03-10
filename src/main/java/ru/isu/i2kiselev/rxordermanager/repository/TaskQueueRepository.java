@@ -40,4 +40,7 @@ public interface TaskQueueRepository extends ReactiveCrudRepository<TaskQueue,In
     @Query("SELECT * FROM public.task_queue where task_queue.employee_id=$1" +
             "ORDER BY id ASC ")
     Flux<TaskQueue> findAllByEmployeeId(Integer employeeId);
+
+    @Query("update task_queue set feedback=$1 where id = $2")
+    Mono<Integer> updateFeedbackByTaskQueueId( String feedback,Integer taskQueueId);
 }

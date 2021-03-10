@@ -95,6 +95,11 @@ public class ManagerService {
                 .doOnNext(x->log.debug("Set status of taskQueue with id {} to {}", taskQueueId, status));
     }
 
+    public Mono<Integer> updateFeedbackByTaskQueueId(Integer taskQueueId, String feedback){
+        return taskQueueRepository.updateFeedbackByTaskQueueId(feedback,taskQueueId)
+                .doOnNext(x->log.debug("Set feedback of taskQueue with id {} to {}", taskQueueId, feedback.substring(0, Math.min(feedback.length(),15))));
+    }
+
     public Mono<Integer> setTaskQueueCompletionTime(Integer taskQueueId, LocalDateTime localDateTime){
         return taskQueueRepository.setTaskQueueCompletionTime( localDateTime, taskQueueId)
                 .doOnNext(x->log.debug("Set completion time of taskQueue with id {} ", taskQueueId));

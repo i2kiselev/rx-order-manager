@@ -3,13 +3,11 @@ package ru.isu.i2kiselev.rxordermanager.controller;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.Employee;
+import ru.isu.i2kiselev.rxordermanager.model.Feedback;
 import ru.isu.i2kiselev.rxordermanager.model.Status;
 import ru.isu.i2kiselev.rxordermanager.model.TaskQueue;
 import ru.isu.i2kiselev.rxordermanager.service.EmployeeService;
@@ -60,11 +58,17 @@ public class TaskPanelController {
     }
 
     @GetMapping("/{taskQueueId}/complete")
-    public Mono<String> setCompleteStatusForTask(@PathVariable Integer taskQueueId, @ModelAttribute("taskQueue") TaskQueue taskQueue){
-        return managerService
-                .updateTaskStatusByTaskQueueId(taskQueueId, Status.COMPLETED)
+    public Mono<String> getFeedbackForm(@PathVariable Integer taskQueueId, Model model){
+        model.addAttribute("feedback", new Feedback());
+        model.addAttribute("taskQueue", managerService.findTaskQueueById(taskQueueId));
+        return Mono.just("feedback-form").doOnNext(x->log.info("Returned feedback-form view"));
+    }
+
+    @PostMapping("/{taskQueueId}/complete")
+    public Mono<String> saveFeedbackAndSaveCompletedStatus(@PathVariable Integer taskQueueId, @ModelAttribute("feedback") Feedback feedback){
+        return managerService.updateFeedbackByTaskQueueId(taskQueueId,feedback.getFeedback())
                 .then(managerService.setTaskQueueCompletionTime(taskQueueId, LocalDateTime.now()))
-                .thenReturn("redirect:/manager/order/{orderId}/manage");
+                .thenReturn("redirect:/task-panel/");
     }
 
 }

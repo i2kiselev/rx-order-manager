@@ -10,9 +10,13 @@ import ru.isu.i2kiselev.rxordermanager.model.TaskQueue;
 import ru.isu.i2kiselev.rxordermanager.repository.OrderRepository;
 import ru.isu.i2kiselev.rxordermanager.repository.TaskQueueRepository;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 /**
  * Service for task distribution and order managing
@@ -109,6 +113,22 @@ public class ManagerService {
         return taskQueueRepository.setTaskQueueStartTime( localDateTime, taskQueueId)
                 .doOnNext(x->log.debug("Set completion time of taskQueue with id {} ", taskQueueId));
     }
+
+    public Mono<LocalDateTime> getAverageOrderCompletionTimeByOrderId(Integer orderId){
+        return taskQueueRepository.findAll()
+                .filter(x->x.getOrderId().equals(orderId))
+                .flatMap(x->getAverageTaskCompletionTimeByTaskId(x.getTaskId()))
+                .reduce(Long::sum)
+                .map(x->LocalDateTime.ofInstant(Instant.ofEpochMilli(x), TimeZone.getDefault().toZoneId()));
+    }
+
+    public Mono<Long> getAverageTaskCompletionTimeByTaskId(Integer taskId){
+        return taskQueueRepository.findAll()
+                .filter(x->x.getTaskId().equals(taskId))
+                .collect(Collectors.averagingLong(x-> ChronoUnit.MILLIS.between(x.getStartDate(),x.getCompletionDate())))
+                .map(Double::longValue);
+    }
+
     public Mono<Boolean> isOrderCompletedByOrderId(Integer orderId){
         return taskQueueRepository.isOrderFinished(orderId);
     }

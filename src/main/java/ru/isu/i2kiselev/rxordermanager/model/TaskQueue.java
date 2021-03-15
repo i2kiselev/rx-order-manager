@@ -29,6 +29,10 @@ public class TaskQueue {
 
     private LocalDateTime assignmentDate;
 
+    private LocalDateTime startDate;
+
+    private LocalDateTime completionDate;
+
     private String feedback;
 
     public TaskQueue(Integer employeeId, Integer taskId, Integer orderId, Status status, LocalDateTime assignmentDate) {

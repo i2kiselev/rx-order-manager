@@ -5,7 +5,6 @@ import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * Task estimate POJO.
- * @version 0.1
  * @author Ilya Kiselev
  */
 

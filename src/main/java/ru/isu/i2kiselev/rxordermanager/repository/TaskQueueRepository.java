@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 /**
  * TaskQueue repository.
- * @version 0.2
  * @author Ilya Kiselev
  */
 

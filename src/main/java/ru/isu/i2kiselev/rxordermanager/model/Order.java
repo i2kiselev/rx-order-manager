@@ -10,7 +10,6 @@ import java.util.List;
 
 /**
  * Order POJO
- * @version 0.5
  * @author Ilya Kiselev
  */
 

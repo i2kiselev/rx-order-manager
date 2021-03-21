@@ -9,7 +9,6 @@ import ru.isu.i2kiselev.rxordermanager.model.Employee;
 
 /**
  * Employee repository.
- * @version 0.5
  * @author Ilya Kiselev
  */
 

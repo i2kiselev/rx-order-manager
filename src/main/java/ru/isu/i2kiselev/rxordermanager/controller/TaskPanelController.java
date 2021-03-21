@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 
 /**
  * TaskPanelController. Allows employees to set statuses for assigned tasks and leave feedback after task completion
- * @version 0.5
  * @author Ilya Kiselev
  */
 

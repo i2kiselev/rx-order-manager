@@ -12,7 +12,6 @@ import ru.isu.i2kiselev.rxordermanager.service.TaskService;
 
 /**
  * Employee controller. Allows to add/delete/update employees
- * @version 0.6
  * @author Ilya Kiselev
  */
 

@@ -8,6 +8,9 @@
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="https://docs.dhtmlx.com/gantt/codebase/dhtmlxgantt.css">
+    <script src="https://docs.dhtmlx.com/gantt/codebase/dhtmlxgantt.js?v=6.1.7"></script>
+    <script type="text/javascript" th:src="@{/js/ganttinit.js}"></script>
     <script crossorigin="anonymous" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -19,8 +22,12 @@
 <body>
 <div th:replace="fragments/navbar"></div>
 <div class="sections-wrap">
+    <div id="gantt_here" style="width:100%; height:100%;"></div>
     <h1 th:if="isOrderCompleted">
         Order is completed!
+    </h1>
+    <h1 th:unless="isOrderCompleted">
+
     </h1>
     <table class="table">
         <thead>

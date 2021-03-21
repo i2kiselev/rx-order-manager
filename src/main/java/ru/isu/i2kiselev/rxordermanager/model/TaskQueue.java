@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 /**
  * TaskQueue POJO. It represents record task from order assigned to employee for completion
- * @version 0.6
  * @author Ilya Kiselev
  */
 

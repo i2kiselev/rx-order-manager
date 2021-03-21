@@ -9,7 +9,6 @@ import ru.isu.i2kiselev.rxordermanager.repository.TaskRepository;
 
 /**
  * Singleton-service for operations with Task class
- * @version 0.1
  * @author Ilya Kiselev
  */
 

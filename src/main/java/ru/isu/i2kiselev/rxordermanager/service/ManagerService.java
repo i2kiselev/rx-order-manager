@@ -4,9 +4,11 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import ru.isu.i2kiselev.rxordermanager.model.GanttData;
 import ru.isu.i2kiselev.rxordermanager.model.Order;
 import ru.isu.i2kiselev.rxordermanager.model.Status;
 import ru.isu.i2kiselev.rxordermanager.model.TaskQueue;
+import ru.isu.i2kiselev.rxordermanager.repository.GanttDataRepository;
 import ru.isu.i2kiselev.rxordermanager.repository.OrderRepository;
 import ru.isu.i2kiselev.rxordermanager.repository.TaskQueueRepository;
 
@@ -20,7 +22,6 @@ import java.util.stream.Collectors;
 
 /**
  * Service for task distribution and order managing
- * @version 0.9
  * @author Ilya Kiselev
  */
 
@@ -32,9 +33,12 @@ public class ManagerService {
 
     private final TaskQueueRepository taskQueueRepository;
 
-    public ManagerService(OrderRepository orderRepository, TaskQueueRepository taskQueueRepository) {
+    private final GanttDataRepository ganttDataRepository;
+
+    public ManagerService(OrderRepository orderRepository, TaskQueueRepository taskQueueRepository, GanttDataRepository ganttDataRepository) {
         this.orderRepository = orderRepository;
         this.taskQueueRepository = taskQueueRepository;
+        this.ganttDataRepository = ganttDataRepository;
     }
 
     public Mono<TaskQueue> updateTaskQueue(TaskQueue taskQueue){
@@ -119,10 +123,15 @@ public class ManagerService {
                 .filter(x->x.getOrderId().equals(orderId))
                 .flatMap(x->getAverageTaskCompletionTimeByTaskId(x.getTaskId()))
                 .reduce(Long::sum)
-                .map(x->LocalDateTime.ofInstant(Instant.ofEpochMilli(x), TimeZone.getDefault().toZoneId()));
+                .map(x->LocalDateTime.ofInstant(Instant.ofEpochMilli(x), TimeZone.getDefault().toZoneId()))
+                .doOnNext(x->log.debug("Returned average completion time {} of order {}", x.toString(), orderId));
     }
 
-    public Mono<Long> getAverageTaskCompletionTimeByTaskId(Integer taskId){
+    public Flux<GanttData> getDataForChartByOrderId(Integer orderId){
+        return ganttDataRepository.getChartDataByOrderId(orderId);
+    }
+
+    private Mono<Long> getAverageTaskCompletionTimeByTaskId(Integer taskId){
         return taskQueueRepository.findAll()
                 .filter(x->x.getTaskId().equals(taskId))
                 .collect(Collectors.averagingLong(x-> ChronoUnit.MILLIS.between(x.getStartDate(),x.getCompletionDate())))

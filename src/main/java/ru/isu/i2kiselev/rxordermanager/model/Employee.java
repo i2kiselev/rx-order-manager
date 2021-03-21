@@ -13,7 +13,6 @@ import java.util.Collections;
 
 /**
  * Employee POJO. It represent company's employee and its auth credentials
- * @version 0.7
  * @author Ilya Kiselev
  */
 

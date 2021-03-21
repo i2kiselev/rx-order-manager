@@ -8,7 +8,6 @@ import ru.isu.i2kiselev.rxordermanager.model.Task;
 
 /**
  * Task repository.
- * @version 0.2
  * @author Ilya Kiselev
  */
 

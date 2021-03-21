@@ -6,7 +6,6 @@ import ru.isu.i2kiselev.rxordermanager.model.Order;
 
 /**
  * Order repository.
- * @version 0.3
  * @author Ilya Kiselev
  */
 

@@ -13,7 +13,6 @@ import ru.isu.i2kiselev.rxordermanager.service.EmployeeService;
 
 /**
  * RegistrationController. Allows to log in and register new employees
- * @version 0.5
  * @author Ilya Kiselev
  */
 

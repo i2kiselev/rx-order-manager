@@ -20,7 +20,7 @@
 <body>
 <div th:replace="fragments/navbar"></div>
 <div id="form">
-    <form action="#" th:action="@{/task-panel/{taskQueueId}/completed(taskQueueId=${taskQueue.id})}" th:object="${feedback}" method="post">
+    <form action="#" th:action="@{/task-panel/{taskQueueId}/complete(taskQueueId=${taskQueue.id})}" th:object="${feedback}" method="post">
         <div class="form-group">
             <label for="task-name">Feedback</label>
             <textarea type="text" th:field="*{feedback}" class="form-control" id="task-name" aria-describedby="nameHelp" placeholder="Enter feedback">

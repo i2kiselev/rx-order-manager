@@ -26,13 +26,13 @@
         <tr th:each="task, indexStat: ${tasks}">
             <td th:text="${indexStat.count}"></td>
             <td th:text="${task.taskName}"></td>
-            <td th:unless="${taskRecords[indexStat.index].status == completing}">
+            <td th:unless="${taskRecords[indexStat.index].status == completing or taskRecords[indexStat.index].status == completed}">
                 <a th:href="@{/task-panel/{taskQueueId}/completing(taskQueueId=${taskRecords[indexStat.index].id})}" class="btn btn-primary">
                     Start task completion
                 </a>
             </td>
             <td th:unless="${taskRecords[indexStat.index].status == completed}" th:if="${taskRecords[indexStat.index].status == completing}">
-                <a th:href="@{/task-panel/{taskQueueId}/completed(taskQueueId=${taskRecords[indexStat.index].id})}" class="btn btn-primary">
+                <a th:href="@{/task-panel/{taskQueueId}/complete(taskQueueId=${taskRecords[indexStat.index].id})}" class="btn btn-primary">
                     Complete task
                 </a>
             </td>

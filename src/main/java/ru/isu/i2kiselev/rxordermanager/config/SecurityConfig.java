@@ -51,7 +51,7 @@ public class SecurityConfig {
                 if (authentication.getAuthorities().iterator().next().getAuthority().equals("ROLE_ADMIN")) {
                     this.setLocation(URI.create("/employee"));
                 } else {
-                    this.setLocation(URI.create("/manager/task-panel/"));
+                    this.setLocation(URI.create("/task-panel/"));
                 }
                 return super.onAuthenticationSuccess(webFilterExchange, authentication);
             }

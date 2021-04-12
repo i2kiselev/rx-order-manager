@@ -70,7 +70,7 @@ public class ManagerController {
 
     @GetMapping("/order/{orderId}/manage")
     public Mono<String> manageOrder(@PathVariable Integer orderId, Model model){
-        model.addAttribute("completion_time", managerService.getAverageOrderCompletionTimeByOrderId(orderId));
+        model.addAttribute("completionTime", managerService.getAverageOrderCompletionTimeByOrderId(orderId));
         model.addAttribute("order", managerService.findOrderById(orderId));
         model.addAttribute("taskRecords", managerService.findAllTaskQueuesByOrderId(orderId));
         model.addAttribute("tasks", taskService.findAllByOrderId(orderId));

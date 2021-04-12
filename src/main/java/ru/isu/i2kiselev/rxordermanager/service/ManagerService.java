@@ -12,10 +12,12 @@ import ru.isu.i2kiselev.rxordermanager.repository.GanttDataRepository;
 import ru.isu.i2kiselev.rxordermanager.repository.OrderRepository;
 import ru.isu.i2kiselev.rxordermanager.repository.TaskQueueRepository;
 
-import java.time.Instant;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
@@ -118,13 +120,18 @@ public class ManagerService {
                 .doOnNext(x->log.debug("Set completion time of taskQueue with id {} ", taskQueueId));
     }
 
-    public Mono<LocalDateTime> getAverageOrderCompletionTimeByOrderId(Integer orderId){
+    public Mono<String> getAverageOrderCompletionTimeByOrderId(Integer orderId){
         return taskQueueRepository.findAll()
                 .filter(x->x.getOrderId().equals(orderId))
                 .flatMap(x->getAverageTaskCompletionTimeByTaskId(x.getTaskId()))
                 .reduce(Long::sum)
-                .map(x->LocalDateTime.ofInstant(Instant.ofEpochMilli(x), TimeZone.getDefault().toZoneId()))
-                .doOnNext(x->log.debug("Returned average completion time {} of order {}", x.toString(), orderId));
+                .map(x->{
+                    Date date = new Date(x);
+                    DateFormat formatter = new SimpleDateFormat("HH:mm:ss.SSS");
+                    formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    return formatter.format(date);
+                })
+                .doOnNext(x->log.debug("Returned average completion time {} of order {}", x, orderId));
     }
 
     public Flux<GanttData> getDataForChartByOrderId(Integer orderId){
@@ -134,8 +141,10 @@ public class ManagerService {
     private Mono<Long> getAverageTaskCompletionTimeByTaskId(Integer taskId){
         return taskQueueRepository.findAll()
                 .filter(x->x.getTaskId().equals(taskId))
+                .filter(x->x.getStartDate()!=null&&x.getCompletionDate()!=null)
                 .collect(Collectors.averagingLong(x-> ChronoUnit.MILLIS.between(x.getStartDate(),x.getCompletionDate())))
-                .map(Double::longValue);
+                .map(Double::longValue)
+                .switchIfEmpty(Mono.just(0L));
     }
 
     public Mono<Boolean> isOrderCompletedByOrderId(Integer orderId){

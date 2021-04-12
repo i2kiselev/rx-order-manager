@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import ru.isu.i2kiselev.rxordermanager.model.GanttData;
 import ru.isu.i2kiselev.rxordermanager.model.Order;
 import ru.isu.i2kiselev.rxordermanager.model.Status;
 import ru.isu.i2kiselev.rxordermanager.model.TaskQueue;
@@ -91,5 +92,11 @@ public class ManagerController {
     @PostMapping("/order/{orderId}/manage/{taskQueueId}/assign")
     public Mono<String> assignTaskToEmployee(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, @ModelAttribute("taskQueue") TaskQueue taskQueue){
         return managerService.updateTaskQueue(taskQueue).thenReturn("redirect:/manager/order/{orderId}/manage");
+    }
+
+    @GetMapping("/gantt/{orderId}")
+    @ResponseBody
+    public Mono<GanttData> getDiagramData(@PathVariable Integer orderId){
+        return managerService.getDataForChartByOrderId(orderId);
     }
 }

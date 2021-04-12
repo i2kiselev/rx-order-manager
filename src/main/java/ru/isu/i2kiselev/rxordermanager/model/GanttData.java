@@ -2,16 +2,14 @@ package ru.isu.i2kiselev.rxordermanager.model;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class GanttData {
-    private Integer id;
 
-    private String taskName;
+    List<GanttElement> tasks;
 
-    private LocalDateTime startDate;
-
-    private Double duration;
-
+    public GanttData(List<GanttElement> tasks) {
+        this.tasks = tasks;
+    }
 }

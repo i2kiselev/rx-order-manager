@@ -4,10 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import ru.isu.i2kiselev.rxordermanager.model.GanttData;
-import ru.isu.i2kiselev.rxordermanager.model.Order;
-import ru.isu.i2kiselev.rxordermanager.model.Status;
-import ru.isu.i2kiselev.rxordermanager.model.TaskQueue;
+import ru.isu.i2kiselev.rxordermanager.model.*;
 import ru.isu.i2kiselev.rxordermanager.repository.GanttDataRepository;
 import ru.isu.i2kiselev.rxordermanager.repository.OrderRepository;
 import ru.isu.i2kiselev.rxordermanager.repository.TaskQueueRepository;
@@ -134,8 +131,8 @@ public class ManagerService {
                 .doOnNext(x->log.debug("Returned average completion time {} of order {}", x, orderId));
     }
 
-    public Flux<GanttData> getDataForChartByOrderId(Integer orderId){
-        return ganttDataRepository.getChartDataByOrderId(orderId);
+    public Mono<GanttData> getDataForChartByOrderId(Integer orderId){
+        return ganttDataRepository.getChartDataByOrderId(orderId).collectList().map(GanttData::new);
     }
 
     private Mono<Long> getAverageTaskCompletionTimeByTaskId(Integer taskId){

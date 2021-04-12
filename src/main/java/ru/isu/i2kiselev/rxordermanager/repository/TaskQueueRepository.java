@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Repository
 public interface TaskQueueRepository extends ReactiveCrudRepository<TaskQueue,Integer> {
 
-    @Query("select * from task_queue where order_id=$1")
+    @Query("select * from task_queue where order_id=$1 order by task_queue.id")
     Flux<TaskQueue> findAllByOrderId(Integer orderId);
 
     @Query("DELETE FROM task_queue WHERE task_queue.order_id = $1")

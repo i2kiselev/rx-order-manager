@@ -67,6 +67,7 @@ public class TaskPanelController {
     public Mono<String> saveFeedbackAndSaveCompletedStatus(@PathVariable Integer taskQueueId, @ModelAttribute("feedback") Feedback feedback){
         return managerService.updateFeedbackByTaskQueueId(taskQueueId,feedback.getFeedback())
                 .then(managerService.setTaskQueueCompletionTime(taskQueueId, LocalDateTime.now()))
+                .then(managerService.updateTaskStatusByTaskQueueId(taskQueueId, Status.COMPLETED))
                 .thenReturn("redirect:/task-panel/");
     }
 

@@ -127,7 +127,7 @@ public class ManagerService {
                 .reduce(Long::sum)
                 .map(x->{
                     Date date = new Date(x);
-                    DateFormat formatter = new SimpleDateFormat("HH:mm:ss.SSS");
+                    DateFormat formatter = new SimpleDateFormat("HH:mm");
                     formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
                     return formatter.format(date);
                 })

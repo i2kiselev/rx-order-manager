@@ -74,6 +74,7 @@ public class EmployeeController {
     public Mono<String> employeeTasks(@PathVariable Integer employeeId, Model model){
         log.info("Returned employee-tasks view");
         model.addAttribute("tasks", taskService.findAllByEmployeeId(employeeId));
+        model.addAttribute("estimates", taskService.findAllTaskEstimatesByEmployeeId(employeeId));
         model.addAttribute("employee",employeeService.findById(employeeId));
         return Mono.just("employee-tasks");
     }

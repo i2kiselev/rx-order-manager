@@ -37,6 +37,10 @@ public class TaskService {
         return taskRepository.findAllByEmployeeId(employeeId);
     }
 
+    public Flux<Integer> findAllTaskEstimatesByEmployeeId(Integer employeeId){
+        log.debug("Returned all estimates for employee #{}", employeeId);
+        return taskRepository.findAllTaskEstimatesByEmployeeId(employeeId);
+    }
     public Flux<Task> findAllAssignedTasksByEmployeeId(Integer employeeId){
         log.debug("Returned all tasks assigned for employee #{}", employeeId);
         return taskRepository.findAllAssignedTasksByEmployeeId(employeeId);

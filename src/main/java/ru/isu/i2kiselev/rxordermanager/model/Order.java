@@ -20,6 +20,8 @@ public class Order {
     @Id
     private Integer id;
 
+    private String name;
+
     private String description;
 
     private LocalDateTime creationDate;

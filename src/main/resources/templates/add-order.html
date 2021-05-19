@@ -27,8 +27,12 @@
             <form action="#" th:action="@{/manager/order/add}" id="orderForm"  th:object="${order}" method="post" >
                 <input type="hidden" th:value="*{id}">
                 <div class="form-group">
+                    <label for="username">Order name</label>
+                    <textarea type="text" th:field="*{name}" class="form-control" id="username" aria-describedby="nameHelp" placeholder="Enter name"></textarea>
+                </div>
+                <div class="form-group">
                     <label for="username">Order description</label>
-                    <textarea type="text" th:field="*{description}" class="form-control" id="username" aria-describedby="nameHelp" placeholder="Enter name"></textarea>
+                    <textarea type="text" th:field="*{description}" class="form-control" id="desc" aria-describedby="descHelp" placeholder="Enter description"></textarea>
                 </div>
                 <div class="form-group">
                     <div class="iqdropdown">
@@ -53,7 +57,6 @@
             </form>
         </div>
     </div>
-
 </div>
 </body>
 </html>

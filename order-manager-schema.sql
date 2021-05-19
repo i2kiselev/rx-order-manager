@@ -26,6 +26,7 @@ ALTER TABLE public.employee_task_estimates
 
 CREATE TABLE public.order_table (
     id SERIAL NOT NULL,
+    name varchar NOT NULL,
     description varchar NOT NULL,
     creation_date timestamp without time zone NOT NULL,
     PRIMARY KEY (id)
@@ -59,3 +60,4 @@ ALTER TABLE public.employee_task_estimates ADD CONSTRAINT FK_employee_task_estim
 ALTER TABLE public.task_queue ADD CONSTRAINT FK_task_queue__task_id FOREIGN KEY (task_id) REFERENCES public.task(id);
 ALTER TABLE public.task_queue ADD CONSTRAINT FK_task_queue__employee_id FOREIGN KEY (employee_id) REFERENCES public.employee(id);
 ALTER TABLE public.task_queue ADD CONSTRAINT FK_task_queue__order_id FOREIGN KEY (order_id) REFERENCES public.order_table(id);
+

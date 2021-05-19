@@ -4,7 +4,10 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import ru.isu.i2kiselev.rxordermanager.model.*;
+import ru.isu.i2kiselev.rxordermanager.model.GanttData;
+import ru.isu.i2kiselev.rxordermanager.model.Order;
+import ru.isu.i2kiselev.rxordermanager.model.Status;
+import ru.isu.i2kiselev.rxordermanager.model.TaskQueue;
 import ru.isu.i2kiselev.rxordermanager.repository.GanttDataRepository;
 import ru.isu.i2kiselev.rxordermanager.repository.OrderRepository;
 import ru.isu.i2kiselev.rxordermanager.repository.TaskQueueRepository;
@@ -144,6 +147,12 @@ public class ManagerService {
                 .switchIfEmpty(Mono.just(0L));
     }
 
+   /* private Flux<GanttData> getGanttDataForActiveOrders(){
+        return taskQueueRepository.findAll()
+                .filter(x->x.getStatus()!=Status.COMPLETED)
+                .
+    }
+*/
     public Mono<Boolean> isOrderCompletedByOrderId(Integer orderId){
         return taskQueueRepository.isOrderFinished(orderId);
     }
@@ -156,7 +165,7 @@ public class ManagerService {
 
     private Mono<Order> addAllTasksToOrder(Order order){
         return Flux.fromIterable(order.getTasks())
-                .flatMap(x->addTaskToOrderByOrderId(order.getId(),x))
+                .map(x->addTaskToOrderByOrderId(order.getId(),x))
                 .then(Mono.just(order));
     }
 

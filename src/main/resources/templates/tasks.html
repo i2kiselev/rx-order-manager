@@ -27,6 +27,7 @@
         <tr th:each="task: ${tasks}">
             <td th:text="${task.id}"></td>
             <td th:text="${task.taskName}"></td>
+            <td th:text="${task.defaultEstimate}"></td>
             <td><a th:href="@{/task/{id}(id=${task.id})}" class="btn btn-primary">Edit</a></td>
             <td>
                 <form th:action="@{/task/{id}/delete(id=${task.id})}" method="post">

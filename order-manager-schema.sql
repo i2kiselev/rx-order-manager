@@ -10,6 +10,7 @@ CREATE TABLE public.employee (
 CREATE TABLE public.task (
      id SERIAL NOT NULL,
      task_name varchar NOT NULL,
+     default_estimate integer NOT NULL,
      PRIMARY KEY (id)
 );
 

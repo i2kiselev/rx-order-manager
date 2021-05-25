@@ -18,4 +18,6 @@ public class Task {
     private Integer id;
 
     private String taskName;
+
+    private Integer defaultEstimate;
 }

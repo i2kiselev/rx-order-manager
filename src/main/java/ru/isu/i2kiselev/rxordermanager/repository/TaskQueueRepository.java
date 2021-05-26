@@ -42,4 +42,5 @@ public interface TaskQueueRepository extends ReactiveCrudRepository<TaskQueue,In
 
     @Query("update task_queue set feedback=$1 where id = $2")
     Mono<Integer> updateFeedbackByTaskQueueId( String feedback,Integer taskQueueId);
+
 }

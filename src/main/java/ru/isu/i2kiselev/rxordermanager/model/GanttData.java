@@ -7,9 +7,9 @@ import java.util.List;
 @Data
 public class GanttData {
 
-    List<GanttElement> tasks;
+    List<GanttElement> data;
 
     public GanttData(List<GanttElement> tasks) {
-        this.tasks = tasks;
+        this.data = tasks;
     }
 }

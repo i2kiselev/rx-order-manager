@@ -13,4 +13,4 @@ spring:
 logging:
   level:
     root: INFO
-    ru.isu.i2kiselev.rxordermanager: DEBUG
+    ru.isu.i2kiselev.rxordermanager: INFO

@@ -21,12 +21,10 @@ public interface TaskRepository extends ReactiveCrudRepository<Task,Integer> {
             "order by employee_task_estimates.task_id")
     Flux<Task> findAllByEmployeeId(Integer employeeId);
 
-    @Query("select * from task " +
+    @Query("select task.id, task.task_name, task.default_estimate " +
+            "from task " +
             "except " +
-            "(select task.id,task.task_name from task " +
-            "left join employee_task_estimates " +
-            "on task.id=employee_task_estimates.task_id " +
-            "where employee_id=$1)")
+            "(select task.id, task.task_name, task.default_estimate from task left join employee_task_estimates on task.id=employee_task_estimates.task_id where employee_id=$1)")
     Flux<Task> findAllNotAddedByEmployeeId(Integer employeeId);
 
     @Query("select task.id,task.task_name from task " +

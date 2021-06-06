@@ -41,7 +41,7 @@ CREATE TABLE public.task_queue (
    order_id integer NOT NULL,
    status varchar NOT NULL,
    feedback varchar,
-   assignment_date timestamp without time zone NOT NULL,
+   assignment_date timestamp without time zone,
    start_date timestamp without time zone,
    completion_date timestamp without time zone,
    PRIMARY KEY (id)

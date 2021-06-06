@@ -82,16 +82,16 @@ public class ManagerService {
 
     public Mono<Order> saveOrderFromForm(Order order){
         return  addCreationDateToOrder(order)
-                .then(orderRepository.save(order))
-                .then(addTaskIdsList(order))
-                .then(addAllTasksToOrder(order))
-                .doOnNext( x->
-                    log.debug("Saved order from form with id {}", x::getId)
+                .then(
+                    orderRepository.save(order)
+                                .flatMap(x->addTaskIdsList(x))
+                                .flatMap(x->addAllTasksToOrder(x))
+                                .doOnNext( x-> log.debug("Saved order from form with id {}",x::getId))
                 );
     }
 
     public Mono<TaskQueue> addTaskToOrderByOrderId(Integer orderId, Integer taskId){
-        TaskQueue taskQueue = new TaskQueue(taskId, orderId, Status.ACCEPTED, LocalDateTime.now());
+        TaskQueue taskQueue = new TaskQueue(taskId, orderId, Status.ACCEPTED);
         return taskQueueRepository
                 .save(taskQueue)
                 .doOnNext(x->log.debug("Added task #{} to order with id {}", taskId, orderId));
@@ -117,6 +117,14 @@ public class ManagerService {
                 .doOnNext(x->log.debug("Set completion time of taskQueue with id {} ", taskQueueId));
     }
 
+    public Mono<GanttData> getGanttDataForActiveOrders(){
+       return getGanttInfoForActiveOrders().collectList().map(GanttData::new);
+    }
+
+    public Flux<GanttInfo> getGanttInfoForActiveOrders(){
+        return ganttDataRepository.getChartDataForActive();
+    }
+
     public Mono<String> getAverageOrderCompletionTimeByOrderId(Integer orderId){
         return taskQueueRepository.findAll()
                 .filter(x->x.getOrderId().equals(orderId))
@@ -129,10 +137,6 @@ public class ManagerService {
                     return formatter.format(date);
                 })
                 .doOnNext(x->log.debug("Returned average completion time {} of order {}", x, orderId));
-    }
-
-    public Mono<GanttData> getDataForChartByOrderId(Integer orderId){
-        return ganttDataRepository.getChartDataByOrderId(orderId).collectList().map(GanttData::new);
     }
 
     private Mono<Long> getAverageTaskCompletionTimeByTaskId(Integer taskId){
@@ -149,7 +153,8 @@ public class ManagerService {
                 .filter(x->x.getStatus()!=Status.COMPLETED)
                 .
     }
-*/
+    */
+
 
     private Flux<TaskQueue> getUnassignedActiveTasks(){
         return taskQueueRepository.findAll().filter(x->x.getEmployeeId()==null).filter(x->!x.getStatus().equals(Status.COMPLETED));
@@ -158,11 +163,6 @@ public class ManagerService {
     private Flux<TaskQueue> getAssignedActiveTasks(){
         return taskQueueRepository.findAll().filter(x->x.getEmployeeId()!=null).filter(x->!x.getStatus().equals(Status.COMPLETED));
     }
-
-    /*private Flux<GanttElement> getElementsForNonAssigned(){
-        getUnassignedActiveTasks().
-        return Flux.fromIterable(new ArrayList<>());
-    }*/
 
     public Mono<Boolean> isOrderCompletedByOrderId(Integer orderId){
         return taskQueueRepository.isOrderFinished(orderId);
@@ -176,13 +176,13 @@ public class ManagerService {
 
     private Mono<Order> addAllTasksToOrder(Order order){
         return Flux.fromIterable(order.getTasks())
-                .map(x->addTaskToOrderByOrderId(order.getId(),x))
+                .flatMap(x->addTaskToOrderByOrderId(order.getId(),x))
                 .then(Mono.just(order));
     }
 
     private Mono<Order> addCreationDateToOrder(Order order){
-        return Mono.just(order)
-                .doOnNext(x->x.setCreationDate(LocalDateTime.now()));
+        order.setCreationDate(LocalDateTime.now());
+        return Mono.just(order);
     }
 
     private Mono<Order> addTaskIdsList(Order order){

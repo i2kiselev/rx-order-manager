@@ -10,7 +10,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Data
 @Table
-public class  TaskEstimate {
+public class TaskEstimate {
 
     private Integer taskId;
 

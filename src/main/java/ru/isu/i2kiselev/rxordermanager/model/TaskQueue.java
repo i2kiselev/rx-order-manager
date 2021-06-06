@@ -49,6 +49,12 @@ public class TaskQueue {
         this.assignmentDate = assignmentDate;
     }
 
+    public TaskQueue(Integer taskId, Integer orderId, Status status) {
+        this.taskId = taskId;
+        this.orderId = orderId;
+        this.status = status;
+    }
+
     public TaskQueue() {
 
     }

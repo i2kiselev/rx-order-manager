@@ -4,11 +4,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import ru.isu.i2kiselev.rxordermanager.model.GanttData;
-import ru.isu.i2kiselev.rxordermanager.model.Order;
-import ru.isu.i2kiselev.rxordermanager.model.Status;
-import ru.isu.i2kiselev.rxordermanager.model.TaskQueue;
+import ru.isu.i2kiselev.rxordermanager.model.*;
 import ru.isu.i2kiselev.rxordermanager.service.EmployeeService;
 import ru.isu.i2kiselev.rxordermanager.service.ManagerService;
 import ru.isu.i2kiselev.rxordermanager.service.TaskService;
@@ -94,9 +92,10 @@ public class ManagerController {
         return managerService.updateTaskQueue(taskQueue).thenReturn("redirect:/manager/order/{orderId}/manage");
     }
 
-    @GetMapping("/gantt/{orderId}")
+    @GetMapping("/gantt/")
     @ResponseBody
-    public Mono<GanttData> getDiagramData(@PathVariable Integer orderId){
-        return managerService.getDataForChartByOrderId(orderId);
+    public Mono<GanttData> getDiagramData(){
+        return managerService.getGanttDataForActiveOrders();
     }
+
 }

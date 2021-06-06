@@ -4,19 +4,15 @@ import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 import ru.isu.i2kiselev.rxordermanager.model.GanttElement;
+import ru.isu.i2kiselev.rxordermanager.model.GanttInfo;
 
-public interface GanttDataRepository extends ReactiveCrudRepository<GanttElement,Integer> {
-    @Query("select task_queue.id, task.task_name as text, to_char(task_queue.start_date, 'yyyy-MM-dd hh:mm') as start_date, employee_task_estimates.completion_time as duration " +
+public interface GanttDataRepository extends ReactiveCrudRepository<GanttInfo,Integer> {
+
+    @Query("select task_queue.id, task.task_name as text, task_queue.assignment_date as task_assignment_date, order_table.creation_date as order_creation_date, employee_task_estimates.completion_time as employee_duration, task.default_estimate as default_duration, order_table.id as order_id " +
             "from task_queue " +
             "left join task on task_queue.task_id=task.id " +
-            "left join employee_task_estimates " +
-            "on task_queue.employee_id=employee_task_estimates.employee_id and task_queue.task_id=employee_task_estimates.task_id where task_queue.order_id=$1 and start_date NOTNULL")
-    Flux<GanttElement> getChartDataByOrderId(Integer orderId);
-
-    @Query("select task_queue.id, task.task_name as text, to_char(task_queue.start_date, 'yyyy-MM-dd hh:mm') as start_date, employee_task_estimates.completion_time as duration " +
-            "from task_queue " +
-            "left join task on task_queue.task_id=task.id " +
-            "left join employee_task_estimates " +
-            "on task_queue.employee_id=employee_task_estimates.employee_id and task_queue.task_id=employee_task_estimates.task_id where task_queue.status!='COMPLETED'")
-    Flux<GanttElement> getChartDataForActive();
+            "left join employee_task_estimates on task_queue.employee_id=employee_task_estimates.employee_id and task_queue.task_id=employee_task_estimates.task_id " +
+            "left join order_table on task_queue.order_id=order_table.id "+
+            "where task_queue.status!='COMPLETED'")
+    Flux<GanttInfo> getChartDataForActive();
 }

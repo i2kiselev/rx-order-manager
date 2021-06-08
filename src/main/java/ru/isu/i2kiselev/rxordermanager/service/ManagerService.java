@@ -1,6 +1,7 @@
 package ru.isu.i2kiselev.rxordermanager.service;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -179,54 +180,40 @@ public class ManagerService {
 
     private GanttData getGanttDataFromInfo(List<GanttInfo> ganttInfoList){
         GanttData ganttData = new GanttData();
-        if (isAnyoneAssigned(ganttInfoList)){
-            List<GanttInfo> finalData = new ArrayList<>();
-            finalData.addAll(ganttInfoList.stream()
+        List<GanttParent> orderList = findParents(ganttInfoList);
+        for (GanttParent parent: orderList) {
+            List<GanttInfo> tasksByOrder = ganttInfoList.stream().filter(x->x.getOrderId().equals(parent.getId())).collect(Collectors.toList());
+            List<GanttInfo> finalInfoList = new ArrayList<>();
+            finalInfoList.addAll(tasksByOrder.stream()
                     .filter(x->x.getTaskFinishDate()!=null)
-                    .sorted(Comparator.comparing(GanttInfo::getTaskFinishDate).reversed())
+                    .sorted(Comparator.comparing(GanttInfo::getTaskStartDate).reversed())
                     .map(x-> {
-                        if (x.getEmployeeDuration()!=null){
-                            x.setDuration(x.getEmployeeDuration());
-                        }
-                        else {
-                            x.setDuration(x.getDefaultDuration());
-                        }
+                        x.setStartDate(x.getTaskStartDate());
+                        x.setDuration(getDateDiffInHours(x.getTaskStartDate(),x.getTaskFinishDate()));
                         return x;
                     })
                     .collect(Collectors.toList()));
-            finalData.addAll(ganttInfoList.stream()
+            finalInfoList.addAll(tasksByOrder.stream()
                     .filter(x->x.getTaskAssignmentDate()!=null&&x.getTaskFinishDate()==null)
                     .sorted(Comparator.comparing(GanttInfo::getTaskAssignmentDate).reversed())
                     .map(x-> {
-                        if (x.getEmployeeDuration()!=null){
-                            x.setDuration(x.getEmployeeDuration());
-                        }
-                        else {
-                            x.setDuration(x.getDefaultDuration());
-                        }
+                        x.setStartDate(x.getTaskAssignmentDate());
+                        x.setDuration(x.getEmployeeDuration());
                         return x;
                     })
                     .collect(Collectors.toList()));
-            finalData.addAll(ganttInfoList.stream()
+            finalInfoList.addAll(tasksByOrder.stream()
                     .filter(x->x.getTaskAssignmentDate()==null)
                     .map(x-> {
-                        if (x.getEmployeeDuration()!=null){
-                            x.setDuration(x.getEmployeeDuration());
-                        }
-                        else {
-                            x.setDuration(x.getDefaultDuration());
-                        }
+                        x.setStartDate(x.getOrderCreationDate());
+                        x.setDuration(x.getDefaultDuration());
                         return x;
                     })
                     .collect(Collectors.toList()));
-            addTasksToData(finalData, ganttData);
-            addParentsToData(finalData, ganttData);
+            addTasksToData(finalInfoList,ganttData);
+            addParentsToData(finalInfoList,ganttData);
         }
         return ganttData;
-    }
-
-    private boolean isAnyoneAssigned(List<GanttInfo> sourceData){
-        return sourceData.stream().anyMatch(x->x.getTaskAssignmentDate()!=null);
     }
 
     private List<GanttParent> findParents(List<GanttInfo> infoList){
@@ -245,16 +232,25 @@ public class ManagerService {
     }
 
     private void addTasksToData(List<GanttInfo> finalData, GanttData target){
-        target.setData(new ArrayList<>());
         List<GanttElement> data = target.getData();
         GanttInfo first = finalData.get(0);
-        first.setStartDate(first.getTaskAssignmentDate());
-        data.add(new GanttElement(finalData.get(0)));
+        data.add(new GanttElement(first));
         for (int i = 1;i<finalData.size();i++) {
             GanttInfo ganttInfo = finalData.get(i);
             GanttInfo prevGanttInfo = finalData.get(i-1);
             ganttInfo.setStartDate(prevGanttInfo.getStartDate().plusHours(prevGanttInfo.getDuration().longValue()));
             data.add(new GanttElement(ganttInfo));
         }
+    }
+
+    private double getDateDiffInHours(LocalDateTime from, LocalDateTime to){
+        long hours = from.until(to,ChronoUnit.HOURS);
+        from.plusHours(hours);
+        long minutes = from.until(to,ChronoUnit.MINUTES);
+        if (hours!=0){
+            return hours+minutes/60;
+
+        }
+        return 1;
     }
 }

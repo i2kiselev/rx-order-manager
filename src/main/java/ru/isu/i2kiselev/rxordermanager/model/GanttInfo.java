@@ -20,6 +20,8 @@ public class GanttInfo {
 
     private LocalDateTime taskAssignmentDate;
 
+    private LocalDateTime taskStartDate;
+
     private LocalDateTime taskFinishDate;
 
     private LocalDateTime startDate;

@@ -27,6 +27,7 @@ public class GanttElement {
     private boolean open;
 
     private static int hash = 1000000;
+
     public GanttElement(GanttInfo ganttInfo){
         this.id = ganttInfo.getId();
         this.text = ganttInfo.getText();

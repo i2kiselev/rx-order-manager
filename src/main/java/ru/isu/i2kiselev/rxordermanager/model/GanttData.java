@@ -11,6 +11,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class GanttData {
 
-    List<GanttElement> data;
+    List<GanttElement> data = new ArrayList<>();
 
 }

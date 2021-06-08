@@ -21,15 +21,24 @@ public class GanttElement {
     private Double duration;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Double parent;
+    private Integer parent;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private boolean open;
+
+    private static int hash = 1000000;
     public GanttElement(GanttInfo ganttInfo){
-        //Random random = new Random(ganttInfo.getOrderId().longValue());
         this.id = ganttInfo.getId();
         this.text = ganttInfo.getText();
-        //this.parent = (double) (random.nextInt(100) * 10);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
+        this.parent = ganttInfo.getOrderId()+hash;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         this.start_date = ganttInfo.getStartDate().format(formatter);
         this.duration = ganttInfo.getDuration();
+    }
+
+    public GanttElement(GanttParent ganttParent){
+        this.id = String.valueOf(ganttParent.getId()+hash);
+        this.text = ganttParent.getText();
+        this.open = true;
     }
 }

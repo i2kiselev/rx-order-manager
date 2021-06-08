@@ -20,6 +20,8 @@ public class GanttInfo {
 
     private LocalDateTime taskAssignmentDate;
 
+    private LocalDateTime taskFinishDate;
+
     private LocalDateTime startDate;
 
     private Double employeeDuration;
@@ -29,6 +31,9 @@ public class GanttInfo {
     private Double duration;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Double orderId;
+    private Integer orderId;
+
+    private String orderName;
+
 
 }

@@ -13,10 +13,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -118,7 +115,7 @@ public class ManagerService {
     }
 
     public Mono<GanttData> getGanttDataForActiveOrders(){
-       return getGanttInfoForActiveOrders().collectList().map(GanttData::new);
+       return getGanttInfoForActiveOrders().collectList().map(x->getGanttDataFromInfo(x));
     }
 
     public Flux<GanttInfo> getGanttInfoForActiveOrders(){
@@ -146,22 +143,6 @@ public class ManagerService {
                 .collect(Collectors.averagingLong(x-> ChronoUnit.MILLIS.between(x.getStartDate(),x.getCompletionDate())))
                 .map(Double::longValue)
                 .switchIfEmpty(Mono.just(0L));
-    }
-
-    /*private Flux<GanttData> getGanttDataForActiveOrders(){
-        return taskQueueRepository.findAll()
-                .filter(x->x.getStatus()!=Status.COMPLETED)
-                .
-    }
-    */
-
-
-    private Flux<TaskQueue> getUnassignedActiveTasks(){
-        return taskQueueRepository.findAll().filter(x->x.getEmployeeId()==null).filter(x->!x.getStatus().equals(Status.COMPLETED));
-    }
-
-    private Flux<TaskQueue> getAssignedActiveTasks(){
-        return taskQueueRepository.findAll().filter(x->x.getEmployeeId()!=null).filter(x->!x.getStatus().equals(Status.COMPLETED));
     }
 
     public Mono<Boolean> isOrderCompletedByOrderId(Integer orderId){
@@ -196,4 +177,84 @@ public class ManagerService {
         return Mono.just(order);
     }
 
+    private GanttData getGanttDataFromInfo(List<GanttInfo> ganttInfoList){
+        GanttData ganttData = new GanttData();
+        if (isAnyoneAssigned(ganttInfoList)){
+            List<GanttInfo> finalData = new ArrayList<>();
+            finalData.addAll(ganttInfoList.stream()
+                    .filter(x->x.getTaskFinishDate()!=null)
+                    .sorted(Comparator.comparing(GanttInfo::getTaskFinishDate).reversed())
+                    .map(x-> {
+                        if (x.getEmployeeDuration()!=null){
+                            x.setDuration(x.getEmployeeDuration());
+                        }
+                        else {
+                            x.setDuration(x.getDefaultDuration());
+                        }
+                        return x;
+                    })
+                    .collect(Collectors.toList()));
+            finalData.addAll(ganttInfoList.stream()
+                    .filter(x->x.getTaskAssignmentDate()!=null&&x.getTaskFinishDate()==null)
+                    .sorted(Comparator.comparing(GanttInfo::getTaskAssignmentDate).reversed())
+                    .map(x-> {
+                        if (x.getEmployeeDuration()!=null){
+                            x.setDuration(x.getEmployeeDuration());
+                        }
+                        else {
+                            x.setDuration(x.getDefaultDuration());
+                        }
+                        return x;
+                    })
+                    .collect(Collectors.toList()));
+            finalData.addAll(ganttInfoList.stream()
+                    .filter(x->x.getTaskAssignmentDate()==null)
+                    .map(x-> {
+                        if (x.getEmployeeDuration()!=null){
+                            x.setDuration(x.getEmployeeDuration());
+                        }
+                        else {
+                            x.setDuration(x.getDefaultDuration());
+                        }
+                        return x;
+                    })
+                    .collect(Collectors.toList()));
+            addTasksToData(finalData, ganttData);
+            addParentsToData(finalData, ganttData);
+        }
+        return ganttData;
+    }
+
+    private boolean isAnyoneAssigned(List<GanttInfo> sourceData){
+        return sourceData.stream().anyMatch(x->x.getTaskAssignmentDate()!=null);
+    }
+
+    private List<GanttParent> findParents(List<GanttInfo> infoList){
+        HashSet<GanttParent> ganttParents = new HashSet<>();
+        for (GanttInfo ganttInfo: infoList) {
+            ganttParents.add(new GanttParent(ganttInfo.getOrderId(),ganttInfo.getOrderName()));
+        }
+        return new ArrayList<>(ganttParents);
+    }
+
+    private void addParentsToData(List<GanttInfo> ganttData, GanttData target){
+        List<GanttParent> parents = findParents(ganttData);
+        for (GanttParent ganttParent:parents) {
+            target.getData().add(new GanttElement(ganttParent));
+        }
+    }
+
+    private void addTasksToData(List<GanttInfo> finalData, GanttData target){
+        target.setData(new ArrayList<>());
+        List<GanttElement> data = target.getData();
+        GanttInfo first = finalData.get(0);
+        first.setStartDate(first.getTaskAssignmentDate());
+        data.add(new GanttElement(finalData.get(0)));
+        for (int i = 1;i<finalData.size();i++) {
+            GanttInfo ganttInfo = finalData.get(i);
+            GanttInfo prevGanttInfo = finalData.get(i-1);
+            ganttInfo.setStartDate(prevGanttInfo.getStartDate().plusHours(prevGanttInfo.getDuration().longValue()));
+            data.add(new GanttElement(ganttInfo));
+        }
+    }
 }

@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .hasAuthority("ROLE_ADMIN")
                 .pathMatchers("/task-panel/**")
                 .hasAuthority("ROLE_EMPLOYEE")
-                .pathMatchers("/manager/gantt","/login","/register","/css/**","/js/**","/img/**")
+                .pathMatchers("/manager/gantt/","/login","/register","/css/**","/js/**","/img/**")
                 .permitAll()
                 .and()
                     .formLogin()

@@ -1,5 +1,6 @@
 package ru.isu.i2kiselev.rxordermanager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
@@ -26,6 +27,10 @@ public class GanttElement {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private boolean open;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String color;
+
+    @JsonIgnore
     private static int hash = 1000000;
 
     public GanttElement(GanttInfo ganttInfo){
@@ -41,5 +46,7 @@ public class GanttElement {
         this.id = String.valueOf(ganttParent.getId()+hash);
         this.text = ganttParent.getText();
         this.open = true;
+        this.color = "red";
     }
+
 }

@@ -6,6 +6,7 @@
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css">
     <link th:href="@{/css/item-quantity-dropdown.min.css}" rel="stylesheet">
@@ -22,7 +23,6 @@
 <body>
 <div th:replace="fragments/navbar"></div>
 <div class="container h-100">
-    <div class="row h-100 justify-content-center align-items-center">
         <div class="form">
             <form action="#" th:action="@{/manager/order/add}" id="orderForm"  th:object="${order}" method="post" >
                 <input type="hidden" th:value="*{id}">
@@ -56,7 +56,6 @@
                 </div>
             </form>
         </div>
-    </div>
 </div>
 </body>
 </html>

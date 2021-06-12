@@ -245,7 +245,7 @@ public class ManagerService {
 
     private double getDateDiffInHours(LocalDateTime from, LocalDateTime to){
         long hours = from.until(to,ChronoUnit.HOURS);
-        from.plusHours(hours);
+        from = from.plusHours(hours);
         long minutes = from.until(to,ChronoUnit.MINUTES);
         if (hours!=0){
             return hours+minutes/60;

@@ -46,7 +46,7 @@ public class GanttElement {
         this.id = String.valueOf(ganttParent.getId()+hash);
         this.text = ganttParent.getText();
         this.open = true;
-        this.color = "red";
+        this.color = "#0084F7";
     }
 
 }

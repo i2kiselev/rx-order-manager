@@ -15,7 +15,7 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script crossorigin="anonymous" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <title>Edit task</title>
+    <title>Изменить задачу</title>
 </head>
 <body>
 <div th:replace="fragments/navbar"></div>
@@ -23,16 +23,16 @@
     <form action="#" th:action="@{/task/{id}/update(id=${task.id})}" th:object="${task}" method="post">
         <input type="hidden" th:field="*{id}">
         <div class="form-group">
-            <label for="task-name">Task name</label>
-            <input type="text" th:field="*{taskName}" class="form-control" id="task-name" aria-describedby="nameHelp" placeholder="Enter task name">
+            <label for="task-name">Название задачи</label>
+            <input type="text" th:field="*{taskName}" class="form-control" id="task-name" aria-describedby="nameHelp" placeholder="Введите название задачи">
         </div>
         <div class="form-group">
-            <label for="task-name">Task estimate</label>
+            <label for="task-name">Ожидаемое время выполнения по умолчанию</label>
             <input type="text" th:field="*{defaultEstimate}" class="form-control" id="task-estimate" aria-describedby="nameHelp" placeholder="Enter task estimate">
         </div>
         <div class="btn-wrap">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="reset" class="btn btn-secondary">Reset</button>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <button type="reset" class="btn btn-secondary">Сброс</button>
         </div>
     </form>
 </div>

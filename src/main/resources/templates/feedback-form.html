@@ -15,14 +15,14 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script crossorigin="anonymous" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <title>Add feedback</title>
+    <title>Добавить отзыв о задаче</title>
 </head>
 <body>
 <div th:replace="fragments/navbar"></div>
 <div id="form">
     <form action="#" th:action="@{/task-panel/{taskQueueId}/complete(taskQueueId=${taskQueue.id})}" th:object="${feedback}" method="post">
         <div class="form-group">
-            <label for="task-name">Feedback</label>
+            <label for="task-name">Отзыв</label>
             <textarea type="text" th:field="*{feedback}" class="form-control" id="task-name" aria-describedby="nameHelp" placeholder="Enter feedback">
             </textarea>
         </div>

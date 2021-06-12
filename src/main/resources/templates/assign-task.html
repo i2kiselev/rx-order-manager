@@ -15,7 +15,7 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script crossorigin="anonymous" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <title>Assign task</title>
+    <title>Назначить задачу</title>
 </head>
 <body>
 <div th:replace="fragments/navbar"></div>
@@ -26,7 +26,7 @@
         <input type="hidden" th:value="*{orderId}">
 
         <div class="form-group">
-            <label for="employee-id">Choose employee</label>
+            <label for="employee-id">Выберите работника</label>
             <select th:field="*{employeeId}" class="form-control" id="employee-id">
                 <option th:each="employee : ${employees}" th:value="${employee.id}" th:text="${employee.username}"></option>
             </select>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>User tasks</title>
+    <title>Назначенные задачи</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -28,16 +28,16 @@
             <td th:text="${task.taskName}"></td>
             <td th:unless="${taskRecords[indexStat.index].status == completing or taskRecords[indexStat.index].status == completed}">
                 <a th:href="@{/task-panel/{taskQueueId}/completing(taskQueueId=${taskRecords[indexStat.index].id})}" class="btn btn-primary">
-                    Start task completion
+                    Начать выполнение задачи
                 </a>
             </td>
             <td th:unless="${taskRecords[indexStat.index].status == completed}" th:if="${taskRecords[indexStat.index].status == completing}">
                 <a th:href="@{/task-panel/{taskQueueId}/complete(taskQueueId=${taskRecords[indexStat.index].id})}" class="btn btn-primary">
-                    Complete task
+                    Завершить задачу
                 </a>
             </td>
             <td th:if="${taskRecords[indexStat.index].status == completed}" >
-                <p> Task is completed</p>
+                <p> Задача завершена</p>
             </td>
         </tr>
         </tbody>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Tasks</title>
+    <title>Типовые задачи</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -19,7 +19,7 @@
 <body>
 <div th:replace="fragments/navbar"></div>
 <div class="sections-wrap">
-    <a th:href="@{/task/add}">Add new task</a>
+    <a th:href="@{/task/add}">Добавить типовую задачу</a>
     <table class="table">
         <thead>
         </thead>
@@ -28,10 +28,10 @@
             <td th:text="${task.id}"></td>
             <td th:text="${task.taskName}"></td>
             <td th:text="${task.defaultEstimate}"></td>
-            <td><a th:href="@{/task/{id}(id=${task.id})}" class="btn btn-primary">Edit</a></td>
+            <td><a th:href="@{/task/{id}(id=${task.id})}" class="btn btn-primary">Редактировать</a></td>
             <td>
                 <form th:action="@{/task/{id}/delete(id=${task.id})}" method="post">
-                    <button type="submit" class="btn btn-primary" >Delete</button>
+                    <button type="submit" class="btn btn-primary" >Удалить</button>
                 </form>
             </td>
         </tr>

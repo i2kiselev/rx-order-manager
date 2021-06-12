@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Employees</title>
+    <title>Работники</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -20,8 +20,8 @@
 <div th:replace="fragments/navbar"></div>
 <div class="sections-wrap">
     <!--<a th:href="@{/employee/add}">Add new employee</a>-->
-    <h1 th:if="${employees.isEmpty()}">No employees registered in order manager</h1>
-    <p th:if="${employees.isEmpty()}">Please use <a th:href="@{/register}">register page </a></p>
+    <h1 th:if="${employees.isEmpty()}">Нет зарегистрированных работников</h1>
+    <p th:if="${employees.isEmpty()}">Используйте <a th:href="@{/register}">страницу регистрации</a></p>
     <table class="table">
         <thead>
         </thead>

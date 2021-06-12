@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Orders</title>
+    <title>Заказы</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -24,7 +24,7 @@
 <div class="sections-wrap">
 <div id="gantt_here" style='width:100%; height:500px;'></div>
     <div class="row h-100 align-items-center">
-        <a th:href="@{/manager/order/add}">Add new order</a>
+        <a th:href="@{/manager/order/add}">Добавить новый заказ</a>
         <table class="table">
             <thead>
             </thead>
@@ -32,10 +32,10 @@
             <tr th:each="order: ${orders}">
                 <td th:text="${order.id}"></td>
                 <td th:text="${order.name}"></td>
-                <td><a th:href="@{/manager/order/{id}/manage(id=${order.id})}" class="btn btn-primary">Manage</a></td>
+                <td><a th:href="@{/manager/order/{id}/manage(id=${order.id})}" class="btn btn-primary">Управление</a></td>
                 <td>
                     <form th:action="@{/manager/order/{id}/delete(id=${order.id})}" method="post">
-                        <button type="submit" class="btn btn-primary" >Delete</button>
+                        <button type="submit" class="btn btn-primary" >Удалить</button>
                     </form>
                 </td>
             </tr>

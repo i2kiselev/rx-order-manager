@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Order</title>
+    <title>Заказ</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -21,7 +21,7 @@
 <div class="sections-wrap">
     <h1 th:text="${order.name}"></h1>
     <input type="hidden" id="orderId" th:value="${order.id}">
-    <h1 if th:text="${'Estimated completion time is '+ completionTime}"></h1>
+    <h1 if th:text="${'Ожидаемое время выполнения заказа '+ completionTime}"></h1>
     <!--<h1 th:if="isOrderCompleted">
         Order is completed!
     </h1>-->
@@ -38,18 +38,18 @@
             <td th:text="${task.taskName}"></td>
             <td>
                 <a th:href="@{/manager/order/{orderId}/manage/{taskQueueId}/assign(orderId=${order.id}, taskQueueId=${taskRecords[indexStat.index].id})}" th:unless="${taskRecords[indexStat.index].employeeId}" class="btn btn-primary">
-                    Assign task
+                    Назначить задачу
                 </a>
                 <p th:if="${taskRecords[indexStat.index].employeeId}" th:text="${assignedEmployees[indexStat.index].username}+' is assigned'" >
                 </p>
             </td>
             <td th:unless="${taskRecords[indexStat.index].status == completed}">
                 <a th:href="@{/manager/order/{orderId}/manage/{taskQueueId}/assign(orderId=${order.id}, taskQueueId=${taskRecords[indexStat.index].id})}" th:if="${taskRecords[indexStat.index].employeeId}" class="btn btn-primary">
-                    Reassign task
+                    Переназначить задачу
                 </a>
             </td>
             <td th:if="${taskRecords[indexStat.index].status == completed}" >
-                <p> Task is completed</p>
+                <p> Задача выполнена</p>
             </td>
 
         </tr>

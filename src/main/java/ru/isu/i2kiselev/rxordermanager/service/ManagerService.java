@@ -1,7 +1,6 @@
 package ru.isu.i2kiselev.rxordermanager.service;
 
 import lombok.extern.log4j.Log4j2;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -211,7 +210,7 @@ public class ManagerService {
                     })
                     .collect(Collectors.toList()));
             addTasksToData(finalInfoList,ganttData);
-            addParentsToData(finalInfoList,ganttData);
+            addParentToData(parent,ganttData);
         }
         return ganttData;
     }
@@ -224,11 +223,8 @@ public class ManagerService {
         return new ArrayList<>(ganttParents);
     }
 
-    private void addParentsToData(List<GanttInfo> ganttData, GanttData target){
-        List<GanttParent> parents = findParents(ganttData);
-        for (GanttParent ganttParent:parents) {
-            target.getData().add(new GanttElement(ganttParent));
-        }
+    private void addParentToData(GanttParent parent, GanttData target){
+        target.getData().add(new GanttElement(parent));
     }
 
     private void addTasksToData(List<GanttInfo> finalData, GanttData target){

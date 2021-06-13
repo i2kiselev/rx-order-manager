@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
 
 /*
 DTO used to generate data for gantt script.
@@ -20,6 +19,9 @@ public class GanttElement {
     private String start_date;
 
     private Double duration;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Double progress;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer parent;
@@ -40,6 +42,9 @@ public class GanttElement {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         this.start_date = ganttInfo.getStartDate().format(formatter);
         this.duration = ganttInfo.getDuration();
+        if(ganttInfo.getTaskFinishDate()!=null){
+            this.progress = 1.0;
+        }
     }
 
     public GanttElement(GanttParent ganttParent){

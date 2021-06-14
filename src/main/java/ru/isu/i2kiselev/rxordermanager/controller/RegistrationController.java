@@ -53,8 +53,15 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public Mono<String> processRegistration(@ModelAttribute("form") Employee form, Model model) {
-        return employeeService.saveEmployee(form.withEncodedPassword(passwordEncoder))
-                .doOnNext(x->log.debug("Registration completed successful for user {} ", x::getId))
-                .then(Mono.just("redirect:/login"));
+        return employeeService.isRegistered(form.getUsername()).flatMap(isRegistered-> {
+            if (isRegistered){
+                model.addAttribute("error", "User " +form.getUsername() + " already exists");
+                model.addAttribute("form", new Employee());
+                return Mono.just("registration");
+            }
+            return employeeService.saveEmployee(form.withEncodedPassword(passwordEncoder))
+                        .doOnNext(x->log.debug("Registration completed successful for user {} ", x::getId))
+                        .then(Mono.just("redirect:/login"));
+        });
     }
 }

@@ -6,5 +6,12 @@
         <a class="navbar-brand align-center" href="#"><img src="#" th:src="@{/img/manager.svg}" width="60" height="60" class="d-inline-block align-center" alt="">
            Order manager
         </a>
+        <ul>
+            <li class="nav-item">
+                <form method="POST" th:action="@{/logout}">
+                    <button class="btn btn-primary" type="submit">Выйти</button>
+                </form>
+            </li>
+        </ul>
     </div>
 </nav>

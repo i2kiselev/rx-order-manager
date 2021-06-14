@@ -8,13 +8,18 @@
         </a>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/employee}">Employees<span class="sr-only"></span></a>
+                <a class="nav-link" th:href="@{/employee}">Работники<span class="sr-only"></span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/task}">Tasks<span class="sr-only"></span></a>
+                <a class="nav-link" th:href="@{/task}">Задачи<span class="sr-only"></span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/manager}">Manager<span class="sr-only"></span></a>
+                <a class="nav-link" th:href="@{/manager}">Менеджер<span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item">
+                <form method="POST" th:action="@{/logout}">
+                    <button class="btn btn-primary" type="submit">Выйти</button>
+                </form>
             </li>
         </ul>
     </div>

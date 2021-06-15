@@ -25,16 +25,15 @@
         <h1 class="h3 mb-3 font-weight-normal">Вход в систему</h1>
         <!-- end::thAction[] -->
         <label class="sr-only" for="username">Логин</label>
-        <input autofocus="" class="form-control" id="username" name="username" placeholder="Username" required=""
+        <input autofocus="" class="form-control" id="username" name="username" placeholder="Логин" required=""
                type="text"/><br/>
         <label class="sr-only" for="password">Пароль</label>
-        <input class="form-control" id="password" name="password" placeholder="Password" required="" type="password"/><br/>
+        <input class="form-control" id="password" name="password" placeholder="Пароль" required="" type="password"/><br/>
         <div th:if="${param.error}" class="error">
             Ошибка при входе. Проверьте правильность логина и пароля.
         </div>
         <p id="new_here">Не зарегистрированы? Нажмите
             <a th:href="@{/register}">сюда</a> для регистрации.</p>
-        <!--<input type="submit" value="login"/>-->
         <button class="btn btn-lg btn-primary btn-block" type="submit" value="login">Войти</button>
         <p class="mt-5 mb-3 text-muted">© 2020-2021</p>
     </form>

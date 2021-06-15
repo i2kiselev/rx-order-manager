@@ -29,11 +29,10 @@
         <tr  th:each="emp: ${employees}">
             <td th:text="${emp.id}"></td>
             <td th:text="${emp.username}"></td>
-            <td><a th:href="@{/employee/{id}/tasks(id=${emp.id})}" class="btn btn-primary">Tasks</a></td>
-            <td><a th:href="@{/employee/{id}(id=${emp.id})}" class="btn btn-primary">Edit</a></td>
+            <td><a th:href="@{/employee/{id}/tasks(id=${emp.id})}" class="btn btn-primary">Задачи</a></td>
             <td>
                 <form th:action="@{/employee/{id}/delete(id=${emp.id})}" method="post">
-                    <button type="submit" class="btn btn-primary" >Delete</button>
+                    <button type="submit" class="btn btn-primary" >Удалить</button>
                 </form>
             </td>
         </tr>

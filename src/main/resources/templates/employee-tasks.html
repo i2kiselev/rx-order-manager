@@ -27,7 +27,7 @@
         <tr th:each="task, iter: ${tasks}">
             <td th:text="${task.id}"></td>
             <td th:text="${task.taskName}"></td>
-            <td th:text="${'Ожидаемое время выполнения '+estimates[iter.index]+' часов'}"></td>
+            <td th:text="${'Ожидаемое время выполнения(в часах): '+estimates[iter.index]}"></td>
             <td>
                 <form th:action="@{/employee/{id}/tasks/{taskId}/delete(id=${employee.id}, taskId=${task.id})}" method="post">
                     <button type="submit" class="btn btn-primary" >Удалить</button>

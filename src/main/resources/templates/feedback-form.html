@@ -23,12 +23,12 @@
     <form action="#" th:action="@{/task-panel/{taskQueueId}/complete(taskQueueId=${taskQueue.id})}" th:object="${feedback}" method="post">
         <div class="form-group">
             <label for="task-name">Отзыв</label>
-            <textarea type="text" th:field="*{feedback}" class="form-control" id="task-name" aria-describedby="nameHelp" placeholder="Enter feedback">
+            <textarea type="text" th:field="*{feedback}" class="form-control" id="task-name" aria-describedby="nameHelp" placeholder="Введите отзыв о задаче">
             </textarea>
         </div>
         <div class="btn-wrap">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="reset" class="btn btn-secondary">Reset</button>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <button type="reset" class="btn btn-secondary">Сброс</button>
         </div>
     </form>
 </div>

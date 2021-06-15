@@ -21,10 +21,13 @@
 </head>
 <body>
 <div th:replace="fragments/navbar"></div>
+<div id="gantt_here" style="display: none" th:if="${orders.size==0}"></div>
+<div id="gantt_here" th:if="${orders.size!=0}"></div>
 <div class="sections-wrap">
-<div id="gantt_here" style='width:100%; height:500px;'></div>
     <div class="row h-100 align-items-center">
-        <a th:href="@{/manager/order/add}">Добавить новый заказ</a>
+        <a class="btn btn-primary" th:href="@{/manager/order/add}">Добавить новый заказ</a>
+        <a class="btn btn-primary" th:href="@{/manager/report/daily}">Отчет за текущий день</a>
+        <a class="btn btn-primary" th:href="@{/manager/report/monthly}">Отчет за текущий месяц</a>
         <table class="table">
             <thead>
             </thead>

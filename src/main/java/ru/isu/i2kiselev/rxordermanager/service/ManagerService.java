@@ -5,9 +5,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.*;
-import ru.isu.i2kiselev.rxordermanager.repository.GanttDataRepository;
-import ru.isu.i2kiselev.rxordermanager.repository.OrderRepository;
-import ru.isu.i2kiselev.rxordermanager.repository.TaskQueueRepository;
+import ru.isu.i2kiselev.rxordermanager.repository.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,10 +30,16 @@ public class ManagerService {
 
     private final GanttDataRepository ganttDataRepository;
 
-    public ManagerService(OrderRepository orderRepository, TaskQueueRepository taskQueueRepository, GanttDataRepository ganttDataRepository) {
+    private final ReportRepository reportRepository;
+
+    private final ReportInfoRepository reportInfoRepository;
+
+    public ManagerService(OrderRepository orderRepository, TaskQueueRepository taskQueueRepository, GanttDataRepository ganttDataRepository, ReportRepository reportRepository, ReportInfoRepository reportInfoRepository) {
         this.orderRepository = orderRepository;
         this.taskQueueRepository = taskQueueRepository;
         this.ganttDataRepository = ganttDataRepository;
+        this.reportRepository = reportRepository;
+        this.reportInfoRepository = reportInfoRepository;
     }
 
     public Mono<TaskQueue> updateTaskQueue(TaskQueue taskQueue) {
@@ -135,6 +139,18 @@ public class ManagerService {
                     return formatter.format(date);
                 })
                 .doOnNext(x -> log.debug("Returned average completion time {} of order {}", x, orderId));
+    }
+
+    public Flux<Report> getDailyReportData(){
+        return reportRepository.getDailyReportData();
+    }
+
+    public Flux<Report> getReportDataByOrderId(Integer orderId){
+        return reportRepository.getReportByOrderId(orderId);
+    }
+
+    public Mono<ReportInfo> getDailyReportInfo(){
+        return reportInfoRepository.getDailyReportInfo();
     }
 
     private Mono<Long> getAverageTaskCompletionTimeByTaskId(Integer taskId) {

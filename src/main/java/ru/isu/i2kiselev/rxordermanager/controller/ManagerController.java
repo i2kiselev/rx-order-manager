@@ -92,6 +92,18 @@ public class ManagerController {
         return managerService.updateTaskQueue(taskQueue).thenReturn("redirect:/manager/order/{orderId}/manage");
     }
 
+    @GetMapping("/report/daily/")
+    public Mono<String> getDailyReport(Model model){
+        model.addAttribute("reportInfo", managerService.getDailyReportInfo());
+        model.addAttribute("reportData", managerService.getDailyReportData());
+        return Mono.just("daily-report");
+    }
+
+    /*@PostMapping("/order/{orderId}/manage/{taskQueueId}/assign")
+    public Mono<String> assigasnTaskToEmployee(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, @ModelAttribute("taskQueue") TaskQueue taskQueue){
+        return managerService.updateTaskQueue(taskQueue).thenReturn("redirect:/manager/order/{orderId}/manage");
+    }*/
+
     @GetMapping("/gantt/")
     @ResponseBody
     public Mono<GanttData> getDiagramData(){

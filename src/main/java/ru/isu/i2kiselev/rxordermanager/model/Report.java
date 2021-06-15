@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class Report {
 
+    private String taskName;
+
     private String employeeName;
 
     private String feedback;

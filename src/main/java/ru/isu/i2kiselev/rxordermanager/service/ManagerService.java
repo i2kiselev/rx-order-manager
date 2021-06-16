@@ -1,5 +1,6 @@
 package ru.isu.i2kiselev.rxordermanager.service;
 
+import io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueue;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -34,12 +35,15 @@ public class ManagerService {
 
     private final ReportInfoRepository reportInfoRepository;
 
-    public ManagerService(OrderRepository orderRepository, TaskQueueRepository taskQueueRepository, GanttDataRepository ganttDataRepository, ReportRepository reportRepository, ReportInfoRepository reportInfoRepository) {
+    private final OrderReportRepository orderReportRepository;
+
+    public ManagerService(OrderRepository orderRepository, TaskQueueRepository taskQueueRepository, GanttDataRepository ganttDataRepository, ReportRepository reportRepository, ReportInfoRepository reportInfoRepository, OrderReportRepository orderReportRepository) {
         this.orderRepository = orderRepository;
         this.taskQueueRepository = taskQueueRepository;
         this.ganttDataRepository = ganttDataRepository;
         this.reportRepository = reportRepository;
         this.reportInfoRepository = reportInfoRepository;
+        this.orderReportRepository = orderReportRepository;
     }
 
     public Mono<TaskQueue> updateTaskQueue(TaskQueue taskQueue) {
@@ -141,8 +145,8 @@ public class ManagerService {
                 .doOnNext(x -> log.debug("Returned average completion time {} of order {}", x, orderId));
     }
 
-    public Flux<Report> getDailyReportData(){
-        return reportRepository.getDailyReportData();
+    public Mono<Void> deleteTaskFromOrder(Integer taskQueueId){
+       return taskQueueRepository.deleteById(taskQueueId);
     }
 
     public Flux<Report> getReportDataByOrderId(Integer orderId){
@@ -151,6 +155,22 @@ public class ManagerService {
 
     public Mono<ReportInfo> getDailyReportInfo(){
         return reportInfoRepository.getDailyReportInfo();
+    }
+
+    public Mono<ReportInfo> getMonthlyReportInfo(){
+        return reportInfoRepository.getMonthlyReportInfo();
+    }
+
+    public Flux<OrderReport> getDailyOrderReportData(){
+        return orderReportRepository.getDailyOrderIdList().flatMap(x->orderReportRepository.getOrderReportByOrderId(x));
+    }
+
+    public Flux<OrderReport> getMonthlyOrderReportData(){
+        return orderReportRepository.getMonthlyOrderIdList().flatMap(x->orderReportRepository.getOrderReportByOrderId(x));
+    }
+
+    public Mono<OrderReport> getOrderReportById(Integer orderId){
+        return orderReportRepository.getOrderReportByOrderId(orderId);
     }
 
     private Mono<Long> getAverageTaskCompletionTimeByTaskId(Integer taskId) {

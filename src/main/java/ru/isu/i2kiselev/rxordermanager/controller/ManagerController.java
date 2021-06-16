@@ -4,7 +4,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.isu.i2kiselev.rxordermanager.model.*;
 import ru.isu.i2kiselev.rxordermanager.service.EmployeeService;
@@ -92,17 +91,30 @@ public class ManagerController {
         return managerService.updateTaskQueue(taskQueue).thenReturn("redirect:/manager/order/{orderId}/manage");
     }
 
-    @GetMapping("/report/daily/")
+    @PostMapping("/order/{orderId}/manage/{taskQueueId}/delete")
+    public Mono<String> deleteTaskFromOrder(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, @ModelAttribute("taskQueue") TaskQueue taskQueue){
+        return managerService.deleteTaskFromOrder(taskQueueId).thenReturn("redirect:/manager/order/{orderId}/manage");
+    }
+
+    @GetMapping("/report/daily")
     public Mono<String> getDailyReport(Model model){
         model.addAttribute("reportInfo", managerService.getDailyReportInfo());
-        model.addAttribute("reportData", managerService.getDailyReportData());
+        model.addAttribute("orderData", managerService.getDailyOrderReportData());
         return Mono.just("daily-report");
     }
 
-    /*@PostMapping("/order/{orderId}/manage/{taskQueueId}/assign")
-    public Mono<String> assigasnTaskToEmployee(@PathVariable Integer orderId, @PathVariable Integer taskQueueId, @ModelAttribute("taskQueue") TaskQueue taskQueue){
-        return managerService.updateTaskQueue(taskQueue).thenReturn("redirect:/manager/order/{orderId}/manage");
-    }*/
+    @GetMapping("/report/monthly")
+    public Mono<String> getMonthlyReport(Model model){
+        model.addAttribute("reportInfo", managerService.getMonthlyReportInfo());
+        model.addAttribute("orderData", managerService.getMonthlyOrderReportData());
+        return Mono.just("monthly-report");
+    }
+    @GetMapping("/report/order/{orderId}")
+    public Mono<String> getOrderReport(@PathVariable Integer orderId, Model model){
+        model.addAttribute("orderReport", managerService.getOrderReportById(orderId));
+        model.addAttribute("report", managerService.getReportDataByOrderId(orderId));
+        return Mono.just("order-report");
+    }
 
     @GetMapping("/gantt/")
     @ResponseBody

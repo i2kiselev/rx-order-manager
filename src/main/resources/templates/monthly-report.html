@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Ежедневный отчёт</title>
+    <title>Отчёт за текущий месяц</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -19,7 +19,7 @@
 <body>
 <div th:replace="fragments/navbar"></div>
 <div class="sections-wrap">
-    <p th:text="'Ежедневный отчет за '+ ${reportInfo.dateOfReport}"></p>
+    <p th:text="'Ежемесячный отчет за '+ ${reportInfo.dateOfReport}"></p>
     <p th:text="'Завершено задач вовремя: '+ ${reportInfo.tasksFinishedInTime}"></p>
     <p th:text="'Завершено задач за время больше ожидаемого: '+ ${reportInfo.tasksNotFinishedInTime}"></p>
     <p th:text="'Задач в процессе выполнения: '+ ${reportInfo.tasksInProgress}"></p>

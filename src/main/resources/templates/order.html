@@ -40,12 +40,17 @@
                 <a th:href="@{/manager/order/{orderId}/manage/{taskQueueId}/assign(orderId=${order.id}, taskQueueId=${taskRecords[indexStat.index].id})}" th:unless="${taskRecords[indexStat.index].employeeId}" class="btn btn-primary">
                     Назначить задачу
                 </a>
-                <p th:if="${taskRecords[indexStat.index].employeeId}" th:text="${assignedEmployees[indexStat.index].username}+' is assigned'" >
+                <p th:if="${taskRecords[indexStat.index].employeeId}" th:text="'Назначен '+${assignedEmployees[indexStat.index].username}" >
                 </p>
             </td>
             <td th:unless="${taskRecords[indexStat.index].status == completed}">
                 <a th:href="@{/manager/order/{orderId}/manage/{taskQueueId}/assign(orderId=${order.id}, taskQueueId=${taskRecords[indexStat.index].id})}" th:if="${taskRecords[indexStat.index].employeeId}" class="btn btn-primary">
                     Переназначить задачу
+                </a>
+            </td>
+            <td th:unless="${taskRecords[indexStat.index].status == completed}">
+                <a th:href="@{/manager/order/{orderId}/manage/{taskQueueId}/delete(orderId=${order.id}, taskQueueId=${taskRecords[indexStat.index].id})}" th:if="${taskRecords[indexStat.index].employeeId}" class="btn btn-primary">
+                    Удалить задачу
                 </a>
             </td>
             <td th:if="${taskRecords[indexStat.index].status == completed}" >

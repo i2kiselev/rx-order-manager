@@ -15,6 +15,5 @@ public class Report {
 
     private Double estimateDuration;
 
-    private String orderName;
 
 }

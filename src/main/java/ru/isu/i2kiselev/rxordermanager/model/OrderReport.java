@@ -2,6 +2,7 @@ package ru.isu.i2kiselev.rxordermanager.model;
 
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -11,10 +12,12 @@ public class OrderReport {
 
     private String orderName;
 
-    private LocalDateTime time;
+    private LocalDate currentDay;
 
     private Integer tasksFinishedInTime;
 
-    private Integer taskNotFinishedInTime;
+    private Integer tasksInProgress;
+
+    private Integer tasksNotFinishedInTime;
 
 }

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="'Отчет заказа №'+ ${orderReport.orderId}"></title>
+    <title>Ежемесячный отчёт по работникам</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -19,37 +19,22 @@
 <body>
 <div th:replace="fragments/navbar"></div>
 <div class="sections-wrap">
-    <p th:text="'Ежедневный отчет за '+ ${orderReport.currentDay}"></p>
-    <p th:text="${orderReport.orderName}"></p>
-    <p th:text="'Завершено задач вовремя: '+ ${orderReport.tasksFinishedInTime}"></p>
-    <p th:text="'Завершено задач за время больше ожидаемого: '+ ${orderReport.tasksNotFinishedInTime}"></p>
-    <p th:text="'Задач в процессе выполнения: '+ ${orderReport.tasksInProgress}"></p>
+    <p th:text="'Ежемесячный отчет за '+ ${reportInfo.dateOfReport}"></p>
+    <p th:text="'Завершено задач вовремя: '+ ${reportInfo.tasksFinishedInTime}"></p>
+    <p th:text="'Завершено задач за время больше ожидаемого: '+ ${reportInfo.tasksNotFinishedInTime}"></p>
     <table class="table">
         <thead>
         <tr>
-            <td>Название задачи</td>
             <td>Имя работника</td>
-            <td>Ожидаемое время выполнения</td>
-            <td>Реальное время выполнения</td>
+            <td>Задачи завершенные за ожидаемое время</td>
+            <td>Задачи завершенные за время больше ожидаемого</td>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="report, iter: ${reports}">
-            <td th:text="${report.taskName}"></td>
-            <td th:text="${report.employeeName}"></td>
-            <td th:text="${report.estimateDuration}"></td>
-            <td th:text="${report.duration}"></td>
-            <td>
-                <p>
-                    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                        Показать отзыв
-                    </a>
-                </p>
-                <div class="collapse" id="collapseExample">
-                    <div class="card card-body" th:text="${report.feedback}">
-                    </div>
-                </div>
-            </td>
+        <tr th:each="report, iter: ${employeeReport}">
+            <td th:text="${report.username}"></td>
+            <td th:text="${report.tasksFinishedInTime}"></td>
+            <td th:text="${report.tasksNotFinishedInTime}"></td>
         </tr>
         </tbody>
     </table>

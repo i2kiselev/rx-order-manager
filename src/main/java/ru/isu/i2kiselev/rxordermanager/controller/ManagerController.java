@@ -109,10 +109,25 @@ public class ManagerController {
         model.addAttribute("orderData", managerService.getMonthlyOrderReportData());
         return Mono.just("monthly-report");
     }
+
+    @GetMapping("/report/employee/daily")
+    public Mono<String> getDailyEmployeeReport(Model model){
+        model.addAttribute("reportInfo", managerService.getDailyReportInfo());
+        model.addAttribute("employeeReport", managerService.getDailyEmployeeReportData());
+        return Mono.just("daily-emp-report");
+    }
+
+    @GetMapping("/report/employee/monthly")
+    public Mono<String> getMonthlyEmployeeReport(Model model){
+        model.addAttribute("reportInfo", managerService.getMonthlyReportInfo());
+        model.addAttribute("employeeReport", managerService.getMonthlyEmployeeReportData());
+        return Mono.just("monthly-emp-report");
+    }
+
     @GetMapping("/report/order/{orderId}")
     public Mono<String> getOrderReport(@PathVariable Integer orderId, Model model){
         model.addAttribute("orderReport", managerService.getOrderReportById(orderId));
-        model.addAttribute("report", managerService.getReportDataByOrderId(orderId));
+        model.addAttribute("reports", managerService.getReportDataByOrderId(orderId));
         return Mono.just("order-report");
     }
 

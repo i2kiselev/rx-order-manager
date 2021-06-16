@@ -1,6 +1,5 @@
 package ru.isu.i2kiselev.rxordermanager.service;
 
-import io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueue;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -37,13 +36,17 @@ public class ManagerService {
 
     private final OrderReportRepository orderReportRepository;
 
-    public ManagerService(OrderRepository orderRepository, TaskQueueRepository taskQueueRepository, GanttDataRepository ganttDataRepository, ReportRepository reportRepository, ReportInfoRepository reportInfoRepository, OrderReportRepository orderReportRepository) {
+    private final EmployeeReportRepository employeeReportRepository;
+
+
+    public ManagerService(OrderRepository orderRepository, TaskQueueRepository taskQueueRepository, GanttDataRepository ganttDataRepository, ReportRepository reportRepository, ReportInfoRepository reportInfoRepository, OrderReportRepository orderReportRepository, EmployeeReportRepository employeeReportRepository) {
         this.orderRepository = orderRepository;
         this.taskQueueRepository = taskQueueRepository;
         this.ganttDataRepository = ganttDataRepository;
         this.reportRepository = reportRepository;
         this.reportInfoRepository = reportInfoRepository;
         this.orderReportRepository = orderReportRepository;
+        this.employeeReportRepository = employeeReportRepository;
     }
 
     public Mono<TaskQueue> updateTaskQueue(TaskQueue taskQueue) {
@@ -173,6 +176,13 @@ public class ManagerService {
         return orderReportRepository.getOrderReportByOrderId(orderId);
     }
 
+    public Flux<EmployeeReport> getDailyEmployeeReportData(){
+        return employeeReportRepository.getDailyEmployeeIdList().flatMap(x->employeeReportRepository.getEmployeeReportByEmployeeId(x));
+    }
+
+    public Flux<EmployeeReport> getMonthlyEmployeeReportData(){
+        return employeeReportRepository.getMonthlyEmployeeIdList().flatMap(x->employeeReportRepository.getEmployeeReportByEmployeeId(x));
+    }
     private Mono<Long> getAverageTaskCompletionTimeByTaskId(Integer taskId) {
         return taskQueueRepository.findAll()
                 .filter(x -> x.getTaskId().equals(taskId))

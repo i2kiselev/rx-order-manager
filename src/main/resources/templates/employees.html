@@ -26,8 +26,8 @@
         <thead>
         </thead>
         <tbody>
-        <tr  th:each="emp: ${employees}">
-            <td th:text="${emp.id}"></td>
+        <tr  th:each="emp, indexStat: ${employees}">
+            <td th:text="${indexStat.count}"></td>
             <td th:text="${emp.username}"></td>
             <td><a th:href="@{/employee/{id}/tasks(id=${emp.id})}" class="btn btn-primary">Задачи</a></td>
             <td>

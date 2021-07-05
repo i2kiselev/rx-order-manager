@@ -25,7 +25,7 @@
         </thead>
         <tbody>
         <tr th:each="task, iter: ${tasks}">
-            <td th:text="${task.id}"></td>
+            <td th:text="${iter.count}"></td>
             <td th:text="${task.taskName}"></td>
             <td th:text="${'Ожидаемое время выполнения(в часах): '+estimates[iter.index]}"></td>
             <td>

@@ -24,8 +24,8 @@
         <thead>
         </thead>
         <tbody>
-        <tr th:each="task: ${tasks}">
-            <td th:text="${task.id}"></td>
+        <tr th:each="task, indexStat: ${tasks}">
+            <td th:text="${indexStat.count}"></td>
             <td th:text="${task.taskName}"></td>
             <td th:text="${task.defaultEstimate}"></td>
             <td><a th:href="@{/task/{id}(id=${task.id})}" class="btn btn-primary">Редактировать</a></td>

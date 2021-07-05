@@ -1,8 +1,7 @@
-
 spring:
   r2dbc:
     username: postgres
-    password: 1832373
+    password: password
     url: r2dbc:postgresql://localhost:5432/order-manager
     pool:
       enabled: true
